@@ -5,7 +5,6 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
-drizzle/
 
 # testing
 /coverage
@@ -13,6 +12,10 @@ drizzle/
 # next.js
 /.next/
 /out/
+
+#drizzle
+drizzle/meta/*.json
+drizzle/*
 
 # production
 /build
