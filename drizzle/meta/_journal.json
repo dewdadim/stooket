@@ -1,1 +1,13 @@
-{"version":"5","dialect":"mysql","entries":[]}
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1708697367638,
+      "tag": "0000_dark_lila_cheney",
+      "breakpoints": true
+    }
+  ]
+}
