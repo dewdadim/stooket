@@ -1,7 +1,7 @@
-import { CategoryCard } from '@/components/CategoryCard'
+import { CategoryCard } from '@/components/category-icon'
 import { Header } from '@/components/Header'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
-import { ProductCard } from '@/components/ProductCard'
+import { ProductCard } from '@/components/product-card'
 import { db } from '@/lib/db'
 import { users } from '@/lib/db/schema'
 

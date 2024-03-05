@@ -1,10 +1,15 @@
 import MaxWidthWrapper from './MaxWidthWrapper'
 import { Input } from './ui/input'
-import { ModeToggle } from './ModeToggle'
-import { ProfileToggle } from './ProfileToggle'
+import { ModeToggle } from './mode-toggle'
+import { ProfileToggle } from './profile-toggle'
 import Link from 'next/link'
 import { Button } from './ui/button'
 import { Search } from 'lucide-react'
+
+import NextAuth from 'next-auth'
+import authConfig from '@/auth.config'
+
+const { auth } = NextAuth(authConfig)
 
 export function Navbar() {
   return (
@@ -16,30 +21,51 @@ export function Navbar() {
               <Link href="/">Stooket</Link>
             </h1>
           </div>
-          <form className="flex gap">
+          <form className="hidden lg:flex gap-0">
             <Input
               type="text"
               placeholder="Search"
-              className="hidden rounded-l-md rounded-r-none z-10 w-72 md:inline-flex "
+              className=" rounded-l-md rounded-r-none z-10 w-72 "
             />
             <Button
               size="icon"
               variant="secondary"
-              className="hidden rounded-l-none rounded-r-md md:inline-flex"
+              className=" rounded-l-none rounded-r-md"
             >
-              <Search className="size-5"></Search>
+              <Search className="size-5" />
             </Button>
           </form>
           <div className="flex items-center gap-2 md:gap-4">
             <Button
               size="icon"
               variant="ghost"
-              className="infline-flex rounded-l-none rounded-r-md md:hidden"
+              className="infline-flex rounded-l-none rounded-r-md lg:hidden"
             >
-              <Search className="size-5"></Search>
+              <Search className="size-5" />
             </Button>
             <ModeToggle />
-            <ProfileToggle />
+            {auth ? (
+              <>
+                <Link href="/login">
+                  <Button className="font-medium" variant="ghost" size="sm">
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/register">
+                  <Button
+                    className="hidden font-medium col md:inline-flex"
+                    variant="ghost"
+                    size="sm"
+                  >
+                    Register
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <ProfileToggle />
+              </>
+            )}
           </div>
         </div>
       </MaxWidthWrapper>
