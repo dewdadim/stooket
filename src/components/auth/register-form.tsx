@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import * as z from 'zod'
-import { useState, useTransition } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from "zod";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { RegisterSchema } from '@/schemas'
-import { Input } from '@/components/ui/input'
+import { RegisterSchema } from "@/schemas";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -14,50 +14,61 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { CardWrapper } from '@/components/auth/card-wrapper'
-import { Button } from '@/components/ui/button'
-import { FormError } from '@/components/form-error'
-import { FormSuccess } from '@/components/form-success'
-import { register } from '@/actions/register'
+} from "@/components/ui/form";
+import { CardWrapper } from "@/components/auth/card-wrapper";
+import { Button } from "@/components/ui/button";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
+import { register } from "@/actions/register";
+import { useRouter } from "next/navigation";
 
 function RegisterForm() {
-  const [error, setError] = useState<string | undefined>('')
-  const [success, setSuccess] = useState<string | undefined>('')
-  const [isPending, startTransition] = useTransition()
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      email: '',
-      password: '',
-      name: '',
-      username: '',
+      email: "",
+      password: "",
+      name: "",
+      username: "",
     },
-  })
+  });
 
-  //   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-  //     setError('')
-  //     setSuccess('')
-
-  //     startTransition(() => {
-  //       register(values).then((data) => {
-  //         setError(data.error)
-  //         setSuccess(data.success)
-  //       })
-  //     })
-  //   }
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+    startTransition(() => {
+      register(values)
+        .then((data) => {
+          if (data?.error) {
+            setError(data.error);
+          }
+          if (data?.success) {
+            form.reset();
+            setSuccess(data.success);
+            router.push("/login");
+          }
+        })
+        .catch(() => setError("Something went wrong"))
+        .finally(() => {
+          setError("");
+          setSuccess("");
+        });
+    });
+  };
 
   return (
-    <div className="flex justify-center mt-36">
+    <div className="mt-24 flex justify-center md:mt-36">
       <CardWrapper
-        headerLabel="Create an account"
+        headerLabel="Looks like someone new is here!"
         backButtonLabel="Already have an account?"
         backButtonHref="/login"
         showSocial
       >
         <Form {...form}>
-          <form className="space-y-6" onSubmit={form.handleSubmit(() => {})}>
+          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <FormField
                 name="name"
@@ -139,7 +150,7 @@ function RegisterForm() {
         </Form>
       </CardWrapper>
     </div>
-  )
+  );
 }
 
-export default RegisterForm
+export default RegisterForm;

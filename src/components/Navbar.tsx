@@ -1,31 +1,30 @@
-import MaxWidthWrapper from './MaxWidthWrapper'
-import { Input } from './ui/input'
-import { ModeToggle } from './mode-toggle'
-import { ProfileToggle } from './profile-toggle'
-import Link from 'next/link'
-import { Button } from './ui/button'
-import { Search } from 'lucide-react'
+import MaxWidthWrapper from "./MaxWidthWrapper";
+import { Input } from "./ui/input";
+import { ModeToggle } from "./mode-toggle";
+import { ProfileToggle } from "./profile-toggle";
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { Search } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-import NextAuth from 'next-auth'
-import authConfig from '@/auth.config'
+export async function Navbar() {
+  const session = await getServerSession(authOptions);
 
-const { auth } = NextAuth(authConfig)
-
-export function Navbar() {
   return (
-    <div className="bg-primary-foreground fixed top-0 w-full z-10">
+    <div className="fixed top-0 z-10 w-full bg-primary-foreground">
       <MaxWidthWrapper>
-        <div className="py-2 flex justify-between items-center">
+        <div className="flex items-center justify-between py-2">
           <div>
-            <h1 className="font-bold text-2xl text-primary">
+            <h1 className="text-2xl font-bold text-primary">
               <Link href="/">Stooket</Link>
             </h1>
           </div>
-          <form className="hidden lg:flex gap-0">
+          <form className="hidden gap-0 lg:flex">
             <Input
               type="text"
               placeholder="Search"
-              className=" rounded-l-md rounded-r-none z-10 w-72 "
+              className=" z-10 w-72 rounded-l-md rounded-r-none "
             />
             <Button
               size="icon"
@@ -44,7 +43,14 @@ export function Navbar() {
               <Search className="size-5" />
             </Button>
             <ModeToggle />
-            {auth ? (
+            {session?.user ? (
+              <>
+                <ProfileToggle />
+                <Button className="font-medium" variant="default" size="sm">
+                  Sell Now
+                </Button>
+              </>
+            ) : (
               <>
                 <Link href="/login">
                   <Button className="font-medium" variant="ghost" size="sm">
@@ -53,7 +59,7 @@ export function Navbar() {
                 </Link>
                 <Link href="/register">
                   <Button
-                    className="hidden font-medium col md:inline-flex"
+                    className="col hidden font-medium md:inline-flex"
                     variant="ghost"
                     size="sm"
                   >
@@ -61,14 +67,10 @@ export function Navbar() {
                   </Button>
                 </Link>
               </>
-            ) : (
-              <>
-                <ProfileToggle />
-              </>
             )}
           </div>
         </div>
       </MaxWidthWrapper>
     </div>
-  )
+  );
 }

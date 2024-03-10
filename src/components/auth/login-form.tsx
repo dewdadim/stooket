@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import * as z from 'zod'
-import { useState, useTransition } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-
-import { LoginSchema } from '@/schemas'
-import { Input } from '@/components/ui/input'
+import * as z from "zod";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { LoginSchema } from "@/schemas";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -14,48 +14,59 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { CardWrapper } from '@/components/auth/card-wrapper'
-import { Button } from '@/components/ui/button'
-import { FormError } from '@/components/form-error'
-import { FormSuccess } from '@/components/form-success'
-import { register } from '@/actions/register'
+} from "@/components/ui/form";
+import { CardWrapper } from "@/components/auth/card-wrapper";
+import { Button } from "@/components/ui/button";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
+import { login } from "@/actions/login";
 
 function LoginForm() {
-  const [error, setError] = useState<string | undefined>('')
-  const [success, setSuccess] = useState<string | undefined>('')
-  const [isPending, startTransition] = useTransition()
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
-  })
+  });
 
-  //   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-  //     setError('')
-  //     setSuccess('')
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    startTransition(() => {
+      login(values)
+        .then((data) => {
+          if (data?.error) {
+            setSuccess("");
+            setError(data.error);
+          }
 
-  //     startTransition(() => {
-  //       register(values).then((data) => {
-  //         setError(data.error)
-  //         setSuccess(data.success)
-  //       })
-  //     })
-  //   }
+          if (data?.success) {
+            setError("");
+            form.reset();
+            setSuccess(data.success);
+          }
+        })
+        .finally(() => {
+          router.refresh();
+        })
+        .catch(() => setError("Something went wrong"));
+    });
+  };
 
   return (
-    <div className="flex justify-center mt-36">
+    <div className="mt-36 flex justify-center">
       <CardWrapper
-        headerLabel="Create an account"
+        headerLabel="Welcome back as always!"
         backButtonLabel="Don't have any account?"
         backButtonHref="/register"
         showSocial
       >
         <Form {...form}>
-          <form className="space-y-6" onSubmit={form.handleSubmit(() => {})}>
+          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <FormField
                 control={form.control}
@@ -97,13 +108,13 @@ function LoginForm() {
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button disabled={isPending} type="submit" className="w-full">
-              Create an account
+              Login
             </Button>
           </form>
         </Form>
       </CardWrapper>
     </div>
-  )
+  );
 }
 
-export default LoginForm
+export default LoginForm;

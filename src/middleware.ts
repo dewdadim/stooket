@@ -1,0 +1,48 @@
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  apiAuthPrefix,
+  authRoutes,
+  privateRoutes,
+} from "@/routes";
+
+export function middleware(request: NextRequest) {
+  const { nextUrl, cookies } = request;
+  const isLoggedIn = cookies.has("next-auth.session-token");
+
+  const isApiAuthRoute = request.nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isPrivateRoute = privateRoutes.includes(nextUrl.pathname);
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+  if (isApiAuthRoute) {
+    return null;
+  }
+
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return null;
+  }
+
+  if (!isLoggedIn && isPrivateRoute) {
+    let callbackUrl = nextUrl.pathname;
+    return Response.redirect(new URL("/login", nextUrl));
+    if (nextUrl.search) {
+      callbackUrl += nextUrl.search;
+    }
+
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+
+    return Response.redirect(
+      new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl),
+    );
+  }
+
+  return null;
+}
+
+export const config = {
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};

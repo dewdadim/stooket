@@ -1,12 +1,12 @@
 interface HeaderProps {
-  label: string
+  label: string;
 }
 
 export const Header = ({ label }: HeaderProps) => {
   return (
-    <div className="w-full flex flex-col gap-y-4 items-center justify-center">
+    <div className="flex w-full flex-col items-center justify-center gap-y-4">
       <h1 className="text-3xl font-bold">Stooket</h1>
-      <p className="text-muted-foreground text-sm">{label}</p>
+      <p className="text-sm text-muted-foreground">{label}</p>
     </div>
-  )
-}
+  );
+};
