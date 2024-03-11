@@ -49,15 +49,16 @@ export const accounts = mysqlTable(
   }),
 )
 
-export const products = mysqlTable("product", {
-  userId: varchar("userId", { length: 255 })
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  name: varchar("name", { length: 255 }),
-  description: text("description"),
-  price: decimal("price", { precision: 6, scale: 2 }),
-  post_at: timestamp("post_at", {
-    mode: "date",
-    fsp: 3,
-  }).defaultNow(),
-})
+// export const products = mysqlTable("product", {
+//   userId: varchar("userId", { length: 255 })
+//     .notNull()
+//     .references(() => users.id, { onDelete: "cascade" }),
+//   id: varchar("id", { length: 255 }).notNull().primaryKey(),
+//   name: varchar("name", { length: 255 }),
+//   description: text("description"),
+//   price: decimal("price", { precision: 6, scale: 2 }),
+//   post_at: timestamp("post_at", {
+//     mode: "date",
+//     fsp: 3,
+//   }).defaultNow(),
+// })
