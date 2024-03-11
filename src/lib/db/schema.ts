@@ -6,8 +6,8 @@ import {
   varchar,
   text,
   decimal,
-} from "drizzle-orm/mysql-core";
-import type { AdapterAccount } from "@auth/core/adapters";
+} from "drizzle-orm/mysql-core"
+import type { AdapterAccount } from "@auth/core/adapters"
 
 export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
@@ -21,7 +21,7 @@ export const users = mysqlTable("user", {
   }).defaultNow(),
   image: varchar("image", { length: 255 }),
   institute: varchar("institute", { length: 255 }),
-});
+})
 
 export const accounts = mysqlTable(
   "account",
@@ -47,7 +47,7 @@ export const accounts = mysqlTable(
       columns: [account.provider, account.providerAccountId],
     }),
   }),
-);
+)
 
 export const products = mysqlTable("product", {
   userId: varchar("userId", { length: 255 })
@@ -60,4 +60,4 @@ export const products = mysqlTable("product", {
     mode: "date",
     fsp: 3,
   }).defaultNow(),
-});
+})

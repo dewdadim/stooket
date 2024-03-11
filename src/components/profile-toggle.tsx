@@ -1,21 +1,14 @@
-"use client";
+"use client"
 
-import { LayoutDashboard, LogOut, Settings, User2 } from "lucide-react";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { Separator } from "./ui/separator";
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { LayoutDashboard, LogOut, Settings, User2 } from "lucide-react"
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar"
+import { Separator } from "./ui/separator"
+import { signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 
 export function ProfileToggle() {
-  const { data: session } = useSession();
-  const router = useRouter();
+  const { data: session } = useSession()
 
   return (
     <Popover>
@@ -61,8 +54,7 @@ export function ProfileToggle() {
           <div
             className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             onClick={() => {
-              signOut();
-              router.refresh();
+              signOut()
             }}
           >
             <LogOut />
@@ -71,5 +63,5 @@ export function ProfileToggle() {
         </div>
       </PopoverContent>
     </Popover>
-  );
+  )
 }

@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { LoginSchema } from "@/schemas";
-import { Input } from "@/components/ui/input";
+import * as z from "zod"
+import { useState, useTransition } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { LoginSchema } from "@/schemas"
+import { Input } from "@/components/ui/input"
 import {
   Form,
   FormControl,
@@ -14,18 +14,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
-import { login } from "@/actions/login";
+} from "@/components/ui/form"
+import { CardWrapper } from "@/components/auth/card-wrapper"
+import { Button } from "@/components/ui/button"
+import { FormError } from "@/components/form-error"
+import { FormSuccess } from "@/components/form-success"
+import { login } from "@/actions/login"
+import { Loader2 } from "lucide-react"
 
 function LoginForm() {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+  const [error, setError] = useState<string | undefined>("")
+  const [success, setSuccess] = useState<string | undefined>("")
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -33,29 +34,29 @@ function LoginForm() {
       email: "",
       password: "",
     },
-  });
+  })
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     startTransition(() => {
       login(values)
         .then((data) => {
           if (data?.error) {
-            setSuccess("");
-            setError(data.error);
+            setSuccess("")
+            setError(data.error)
           }
 
           if (data?.success) {
-            setError("");
-            form.reset();
-            setSuccess(data.success);
+            setError("")
+            form.reset()
+            setSuccess(data.success)
           }
         })
         .finally(() => {
-          router.refresh();
+          router.refresh()
         })
-        .catch(() => setError("Something went wrong"));
-    });
-  };
+        .catch(() => setError("Something went wrong"))
+    })
+  }
 
   return (
     <div className="mt-36 flex justify-center">
@@ -107,14 +108,20 @@ function LoginForm() {
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button disabled={isPending} type="submit" className="w-full">
-              Login
-            </Button>
+            {isPending ? (
+              <Button disabled className="w-full">
+                <Loader2 className="h-4 w-4 animate-spin" />
+              </Button>
+            ) : (
+              <Button disabled={isPending} type="submit" className="w-full">
+                Login
+              </Button>
+            )}
           </form>
         </Form>
       </CardWrapper>
     </div>
-  );
+  )
 }
 
-export default LoginForm;
+export default LoginForm

@@ -1,12 +1,12 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import "dotenv/config";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db } from "@/lib/db";
-import { Adapter } from "next-auth/adapters";
-import bcrypt from "bcryptjs";
-import { users } from "./db/schema";
-import { eq } from "drizzle-orm";
+import { NextAuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import "dotenv/config"
+import { DrizzleAdapter } from "@auth/drizzle-adapter"
+import { db } from "@/lib/db"
+import { Adapter } from "next-auth/adapters"
+import bcrypt from "bcryptjs"
+import { users } from "./db/schema"
+import { eq } from "drizzle-orm"
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db) as Adapter,
@@ -30,21 +30,21 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          return null
         }
 
         const user = await db.query.users.findFirst({
           where: eq(users.email, credentials.email),
-        });
+        })
 
-        if (!user) return null;
+        if (!user) return null
 
         const passwordMatch = await bcrypt.compare(
           credentials.password,
           user.password!,
-        );
+        )
 
-        if (!passwordMatch) return null;
+        if (!passwordMatch) return null
 
         return {
           id: user.id,
@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
           username: user.username,
           email: user.email,
           image: user.image,
-        } as any;
+        } as any
       },
     }),
   ],
@@ -64,16 +64,16 @@ export const authOptions: NextAuthOptions = {
           ...session.user,
           username: token.username,
         },
-      };
+      }
     },
     async jwt({ token, user }) {
       if (user) {
         return {
           ...token,
           username: user.username,
-        };
+        }
       }
-      return token;
+      return token
     },
   },
-};
+}

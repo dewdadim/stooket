@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from "zod"
 
 //login user form validation
 export const LoginSchema = z.object({
@@ -8,7 +8,7 @@ export const LoginSchema = z.object({
   password: z.string().min(1, {
     message: "Password is required",
   }),
-});
+})
 
 //register user form validation
 export const RegisterSchema = z.object({
@@ -26,4 +26,4 @@ export const RegisterSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required",
   }),
-});
+})

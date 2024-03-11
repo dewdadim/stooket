@@ -1,35 +1,35 @@
-"use server";
+"use server"
 
-import * as z from "zod";
-import bcrypt from "bcryptjs";
-import uniqid from "uniqid";
+import * as z from "zod"
+import bcrypt from "bcryptjs"
+import uniqid from "uniqid"
 
-import { db } from "@/lib/db";
-import { RegisterSchema } from "@/schemas";
-import { getUserByEmail, getUserByUsername } from "@/data/user";
-import { users } from "@/lib/db/schema";
+import { db } from "@/lib/db"
+import { RegisterSchema } from "@/schemas"
+import { getUserByEmail, getUserByUsername } from "@/data/user"
+import { users } from "@/lib/db/schema"
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
-  const validatedFields = RegisterSchema.safeParse(values);
+  const validatedFields = RegisterSchema.safeParse(values)
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Invalid fields!" }
   }
 
-  const id = uniqid();
-  const { email, password, name, username } = validatedFields.data;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const id = uniqid()
+  const { email, password, name, username } = validatedFields.data
+  const hashedPassword = await bcrypt.hash(password, 10)
 
   //check existing user
-  const existingEmail = await getUserByEmail(email);
-  const existingUsername = await getUserByUsername(username);
+  const existingEmail = await getUserByEmail(email)
+  const existingUsername = await getUserByUsername(username)
 
   if (existingEmail) {
-    return { error: "Email already in use!" };
+    return { error: "Email already in use!" }
   }
 
   if (existingUsername) {
-    return { error: "Username is not available!" };
+    return { error: "Username is not available!" }
   }
 
   await db.insert(users).values({
@@ -38,7 +38,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     name: name,
     email: email,
     password: hashedPassword,
-  });
+  })
 
-  return { success: "User created!" };
-};
+  return { success: "User created!" }
+}

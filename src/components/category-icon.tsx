@@ -1,9 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from "next/image"
+import Link from "next/link"
 
 interface CategoryCardProps {
-  icon: string;
-  title: string;
+  icon: string
+  title: string
 }
 
 export function CategoryCard(data: CategoryCardProps) {
@@ -22,5 +22,5 @@ export function CategoryCard(data: CategoryCardProps) {
         </div>
       </div>
     </Link>
-  );
+  )
 }

@@ -1,9 +1,9 @@
-import { CategoryCard } from "@/components/category-icon";
-import { Header } from "@/components/Header";
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import { ProductCard } from "@/components/product-card";
-import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
+import { CategoryCard } from "@/components/category-icon"
+import { Header } from "@/components/Header"
+import MaxWidthWrapper from "@/components/MaxWidthWrapper"
+import { ProductCard } from "@/components/product-card"
+import { db } from "@/lib/db"
+import { users } from "@/lib/db/schema"
 
 export default async function Home() {
   const usersData = await db
@@ -12,7 +12,7 @@ export default async function Home() {
       username: users.username,
       avatar: users.image,
     })
-    .from(users);
+    .from(users)
 
   return (
     <>
@@ -57,5 +57,5 @@ export default async function Home() {
         </div>
       </MaxWidthWrapper>
     </>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { Button } from "./ui/button";
-import { toast } from "sonner";
+import { Button } from "./ui/button"
+import { toast } from "sonner"
 
 export const ToastDemo = () => {
   return (
@@ -19,5 +19,5 @@ export const ToastDemo = () => {
     >
       Show Toast
     </Button>
-  );
-};
+  )
+}

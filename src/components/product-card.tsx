@@ -1,4 +1,4 @@
-import { AspectRatio } from "./ui/aspect-ratio";
+import { AspectRatio } from "./ui/aspect-ratio"
 import {
   Card,
   CardContent,
@@ -6,18 +6,18 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import Image from "next/image";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import Link from "next/link";
+} from "./ui/card"
+import Image from "next/image"
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar"
+import Link from "next/link"
 
 interface ProductCardProps {
-  id: string;
-  title: string;
-  price: string;
-  thumbnailUrl: string;
-  avatar: string;
-  username: string;
+  id: string
+  title: string
+  price: string
+  thumbnailUrl: string
+  avatar: string
+  username: string
 }
 
 export function ProductCard(data: ProductCardProps) {
@@ -53,5 +53,5 @@ export function ProductCard(data: ProductCardProps) {
         </div>
       </Link>
     </section>
-  );
+  )
 }

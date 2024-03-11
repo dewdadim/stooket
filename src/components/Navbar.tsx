@@ -1,15 +1,15 @@
-import MaxWidthWrapper from "./MaxWidthWrapper";
-import { Input } from "./ui/input";
-import { ModeToggle } from "./mode-toggle";
-import { ProfileToggle } from "./profile-toggle";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { Search } from "lucide-react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import MaxWidthWrapper from "./MaxWidthWrapper"
+import { Input } from "./ui/input"
+import { ModeToggle } from "./mode-toggle"
+import { ProfileToggle } from "./profile-toggle"
+import Link from "next/link"
+import { Button } from "./ui/button"
+import { Search } from "lucide-react"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 export async function Navbar() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
   return (
     <div className="fixed top-0 z-10 w-full bg-primary-foreground">
@@ -47,7 +47,7 @@ export async function Navbar() {
               <>
                 <ProfileToggle />
                 <Button className="font-medium" variant="default" size="sm">
-                  Sell Now
+                  Sell Item
                 </Button>
               </>
             ) : (
@@ -72,5 +72,5 @@ export async function Navbar() {
         </div>
       </MaxWidthWrapper>
     </div>
-  );
+  )
 }
