@@ -53,9 +53,6 @@ function RegisterForm() {
             setSuccess(data.success)
           }
         })
-        .finally(() => {
-          router.push("/login")
-        })
         .catch(() => setError("Something went wrong"))
     })
   }
