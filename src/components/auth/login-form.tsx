@@ -49,10 +49,8 @@ function LoginForm() {
             setError("")
             form.reset()
             setSuccess(data.success)
+            router.push("/")
           }
-        })
-        .finally(() => {
-          router.refresh()
         })
         .catch(() => setError("Something went wrong"))
     })

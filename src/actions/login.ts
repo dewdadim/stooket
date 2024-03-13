@@ -5,13 +5,11 @@ import {} from "next-auth"
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values)
-  
+
   if (!validatedFields.success) {
     return { error: "Invalid fields!" }
   }
 
-  console.log(validatedFields.data)
-  
   const { email, password } = validatedFields.data
 
   const signInData = await signIn("credentials", {
