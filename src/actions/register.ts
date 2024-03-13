@@ -16,6 +16,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Invalid fields!" }
   }
 
+  console.log(validatedFields.data)
+
   const id = uniqid()
   const { email, password, name, username } = validatedFields.data
   const hashedPassword = await bcrypt.hash(password, 10)

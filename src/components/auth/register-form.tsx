@@ -51,10 +51,8 @@ function RegisterForm() {
             setError("")
             form.reset()
             setSuccess(data.success)
+            router.push("/login")
           }
-        })
-        .finally(() => {
-          router.push("/login")
         })
         .catch(() => setError("Something went wrong"))
     })
@@ -150,7 +148,7 @@ function RegisterForm() {
               </Button>
             ) : (
               <Button disabled={isPending} type="submit" className="w-full">
-                Login
+                Create Account
               </Button>
             )}
           </form>
