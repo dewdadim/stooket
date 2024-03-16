@@ -21,14 +21,6 @@ export async function POST(request: Request) {
   const user = await currentUser()
   const id = uuidv4()
 
-  db.insert(products).values({
-    id: id,
-    userId: "5gkltsh2qfx",
-    name: title,
-    description: description,
-    price: price,
-  })
-
   console.log("data: ", id, title, description, price)
 
   return NextResponse.json({ title, price, description, category })
