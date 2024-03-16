@@ -31,7 +31,7 @@ export function ProductCard(data: ProductCardProps) {
               IMG
             </AvatarFallback>
           </Avatar>
-          <p className="text-sm lg:text-base">@{data.username}</p>
+          <p className="text-sm md:text-base">@{data.username}</p>
         </div>
         <div className="py-2">
           <AspectRatio ratio={1 / 1} className="w-full bg-muted">

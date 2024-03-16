@@ -5,9 +5,15 @@ import { cn } from "@/lib/utils"
 import { Footer } from "@/components/Footer"
 import { Navbar } from "@/components/Navbar"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/sonner"
 import { getServerSession } from "next-auth"
 import SessionProvider from "@/components/SessionProvider"
+import {
+  AlertOctagonIcon,
+  AlertTriangleIcon,
+  CheckCircle2,
+  InfoIcon,
+} from "lucide-react"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -35,7 +41,17 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Toaster />
+            <Toaster
+              richColors
+              position="top-center"
+              visibleToasts={1}
+              icons={{
+                success: <CheckCircle2 />,
+                info: <InfoIcon />,
+                warning: <AlertOctagonIcon />,
+                error: <AlertTriangleIcon />,
+              }}
+            />
             <main className="relative flex min-h-screen flex-col">
               <Navbar />
               <div className="flex-1 flex-grow">{children}</div>
