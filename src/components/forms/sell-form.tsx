@@ -5,7 +5,7 @@ import { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { RegisterSchema } from "@/schemas"
+import { SellSchema } from "@/schemas"
 import { Input } from "@/components/ui/input"
 import {
   Form,
@@ -15,13 +15,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { CardWrapper } from "@/components/auth/card-wrapper"
+import { CardWrapper } from "@/components/forms/card-wrapper"
 import { Button } from "@/components/ui/button"
 import { FormError } from "@/components/form-error"
 import { FormSuccess } from "@/components/form-success"
-import { register } from "@/actions/register"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { sell } from "@/actions/sell"
+import { db } from "@/lib/db"
+import { products, test } from "@/lib/db/schema"
+import { v4 as uuidv4 } from "uuid"
 
 function RegisterForm() {
   const [error, setError] = useState<string | undefined>("")
@@ -29,19 +40,18 @@ function RegisterForm() {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof SellSchema>>({
+    resolver: zodResolver(SellSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      name: "",
-      username: "",
+      title: "",
+      category: "",
+      description: "",
     },
   })
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = async (values: z.infer<typeof SellSchema>) => {
     startTransition(() => {
-      register(values)
+      sell(values)
         .then((data) => {
           if (data?.error) {
             setSuccess("")
@@ -51,35 +61,52 @@ function RegisterForm() {
             setError("")
             form.reset()
             setSuccess(data.success)
-            router.push("/login")
+            router.push("/")
           }
         })
         .catch(() => setError("Something went wrong"))
     })
+    // Send data to API route
+    // const res = await fetch("http://localhost:3000/api/sell", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     title,
+    //     price,
+    //     description,
+    //     category,
+    //   }),
+    // })
+
+    // const result = await res.json()
+    // console.log(result)
+
+    // Navigate to thank you
+    // router.push("/")
   }
 
   return (
     <div className="mt-24 flex justify-center md:mt-36">
       <CardWrapper
-        headerLabel="Looks like someone new is here!"
-        backButtonLabel="Already have an account?"
-        backButtonHref="/login"
-        showSocial
+        header="What are you selling today?"
+        className="md:w-[600px]"
       >
         <Form {...form}>
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <FormField
-                name="name"
+                name="title"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Product Title</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder="John Doe"
+                        placeholder="Name your product"
                       />
                     </FormControl>
                     <FormMessage />
@@ -88,16 +115,26 @@ function RegisterForm() {
               />
               <FormField
                 control={form.control}
-                name="username"
+                name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="username123"
-                      />
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="free items">Free Items</SelectItem>
+                          <SelectItem value="food">Food & Drinks</SelectItem>
+                          <SelectItem value="service">Services</SelectItem>
+                          <SelectItem value="tech">Tech & Gadgets</SelectItem>
+                          <SelectItem value="hobby">Hobby</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -105,34 +142,37 @@ function RegisterForm() {
               />
               <FormField
                 control={form.control}
-                name="email"
+                name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="john.doe@example.com"
-                        type="email"
-                      />
-                    </FormControl>
+                    <FormLabel>Price</FormLabel>
+                    <div className="flex items-center">
+                      <p className="rounded-l-md bg-secondary p-2">RM</p>
+                      <FormControl>
+                        <Input
+                          className="rounded-l-none"
+                          {...field}
+                          disabled={isPending}
+                          placeholder="0.00"
+                          type="number"
+                        />
+                      </FormControl>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
-                name="password"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Description (Optional)</FormLabel>
                     <FormControl>
-                      <Input
+                      <Textarea
                         {...field}
                         disabled={isPending}
-                        placeholder="******"
-                        type="password"
+                        placeholder="This product is..."
                       />
                     </FormControl>
                     <FormMessage />
@@ -148,7 +188,7 @@ function RegisterForm() {
               </Button>
             ) : (
               <Button disabled={isPending} type="submit" className="w-full">
-                Create Account
+                Add Product
               </Button>
             )}
           </form>

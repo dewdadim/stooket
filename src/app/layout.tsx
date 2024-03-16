@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { Footer } from "@/components/Footer"
 import { Navbar } from "@/components/Navbar"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/toaster"
 import { getServerSession } from "next-auth"
 import SessionProvider from "@/components/SessionProvider"
 
@@ -35,11 +35,11 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Toaster position="top-center" />
+            <Toaster />
             <main className="relative flex min-h-screen flex-col">
               <Navbar />
               <div className="flex-1 flex-grow">{children}</div>
-              <Footer />
+              <Footer className="mt-16" />
             </main>
           </ThemeProvider>
         </SessionProvider>

@@ -6,14 +6,16 @@ import {
   varchar,
   text,
   decimal,
+  boolean,
+  double,
 } from "drizzle-orm/mysql-core"
 import type { AdapterAccount } from "@auth/core/adapters"
 
 export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }),
-  username: varchar("username", { length: 255 }),
-  email: varchar("email", { length: 255 }).notNull(),
+  username: varchar("username", { length: 255 }).notNull().unique(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
   password: varchar("password", { length: 255 }),
   // emailVerified: timestamp("emailVerified", {
   //   mode: "date",
@@ -21,6 +23,7 @@ export const users = mysqlTable("user", {
   // }).defaultNow(),
   image: varchar("image", { length: 255 }),
   institute: varchar("institute", { length: 255 }),
+  isSeller: boolean("isSeller").default(false),
 })
 
 export const accounts = mysqlTable(
@@ -49,16 +52,20 @@ export const accounts = mysqlTable(
   }),
 )
 
-// export const products = mysqlTable("product", {
-//   userId: varchar("userId", { length: 255 })
-//     .notNull()
-//     .references(() => users.id, { onDelete: "cascade" }),
-//   id: varchar("id", { length: 255 }).notNull().primaryKey(),
-//   name: varchar("name", { length: 255 }),
-//   description: text("description"),
-//   price: decimal("price", { precision: 6, scale: 2 }),
-//   post_at: timestamp("post_at", {
-//     mode: "date",
-//     fsp: 3,
-//   }).defaultNow(),
-// })
+export const products = mysqlTable("product", {
+  username: varchar("username", { length: 255 })
+    .notNull()
+    .references(() => users.username, { onDelete: "cascade" }),
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  name: varchar("name", { length: 255 }),
+  description: text("description"),
+  price: double("price", { precision: 6, scale: 2 }),
+  // post_at: timestamp("post_at", {
+  //   mode: "date",
+  // }).defaultNow(),
+})
+
+export const test = mysqlTable("institute", {
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  name: text("name"),
+})

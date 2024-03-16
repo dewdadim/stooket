@@ -27,3 +27,18 @@ export const RegisterSchema = z.object({
     message: "Name is required",
   }),
 })
+
+//sell form validation
+export const SellSchema = z.object({
+  title: z
+    .string()
+    .min(1, {
+      message: "Product title is required",
+    })
+    .max(120, { message: "Exceeds 120 maximum characters" }),
+  price: z.coerce.number().gte(2, "Minimum price RM2.00"),
+  category: z.string().min(1, {
+    message: "Please select appropriate category",
+  }),
+  description: z.string(),
+})

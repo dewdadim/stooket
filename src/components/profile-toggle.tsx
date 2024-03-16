@@ -6,6 +6,7 @@ import { Separator } from "./ui/separator"
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
+import Link from "next/link"
 
 export function ProfileToggle() {
   const { data: session } = useSession()
@@ -36,18 +37,27 @@ export function ProfileToggle() {
           <Separator />
 
           <div className="flex flex-col">
-            <div className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground">
+            <Link
+              href="/profile"
+              className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
+            >
               <User2 />
               <p className="text-sm leading-none">Profile</p>
-            </div>
-            <div className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground">
+            </Link>
+            <Link
+              href="#"
+              className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
+            >
               <Settings />
               <p className="text-sm leading-none">Settings</p>
-            </div>
-            <div className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground">
+            </Link>
+            <Link
+              href="#"
+              className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
+            >
               <LayoutDashboard />
               <p className="text-sm leading-none">Sales Dashboard</p>
-            </div>
+            </Link>
           </div>
 
           <Separator />

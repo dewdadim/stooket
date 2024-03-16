@@ -6,7 +6,7 @@ import Link from "next/link"
 import { Button } from "./ui/button"
 import { Search } from "lucide-react"
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
+import { authOptions } from "@/auth"
 
 export async function Navbar() {
   const session = await getServerSession(authOptions)
@@ -46,9 +46,11 @@ export async function Navbar() {
             {session?.user ? (
               <>
                 <ProfileToggle />
-                <Button className="font-medium" variant="default" size="sm">
-                  Sell Item
-                </Button>
+                <Link href="/sell">
+                  <Button className="font-medium" variant="default" size="sm">
+                    Sell Item
+                  </Button>
+                </Link>
               </>
             ) : (
               <>

@@ -2,7 +2,7 @@
 
 import * as z from "zod"
 import bcrypt from "bcryptjs"
-import uniqid from "uniqid"
+import { v4 as uuidv4 } from "uuid"
 
 import { db } from "@/lib/db"
 import { RegisterSchema } from "@/schemas"
@@ -16,7 +16,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Invalid fields!" }
   }
 
-  const id = uniqid()
+  const id = uuidv4()
   const { email, password, name, username } = validatedFields.data
   const hashedPassword = await bcrypt.hash(password, 10)
 
