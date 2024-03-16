@@ -3,8 +3,7 @@ import { Header } from "@/components/Header"
 import MaxWidthWrapper from "@/components/MaxWidthWrapper"
 import { ProductCard } from "@/components/product-card"
 import { db } from "@/lib/db"
-import { products, users } from "@/lib/db/schema"
-import { eq } from "drizzle-orm"
+import { products } from "@/lib/db/schema"
 
 export default async function Home() {
   // const data = await db

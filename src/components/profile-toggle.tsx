@@ -3,19 +3,19 @@
 import { LayoutDashboard, LogOut, Settings, User2 } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar"
 import { Separator } from "./ui/separator"
-import { signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { signOut } from "next-auth/react"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import Link from "next/link"
+import { useCurrentUser } from "@/hooks/use-current-user"
 
 export function ProfileToggle() {
-  const { data: session } = useSession()
+  const user = useCurrentUser()
 
   return (
     <Popover>
       <PopoverTrigger>
         <Avatar className="size-8 rounded-sm">
-          <AvatarImage src={session?.user.image!} alt="Profile" />
+          <AvatarImage src={user?.image!} alt="Profile" />
           <AvatarFallback className="size-8 rounded-sm bg-secondary">
             IMG
           </AvatarFallback>
@@ -26,12 +26,12 @@ export function ProfileToggle() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4 rounded-md p-2">
             <Avatar className="size-10 rounded-sm">
-              <AvatarImage src={session?.user.image!} alt="Profile" />
+              <AvatarImage src={user?.image!} alt="Profile" />
               <AvatarFallback className="size-8 rounded-sm bg-secondary">
                 IMG
               </AvatarFallback>
             </Avatar>
-            <h4 className="font-medium leading-none">{session?.user.name}</h4>
+            <h4 className="font-medium leading-none">{user?.name}</h4>
           </div>
 
           <Separator />
