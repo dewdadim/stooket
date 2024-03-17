@@ -50,13 +50,15 @@ export default async function ProductDetails({
         </BreadcrumbList>
       </Breadcrumb>
       <Header className="mt-4" />
-      <div className="mt-4 flex">
-        <section className="flex-1 space-y-4">
+      <div className="mt-4 flex flex-wrap gap-8 lg:flex-nowrap">
+        <section className="w-fit flex-auto space-y-4">
           <h1 className="text-2xl font-semibold">{product.name}</h1>
           <h1 className="text-2xl">RM{product.price}</h1>
+          <h1 className="pt-16 text-2xl font-semibold">Description</h1>
+          <p>{product.description}</p>
         </section>
-        <section className="flex-">
-          <CardWrapper>
+        <section className="fixed inset-x-0 bottom-0 w-full flex-none md:static lg:static lg:w-auto">
+          <CardWrapper className="w-full lg:w-[400px]">
             <form className="space-y-6">
               <div className="flex items-center gap-4">
                 <Avatar className="size-12 rounded-sm">

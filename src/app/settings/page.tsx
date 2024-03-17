@@ -4,7 +4,7 @@ export default function page() {
   return (
     <MaxWidthWrapper>
       return{" "}
-      <div className="mt-32 text-2xl">Profile page in development... 🛠</div>
+      <div className="mt-32 text-2xl">Settings page in development... 🛠</div>
     </MaxWidthWrapper>
   )
 }

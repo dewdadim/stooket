@@ -73,12 +73,12 @@ function LoginForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username/Email</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder="username123 / user@example.com"
+                        placeholder="user@example.com"
                         type="email"
                       />
                     </FormControl>

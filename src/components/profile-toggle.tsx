@@ -45,14 +45,14 @@ export function ProfileToggle() {
               <p className="text-sm leading-none">Profile</p>
             </Link>
             <Link
-              href="#"
+              href="/settings"
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <Settings />
               <p className="text-sm leading-none">Settings</p>
             </Link>
             <Link
-              href="#"
+              href="/sales-dashboard"
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <LayoutDashboard />

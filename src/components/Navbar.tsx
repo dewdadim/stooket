@@ -19,6 +19,7 @@ export async function Navbar() {
             <h1 className="text-2xl font-bold text-primary">
               <Link href="/">Stooket</Link>
             </h1>
+            <p className="text-xs">Testing environment</p>
           </div>
           <form className="hidden gap-0 lg:flex">
             <Input
