@@ -3,7 +3,6 @@
 import { AspectRatio } from "./ui/aspect-ratio"
 import {
   Carousel,
-  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,

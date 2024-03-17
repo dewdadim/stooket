@@ -34,7 +34,7 @@ export const CardWrapper = ({
         className,
       )}
     >
-      <CardHeader>
+      <CardHeader className={!header ? "p-0" : ""}>
         <Header label={headerLabel} header={header} />
       </CardHeader>
       <CardContent>{children}</CardContent>
