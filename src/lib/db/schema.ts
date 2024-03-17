@@ -10,6 +10,7 @@ import {
   double,
 } from "drizzle-orm/mysql-core"
 import type { AdapterAccount } from "@auth/core/adapters"
+import { relations } from "drizzle-orm"
 
 export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
@@ -25,6 +26,10 @@ export const users = mysqlTable("user", {
   institute: varchar("institute", { length: 255 }),
   isSeller: boolean("isSeller").default(false),
 })
+
+export const usersRelations = relations(users, ({ many }) => ({
+  posts: many(products),
+}))
 
 export const accounts = mysqlTable(
   "account",
@@ -64,6 +69,13 @@ export const products = mysqlTable("product", {
   //   mode: "date",
   // }).defaultNow(),
 })
+
+export const postsRelations = relations(products, ({ one }) => ({
+  sellers: one(users, {
+    fields: [products.username],
+    references: [users.username],
+  }),
+}))
 
 export const test = mysqlTable("institute", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),

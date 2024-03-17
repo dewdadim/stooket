@@ -30,17 +30,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { sell } from "@/actions/sell"
-import { db } from "@/lib/db"
-import { products, test } from "@/lib/db/schema"
-import { v4 as uuidv4 } from "uuid"
-import { useToast } from "../ui/use-toast"
 
 function RegisterForm() {
   const [error, setError] = useState<string | undefined>("")
   const [success, setSuccess] = useState<string | undefined>("")
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
-  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof SellSchema>>({
     resolver: zodResolver(SellSchema),
@@ -68,25 +63,6 @@ function RegisterForm() {
         })
         .catch(() => setError("Something went wrong"))
     })
-    // Send data to API route
-    // const res = await fetch("http://localhost:3000/api/sell", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     title,
-    //     price,
-    //     description,
-    //     category,
-    //   }),
-    // })
-
-    // const result = await res.json()
-    // console.log(result)
-
-    // Navigate to thank you
-    // router.push("/")
   }
 
   return (

@@ -7,7 +7,9 @@ interface FormSuccessProps {
 export const FormSuccess = ({ message }: FormSuccessProps) => {
   if (!message) return null
 
-  return toast.success(message)
+  if (message) {
+    return <div className="hidden">{toast.success(message)}</div>
+  }
 
   // return (
   //   // <div className="flex items-center gap-x-2 rounded-md bg-emerald-500/15 p-3 text-sm text-emerald-500">

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 
 interface CardWrapperProps {
   children: React.ReactNode
-  header: string
+  header?: string
   headerLabel?: string
   hasBackButton?: boolean
   backButtonLabel?: string | undefined

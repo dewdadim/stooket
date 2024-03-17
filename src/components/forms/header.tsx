@@ -1,5 +1,5 @@
 interface HeaderProps {
-  header: string
+  header?: string
   label?: string
 }
 
