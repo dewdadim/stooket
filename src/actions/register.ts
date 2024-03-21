@@ -1,19 +1,19 @@
-"use server"
+'use server'
 
-import * as z from "zod"
-import bcrypt from "bcryptjs"
-import { v4 as uuidv4 } from "uuid"
+import * as z from 'zod'
+import bcrypt from 'bcryptjs'
+import { v4 as uuidv4 } from 'uuid'
 
-import { db } from "@/lib/db"
-import { RegisterSchema } from "@/schemas"
-import { getUserByEmail, getUserByUsername } from "@/data/user"
-import { users } from "@/lib/db/schema"
+import { db } from '@/lib/db'
+import { RegisterSchema } from '@/schemas'
+import { getUserByEmail, getUserByUsername } from '@/data/user'
+import { users } from '@/lib/db/schema'
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values)
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" }
+    return { error: 'Invalid fields!' }
   }
 
   const id = uuidv4()
@@ -25,11 +25,11 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const existingUsername = await getUserByUsername(username)
 
   if (existingEmail) {
-    return { error: "Email already in use!" }
+    return { error: 'Email already in use!' }
   }
 
   if (existingUsername) {
-    return { error: "Username is not available!" }
+    return { error: 'Username is not available!' }
   }
 
   await db.insert(users).values({
@@ -38,8 +38,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     name: name,
     email: email,
     password: hashedPassword,
-    image: "/avatar/default.jpg",
+    image: '/avatar/default.jpg',
   })
 
-  return { success: "User created!" }
+  return { success: 'User created!' }
 }

@@ -1,30 +1,33 @@
-import MaxWidthWrapper from "@/components/MaxWidthWrapper"
-import { getProductById } from "@/data/product"
-import { db } from "@/lib/db"
-import { products } from "@/lib/db/schema"
-import { eq } from "drizzle-orm"
-import { notFound } from "next/navigation"
+import MaxWidthWrapper from '@/components/MaxWidthWrapper'
+import { getProductById } from '@/data/product'
+import { db } from '@/lib/db'
+import { products } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
+import { notFound } from 'next/navigation'
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Header } from "@/components/Header"
-import { CardWrapper } from "@/components/forms/card-wrapper"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getUserByUsername } from "@/data/user"
+} from '@/components/ui/breadcrumb'
+import { Header } from '@/components/Header'
+import { CardWrapper } from '@/components/forms/card-wrapper'
+import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getUserByUsername } from '@/data/user'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
-import Image from "next/image"
+} from '@/components/ui/carousel'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import Image from 'next/image'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
+import { currentUser } from '@/lib/auth'
 
 export default async function ProductDetails({
   params,
@@ -34,6 +37,7 @@ export default async function ProductDetails({
   const id = params.productId
   const product = await getProductById(id)
   const seller = await getUserByUsername(product?.username!)
+  const user = await currentUser()
 
   if (!product) return notFound()
 
@@ -48,11 +52,11 @@ export default async function ProductDetails({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={"/"}>Categoryss</BreadcrumbLink>
+            <BreadcrumbLink href={'/'}>Categoryss</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={"/product/" + product.id}>
+            <BreadcrumbLink href={'/product/' + product.id}>
               {product.name}
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -60,14 +64,17 @@ export default async function ProductDetails({
       </Breadcrumb>
       <Carousel
         opts={{
-          align: "start",
-          loop: true,
+          align: 'start',
+          loop: false,
         }}
         className="mt-4"
       >
         <CarouselContent>
           {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            <CarouselItem
+              key={index}
+              className={cn('md:basis-1/2 lg:basis-1/3')}
+            >
               <AspectRatio ratio={3 / 2}>
                 <Image
                   src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
@@ -91,7 +98,7 @@ export default async function ProductDetails({
         </section>
         <section className="fixed inset-x-0 bottom-0 w-full flex-none shadow-2xl md:static md:shadow-none lg:static lg:w-auto">
           <CardWrapper className="w-full lg:w-[400px]">
-            <form className="space-y-6">
+            <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <Avatar className="size-12 rounded-sm">
                   <AvatarImage src={seller?.image!} alt="Profile" />
@@ -104,10 +111,14 @@ export default async function ProductDetails({
                   <p className="">@{seller?.username}</p>
                 </span>
               </div>
-              <Button type="submit" className="w-full">
-                Buy Item
-              </Button>
-            </form>
+              <div>
+                <Link href={user ? '/buy' : '/login'}>
+                  <Button type="submit" className="w-full">
+                    Buy Item
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </CardWrapper>
         </section>
       </div>
