@@ -1,7 +1,7 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { getProductById } from '@/data/product'
 import { db } from '@/lib/db'
-import { products } from '@/lib/db/schema'
+import { productImages, products } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
 import {
@@ -11,7 +11,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { Header } from '@/components/Header'
 import { CardWrapper } from '@/components/forms/card-wrapper'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -37,11 +36,13 @@ export default async function ProductDetails({
   const id = params.productId
   const product = await getProductById(id)
   const seller = await getUserByUsername(product?.username!)
+  const productImg = await db
+    .select()
+    .from(productImages)
+    .where(eq(productImages.productId, product?.id!))
   const user = await currentUser()
 
   if (!product) return notFound()
-
-  const onSubmit = async () => {}
 
   return (
     <MaxWidthWrapper className="mt-16">
@@ -57,7 +58,7 @@ export default async function ProductDetails({
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink href={'/product/' + product.id}>
-              {product.name}
+              {product.title}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -66,19 +67,20 @@ export default async function ProductDetails({
         opts={{
           align: 'start',
           loop: false,
+          dragFree: false,
         }}
         className="mt-4"
       >
         <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {productImg.map((productImg) => (
             <CarouselItem
-              key={index}
+              key={productImg.url}
               className={cn('md:basis-1/2 lg:basis-1/3')}
             >
               <AspectRatio ratio={3 / 2}>
                 <Image
-                  src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
-                  alt="Photo by Drew Beamer"
+                  src={productImg.url}
+                  alt="Product's image"
                   fill
                   className="rounded-md object-cover"
                 />
@@ -91,9 +93,9 @@ export default async function ProductDetails({
       </Carousel>
       <div className="mt-4 flex flex-wrap gap-8 lg:flex-nowrap">
         <section className="w-fit flex-auto space-y-4">
-          <h1 className="text-2xl font-semibold">{product.name}</h1>
-          <h1 className="text-2xl">RM{product.price}</h1>
-          <h1 className="pt-16 text-2xl font-semibold">Description</h1>
+          <h1 className="text-2xl font-semibold">{product.title}</h1>
+          <h1 className="text-2xl">RM{product.price?.toFixed(2)}</h1>
+          <h2 className="pt-16 text-xl font-semibold">Description</h2>
           <p>{product.description}</p>
         </section>
         <section className="fixed inset-x-0 bottom-0 w-full flex-none shadow-2xl md:static md:shadow-none lg:static lg:w-auto">

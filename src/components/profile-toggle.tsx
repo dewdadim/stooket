@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { LayoutDashboard, LogOut, Settings, User2 } from "lucide-react"
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar"
-import { Separator } from "./ui/separator"
-import { signOut } from "next-auth/react"
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
-import Link from "next/link"
-import { useCurrentUser } from "@/hooks/use-current-user"
+import { LayoutDashboard, LogOut, Settings, User2 } from 'lucide-react'
+import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
+import { Separator } from './ui/separator'
+import { signOut } from 'next-auth/react'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import Link from 'next/link'
+import { useCurrentUser } from '@/hooks/use-current-user'
 
 export function ProfileToggle() {
   const user = useCurrentUser()
@@ -22,7 +22,7 @@ export function ProfileToggle() {
         </Avatar>
       </PopoverTrigger>
 
-      <PopoverContent className="w-auto min-w-56" align="center">
+      <PopoverContent className="w-auto min-w-56 max-w-64" align="center">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4 rounded-md p-2">
             <Avatar className="size-10 rounded-sm">
@@ -31,7 +31,7 @@ export function ProfileToggle() {
                 IMG
               </AvatarFallback>
             </Avatar>
-            <h4 className="font-medium leading-none">{user?.name}</h4>
+            <h4 className="truncate font-medium leading-none">{user?.name}</h4>
           </div>
 
           <Separator />

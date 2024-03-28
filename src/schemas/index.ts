@@ -36,9 +36,22 @@ export const SellSchema = z.object({
       message: 'Product title is required',
     })
     .max(100, { message: 'Exceeds 100 maximum characters' }),
-  price: z.coerce.number().gte(2, 'Minimum price RM2.00'),
+  price: z.coerce.number().gte(1, 'Minimum price RM1.00'),
   category: z.string().min(1, {
     message: 'Please select appropriate category',
   }),
-  description: z.string(),
+  productImages: z
+    .array(
+      z.object({
+        url: z.string().min(1, { message: 'Image URL is required' }),
+      }),
+    )
+    .min(3, { message: 'At least 3 images required' }),
+  thumbnail: z
+    .string()
+    .min(1, {
+      message: 'Thumbnail is required',
+    })
+    .optional(),
+  description: z.string().optional(),
 })

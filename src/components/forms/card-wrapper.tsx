@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Header } from "@/components/forms/header"
-import { BackButton } from "@/components/forms/back-button"
-import { cn } from "@/lib/utils"
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Header } from '@/components/forms/header'
+import { BackButton } from '@/components/forms/back-button'
+import { cn } from '@/lib/utils'
 
 interface CardWrapperProps {
   children: React.ReactNode
@@ -30,11 +30,11 @@ export const CardWrapper = ({
   return (
     <Card
       className={cn(
-        "w-full border-none shadow-none md:w-[400px] md:shadow-xl md:dark:border-solid md:dark:border-secondary",
+        'w-full border-none shadow-none md:w-[400px] md:shadow-xl md:dark:border-solid md:dark:border-secondary',
         className,
       )}
     >
-      <CardHeader className={!header ? "p-0" : ""}>
+      <CardHeader className={!header ? 'p-0' : ''}>
         <Header label={headerLabel} header={header} />
       </CardHeader>
       <CardContent>{children}</CardContent>

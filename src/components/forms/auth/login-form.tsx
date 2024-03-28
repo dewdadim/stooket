@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import * as z from "zod"
-import { useState, useTransition } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
-import { LoginSchema } from "@/schemas"
-import { Input } from "@/components/ui/input"
+import * as z from 'zod'
+import { useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { LoginSchema } from '@/schemas'
+import { Input } from '@/components/ui/input'
 import {
   Form,
   FormControl,
@@ -14,25 +14,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { CardWrapper } from "@/components/forms/card-wrapper"
-import { Button } from "@/components/ui/button"
-import { FormError } from "@/components/form-error"
-import { FormSuccess } from "@/components/form-success"
-import { login } from "@/actions/login"
-import { Loader2 } from "lucide-react"
+} from '@/components/ui/form'
+import { CardWrapper } from '@/components/forms/card-wrapper'
+import { Button } from '@/components/ui/button'
+import { FormError } from '@/components/form-error'
+import { FormSuccess } from '@/components/form-success'
+import { login } from '@/actions/login'
+import { Loader2 } from 'lucide-react'
 
 function LoginForm() {
-  const [error, setError] = useState<string | undefined>("")
-  const [success, setSuccess] = useState<string | undefined>("")
+  const [error, setError] = useState<string | undefined>('')
+  const [success, setSuccess] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   })
 
@@ -41,18 +41,18 @@ function LoginForm() {
       login(values)
         .then((data) => {
           if (data?.error) {
-            setSuccess("")
+            setSuccess('')
             setError(data.error)
           }
 
           if (data?.success) {
-            setError("")
+            setError('')
             form.reset()
             setSuccess(data.success)
             router.refresh()
           }
         })
-        .catch(() => setError("Something went wrong"))
+        .catch(() => setError('Something went wrong'))
     })
   }
 
