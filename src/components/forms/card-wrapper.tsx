@@ -4,6 +4,8 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Header } from '@/components/forms/header'
 import { BackButton } from '@/components/forms/back-button'
 import { cn } from '@/lib/utils'
+import { Social } from './auth/social'
+import { Separator } from '../ui/separator'
 
 interface CardWrapperProps {
   children: React.ReactNode
@@ -24,6 +26,7 @@ export const CardWrapper = ({
   backButtonLabel,
   backButtonHref,
   className,
+  showSocial,
 }: CardWrapperProps) => {
   if (backButtonLabel) hasBackButton = true
 
@@ -38,6 +41,11 @@ export const CardWrapper = ({
         <Header label={headerLabel} header={header} />
       </CardHeader>
       <CardContent>{children}</CardContent>
+      {showSocial && (
+        <CardFooter>
+          <Social />
+        </CardFooter>
+      )}
       {hasBackButton ? (
         <CardFooter>
           <BackButton label={backButtonLabel!} href={backButtonHref!} />

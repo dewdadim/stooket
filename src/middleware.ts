@@ -1,14 +1,14 @@
-import type { NextRequest } from "next/server"
+import type { NextRequest } from 'next/server'
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
   authRoutes,
   privateRoutes,
-} from "@/routes"
+} from '@/routes'
 
 export function middleware(request: NextRequest) {
   const { nextUrl, cookies } = request
-  const isLoggedIn = cookies.has("__Secure-next-auth.session-token")
+  const isLoggedIn = cookies.has('next-auth.session-token')
 
   const isApiAuthRoute = request.nextUrl.pathname.startsWith(apiAuthPrefix)
   const isPrivateRoute = privateRoutes.includes(nextUrl.pathname)
@@ -26,12 +26,12 @@ export function middleware(request: NextRequest) {
   }
 
   if (!isLoggedIn && isPrivateRoute) {
-    return Response.redirect(new URL("/login", nextUrl))
+    return Response.redirect(new URL('/login', nextUrl))
   }
 
   return null
 }
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 }

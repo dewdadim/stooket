@@ -1,32 +1,37 @@
-import { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import "dotenv/config"
-import { DrizzleAdapter } from "@auth/drizzle-adapter"
-import { db } from "@/lib/db"
-import { Adapter } from "next-auth/adapters"
-import bcrypt from "bcryptjs"
-import { users } from "./lib/db/schema"
-import { eq } from "drizzle-orm"
+import { NextAuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
+import 'dotenv/config'
+import { DrizzleAdapter } from '@auth/drizzle-adapter'
+import { db } from '@/lib/db'
+import { Adapter } from 'next-auth/adapters'
+import bcrypt from 'bcryptjs'
+import { users } from './lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db) as Adapter,
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
-      name: "credentials",
+      name: 'credentials',
       credentials: {
         email: {
-          label: "Email",
-          type: "email",
-          placeholder: "john.doe@example.com",
+          label: 'Email',
+          type: 'email',
+          placeholder: 'john.doe@example.com',
         },
-        password: { label: "Password", type: "password" },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -70,7 +75,16 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id
         token.username = user.username
+          ? user.username
+          : user.email?.split('@')[0]!
         token.isSeller = user.isSeller
+
+        if (!user.username) {
+          await db
+            .update(users)
+            .set({ username: token.username })
+            .where(eq(users.id, token.id))
+        }
       }
       return token
     },

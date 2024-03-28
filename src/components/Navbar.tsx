@@ -1,12 +1,12 @@
-import MaxWidthWrapper from "./MaxWidthWrapper"
-import { Input } from "./ui/input"
-import { ModeToggle } from "./mode-toggle"
-import { ProfileToggle } from "./profile-toggle"
-import Link from "next/link"
-import { Button } from "./ui/button"
-import { Search } from "lucide-react"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/auth"
+import MaxWidthWrapper from './MaxWidthWrapper'
+import { Input } from './ui/input'
+import { ModeToggle } from './mode-toggle'
+import { ProfileToggle } from './profile-toggle'
+import Link from 'next/link'
+import { Button } from './ui/button'
+import { Search } from 'lucide-react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/auth'
 
 export async function Navbar() {
   const session = await getServerSession(authOptions)
@@ -16,10 +16,9 @@ export async function Navbar() {
       <MaxWidthWrapper>
         <div className="flex items-center justify-between py-2">
           <div>
-            <h1 className="text-2xl font-bold text-primary">
+            <h1 className="text-3xl font-bold text-primary">
               <Link href="/">Stooket</Link>
             </h1>
-            <p className="text-xs">Testing environment</p>
           </div>
           <form className="hidden gap-0 lg:flex">
             <Input
