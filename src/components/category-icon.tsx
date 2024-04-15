@@ -1,5 +1,5 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface CategoryCardProps {
   icon: string
@@ -8,7 +8,7 @@ interface CategoryCardProps {
 
 export function CategoryCard(data: CategoryCardProps) {
   return (
-    <Link href={"#"}>
+    <Link href={'#'}>
       <div className="flex flex-col items-center gap-1 rounded-sm p-2 hover:bg-primary-foreground">
         <Image
           className="size-16 rounded-md bg-secondary"

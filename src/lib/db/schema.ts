@@ -9,7 +9,7 @@ import {
   double,
 } from 'drizzle-orm/mysql-core'
 import type { AdapterAccount } from '@auth/core/adapters'
-import { relations, sql } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 
 //users table
 export const users = mysqlTable('user', {
@@ -18,9 +18,10 @@ export const users = mysqlTable('user', {
   username: varchar('username', { length: 255 }).notNull().unique(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: varchar('password', { length: 255 }),
-  emailVerified: timestamp('emailVerified', { mode: 'date' }).default(
-    sql<string>`CURRENT_TIMESTAMP`,
-  ),
+  emailVerified: timestamp('emailVerified', {
+    mode: 'date',
+    fsp: 3,
+  }).defaultNow(),
   image: varchar('image', { length: 255 }),
   institute: varchar('institute', { length: 255 }),
   isSeller: boolean('isSeller').default(false),
@@ -68,10 +69,8 @@ export const products = mysqlTable('product', {
   description: text('description'),
   price: double('price', { precision: 6, scale: 2 }),
   thumbnail: varchar('thumbnail', { length: 255 }),
-  post_at: timestamp('post_at', { mode: 'date' }).default(
-    sql<string>`CURRENT_TIMESTAMP`,
-  ),
-  update_at: timestamp('update_at', { mode: 'date' }),
+  post_at: timestamp('post_at', { mode: 'date', fsp: 3 }).defaultNow(),
+  update_at: timestamp('update_at', { mode: 'date', fsp: 3 }).defaultNow(),
 })
 
 export const postsRelations = relations(products, ({ one }) => ({
@@ -84,9 +83,7 @@ export const postsRelations = relations(products, ({ one }) => ({
 //productImages table
 export const productImages = mysqlTable('product_image', {
   url: varchar('url', { length: 255 }).notNull().primaryKey(),
-  post_at: timestamp('post_at', { mode: 'date' }).default(
-    sql<string>`CURRENT_TIMESTAMP`,
-  ),
+  post_at: timestamp('post_at', { mode: 'date', fsp: 3 }).defaultNow(),
   productId: varchar('productId', { length: 255 })
     .notNull()
     .references(() => products.id, { onDelete: 'cascade' }),
@@ -96,7 +93,5 @@ export const productImages = mysqlTable('product_image', {
 export const institutes = mysqlTable('institute', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   name: text('name'),
-  register_at: timestamp('register_at', { mode: 'date' }).default(
-    sql<string>`CURRENT_TIMESTAMP`,
-  ),
+  register_at: timestamp('register_at', { mode: 'date', fsp: 3 }).defaultNow(),
 })

@@ -180,6 +180,7 @@ function RegisterForm() {
                                         return (
                                           <Loader2 className="size-4 animate-spin" />
                                         )
+                                      return <h2>Upload Image</h2>
                                     },
                                     allowedContent() {
                                       return <div>Image (max 4MB)</div>

@@ -16,7 +16,7 @@ export async function Navbar() {
       <MaxWidthWrapper>
         <div className="flex items-center justify-between py-2">
           <div>
-            <h1 className="text-3xl font-bold text-primary">
+            <h1 className="text-2xl font-bold text-primary">
               <Link href="/">Stooket</Link>
             </h1>
           </div>

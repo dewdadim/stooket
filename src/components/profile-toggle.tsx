@@ -61,7 +61,7 @@ export function ProfileToggle() {
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <LayoutDashboard />
-              <p className="text-sm leading-none">Sales Dashboard</p>
+              <p className="text-sm leading-none">Sales Manager</p>
             </Link>
           </div>
 
