@@ -15,17 +15,6 @@ import { CardWrapper } from '@/components/forms/card-wrapper'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getUserByUsername } from '@/data/user'
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from '@/components/ui/carousel'
-import { AspectRatio } from '@/components/ui/aspect-ratio'
-import Image from 'next/image'
-import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { currentUser } from '@/lib/auth'
 import * as React from 'react'
@@ -90,7 +79,7 @@ export default async function ProductDetails({
                 </span>
               </div>
               <div>
-                <Link href={user ? '/buy' : '/login'}>
+                <Link href={user ? '/buy/' + params.productId : '/login'}>
                   <Button type="submit" className="w-full">
                     Buy Item
                   </Button>

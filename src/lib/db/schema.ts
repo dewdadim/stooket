@@ -1,27 +1,24 @@
 import {
-  int,
+  integer,
   timestamp,
-  mysqlTable,
+  pgTable,
   primaryKey,
   varchar,
   text,
   boolean,
-  double,
-} from 'drizzle-orm/mysql-core'
+  real,
+} from 'drizzle-orm/pg-core'
 import type { AdapterAccount } from '@auth/core/adapters'
 import { relations } from 'drizzle-orm'
 
 //users table
-export const users = mysqlTable('user', {
+export const users = pgTable('user', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   name: varchar('name', { length: 255 }),
-  username: varchar('username', { length: 255 }).notNull().unique(),
+  username: varchar('username', { length: 255 }).unique(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: varchar('password', { length: 255 }),
-  emailVerified: timestamp('emailVerified', {
-    mode: 'date',
-    fsp: 3,
-  }).defaultNow(),
+  emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: varchar('image', { length: 255 }),
   institute: varchar('institute', { length: 255 }),
   isSeller: boolean('isSeller').default(false),
@@ -32,24 +29,22 @@ export const usersRelations = relations(users, ({ many }) => ({
 }))
 
 //accounts table
-export const accounts = mysqlTable(
+export const accounts = pgTable(
   'account',
   {
-    userId: varchar('userId', { length: 255 })
+    userId: text('userId')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    type: varchar('type', { length: 255 })
-      .$type<AdapterAccount['type']>()
-      .notNull(),
-    provider: varchar('provider', { length: 255 }).notNull(),
-    providerAccountId: varchar('providerAccountId', { length: 255 }).notNull(),
-    refresh_token: varchar('refresh_token', { length: 255 }),
-    access_token: varchar('access_token', { length: 255 }),
-    expires_at: int('expires_at'),
-    token_type: varchar('token_type', { length: 255 }),
-    scope: varchar('scope', { length: 255 }),
-    id_token: varchar('id_token', { length: 2048 }),
-    session_state: varchar('session_state', { length: 255 }),
+    type: text('type').$type<AdapterAccount['type']>().notNull(),
+    provider: text('provider').notNull(),
+    providerAccountId: text('providerAccountId').notNull(),
+    refresh_token: text('refresh_token'),
+    access_token: text('access_token'),
+    expires_at: integer('expires_at'),
+    token_type: text('token_type'),
+    scope: text('scope'),
+    id_token: text('id_token'),
+    session_state: text('session_state'),
   },
   (account) => ({
     compoundKey: primaryKey({
@@ -59,7 +54,7 @@ export const accounts = mysqlTable(
 )
 
 //products table
-export const products = mysqlTable('product', {
+export const products = pgTable('product', {
   username: varchar('username', { length: 255 })
     .notNull()
     .references(() => users.username, { onDelete: 'cascade' }),
@@ -67,10 +62,10 @@ export const products = mysqlTable('product', {
   title: varchar('title', { length: 255 }),
   category: varchar('category', { length: 255 }),
   description: text('description'),
-  price: double('price', { precision: 6, scale: 2 }),
+  price: real('price'),
   thumbnail: varchar('thumbnail', { length: 255 }),
-  post_at: timestamp('post_at', { mode: 'date', fsp: 3 }).defaultNow(),
-  update_at: timestamp('update_at', { mode: 'date', fsp: 3 }).defaultNow(),
+  post_at: timestamp('post_at', { mode: 'date' }).defaultNow(),
+  update_at: timestamp('update_at', { mode: 'date' }).defaultNow(),
 })
 
 export const postsRelations = relations(products, ({ one }) => ({
@@ -81,17 +76,34 @@ export const postsRelations = relations(products, ({ one }) => ({
 }))
 
 //productImages table
-export const productImages = mysqlTable('product_image', {
+export const productImages = pgTable('product_image', {
   url: varchar('url', { length: 255 }).notNull().primaryKey(),
-  post_at: timestamp('post_at', { mode: 'date', fsp: 3 }).defaultNow(),
+  post_at: timestamp('post_at', { mode: 'date' }).defaultNow(),
+  productId: varchar('productId', { length: 255 })
+    .notNull()
+    .references(() => products.id, { onDelete: 'cascade' }),
+})
+
+//purchases table
+export const purchases = pgTable('purchase', {
+  purchaseId: varchar('purchaseId', { length: 255 }).notNull().primaryKey(),
+  seller: varchar('seller', { length: 255 })
+    .notNull()
+    .references(() => users.username, { onDelete: 'cascade' }),
+  buyer: varchar('buyer', { length: 255 })
+    .notNull()
+    .references(() => users.username, { onDelete: 'cascade' }),
+  purchase_at: timestamp('post_at', { mode: 'date' }).defaultNow(),
+  cancel_at: timestamp('cancel _at', { mode: 'date' }),
+  complete_at: timestamp('complete_at', { mode: 'date' }),
   productId: varchar('productId', { length: 255 })
     .notNull()
     .references(() => products.id, { onDelete: 'cascade' }),
 })
 
 //institutes table
-export const institutes = mysqlTable('institute', {
+export const institutes = pgTable('institute', {
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   name: text('name'),
-  register_at: timestamp('register_at', { mode: 'date', fsp: 3 }).defaultNow(),
+  register_at: timestamp('register_at', { mode: 'date' }).defaultNow(),
 })

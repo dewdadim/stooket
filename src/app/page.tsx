@@ -26,7 +26,7 @@ export default async function Home() {
               id={data.product?.id!}
               thumbnailUrl={data.product?.thumbnail!}
               title={data.product?.title!}
-              price={data.product?.price?.toFixed(2).toString()!}
+              price={data.product?.price?.toFixed(2)!}
               username={data.product?.username!}
               avatar={data.user?.image!}
             />

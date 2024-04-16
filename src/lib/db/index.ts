@@ -1,14 +1,7 @@
-import { drizzle } from 'drizzle-orm/mysql2'
-import mysql from 'mysql2/promise'
+import { Pool } from '@neondatabase/serverless'
+import { drizzle } from 'drizzle-orm/neon-serverless'
 import * as schema from './schema'
 import 'dotenv/config'
 
-const connection = mysql.createPool({
-  host: process.env.DATABASE_HOST,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
-  connectionLimit: 500,
-})
-
-export const db = drizzle(connection, { schema, mode: 'default' })
+const sql = new Pool({ connectionString: process.env.DRIZZLE_DATABASE_URL })
+export const db = drizzle(sql, { schema: schema })

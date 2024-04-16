@@ -12,7 +12,7 @@ export async function Navbar() {
   const session = await getServerSession(authOptions)
 
   return (
-    <div className="fixed top-0 z-10 w-full bg-primary-foreground">
+    <div className="fixed top-0 z-50 w-full bg-primary-foreground">
       <MaxWidthWrapper>
         <div className="flex items-center justify-between py-2">
           <div>
@@ -46,7 +46,7 @@ export async function Navbar() {
             {session?.user ? (
               <>
                 <ProfileToggle />
-                <Link href="/sell">
+                <Link href="/sell" className="hidden md:inline">
                   <Button className="font-medium" variant="default" size="sm">
                     Sell Item
                   </Button>
