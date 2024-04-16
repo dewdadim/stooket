@@ -162,8 +162,8 @@ function BuyForm(product: Product) {
                     </Button>
                   )}
                   <CardDescription className="pt-3 text-center lg:text-left">
-                    By tapping on 'Purchase', you accept the{' '}
-                    <span className="text-blue-400">terms & conditions </span>
+                    By tapping on &apos;Purchase&apos;, you accept the
+                    <span className="text-blue-400"> terms & conditions </span>
                     from Stooket
                   </CardDescription>
                 </Card>
