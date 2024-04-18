@@ -16,9 +16,9 @@ export default async function Home() {
     <>
       <MaxWidthWrapper>
         <Header className="mt-24" />
-        <h1 className="mt-12 text-2xl font-bold">Find the category</h1>
+        <div className="mt-12 text-2xl font-bold">Find the category</div>
         <CategoryList />
-        <h1 className="mt-12 text-2xl font-bold">Recommended for you</h1>
+        <div className="mt-12 text-2xl font-bold">Recommended for you</div>
         <div className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-4">
           {data.map((data) => (
             <ProductCard
