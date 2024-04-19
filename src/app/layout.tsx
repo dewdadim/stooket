@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   title: 'Stooket. Student Marketplace',
   description:
     'Stooket is the best and only student marketplace in Malaysia! It helps student to sell and buy either new or used stuff in their institute.',
+  openGraph: {
+    images: '/opengraph-image.png',
+  },
 }
 
 export default async function RootLayout({
