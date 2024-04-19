@@ -18,11 +18,16 @@ import {
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://stooket.com'),
   title: 'Stooket. Student Marketplace',
   description:
     'Stooket is the best and only student marketplace in Malaysia! It helps student to sell and buy either new or used stuff in their institute.',
   openGraph: {
-    images: '/opengraph-image.png',
+    images: 'https://www.stooket.com/opengraph-image.png',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: 'https://www.stooket.com/opengraph-image.png',
   },
 }
 
