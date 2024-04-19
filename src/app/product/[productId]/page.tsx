@@ -19,12 +19,27 @@ import Link from 'next/link'
 import { currentUser } from '@/lib/auth'
 import * as React from 'react'
 import { ProductCarousel } from '@/components/product-carousel'
+import { Metadata, ResolvingMetadata } from 'next'
 
-export default async function ProductDetails({
-  params,
-}: {
+type Props = {
   params: { productId: string }
-}) {
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  // read route params
+  const id = params.productId
+  const product = await getProductById(id)
+
+  return {
+    title: product?.title,
+  }
+}
+
+export default async function ProductDetails({ params }: Props) {
   const id = params.productId
   const product = await getProductById(id)
   const seller = await getUserByUsername(product?.username!)

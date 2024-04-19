@@ -19,7 +19,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://stooket.com'),
-  title: 'Stooket. Student Marketplace',
+  title: { default: 'Stooket | Student Marketplace', template: '%s - Stooket' },
   description:
     'Stooket is the best and only student marketplace in Malaysia! It helps student to sell and buy either new or used stuff in their institute.',
   openGraph: {
