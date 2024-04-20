@@ -45,13 +45,16 @@ export async function NotificationToggle() {
             Purchase Request ({purchase_request.length})
           </div>
           {purchase_request.map((request) => (
-            <div className="flex w-full items-center gap-4 rounded-md p-4 hover:bg-accent">
+            <div
+              className="flex w-full items-center gap-4 rounded-md p-4 hover:bg-accent"
+              key={request.purchase.id}
+            >
               <HandCoins
                 className="size-10"
                 strokeWidth={1.5}
                 color="#285f73"
               />
-              <div className="flex flex-col gap-1 " key={request.purchase.id}>
+              <div className="flex flex-col gap-1 ">
                 <div className="flex items-center gap-2">
                   <div>
                     <p className="text-sm">
