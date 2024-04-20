@@ -5,7 +5,7 @@ import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { LoginSchema } from '@/schemas'
+import { BuySchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import {
   Form,
@@ -19,8 +19,7 @@ import { CardWrapper } from '@/components/forms/card-wrapper'
 import { Button } from '@/components/ui/button'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
-import { login } from '@/actions/login'
-import { ArrowLeft, Copy, Loader2 } from 'lucide-react'
+import { ArrowLeft, Loader2 } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -34,6 +33,7 @@ import { Textarea } from '../ui/textarea'
 import Image from 'next/image'
 import { AspectRatio } from '../ui/aspect-ratio'
 import Link from 'next/link'
+import { buy } from '@/actions/buy'
 
 type Product = {
   data: {
@@ -61,17 +61,17 @@ function BuyForm(product: Product) {
     day: 'numeric',
   })
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof BuySchema>>({
+    resolver: zodResolver(BuySchema),
     defaultValues: {
-      email: '',
-      password: '',
+      phoneNumber: '',
+      message: '',
     },
   })
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof BuySchema>) => {
     startTransition(() => {
-      login(values)
+      buy(values, product.data.id)
         .then((data) => {
           if (data?.error) {
             setSuccess('')
@@ -125,7 +125,7 @@ function BuyForm(product: Product) {
                 <div className="space-y-4">
                   <FormField
                     control={form.control}
-                    name="email"
+                    name="phoneNumber"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Phone Number</FormLabel>
@@ -142,7 +142,7 @@ function BuyForm(product: Product) {
                   />
                   <FormField
                     control={form.control}
-                    name="email"
+                    name="message"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Message (Optional)</FormLabel>
@@ -159,7 +159,7 @@ function BuyForm(product: Product) {
                   />
                   <FormField
                     control={form.control}
-                    name="password"
+                    name="location"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Location</FormLabel>
@@ -167,7 +167,7 @@ function BuyForm(product: Product) {
                           <Textarea
                             {...field}
                             disabled={isPending}
-                            placeholder="ex: Room B-222, Blok A, Kolej 3..."
+                            placeholder="e.g. Room B-222, Blok A, Kolej 3..."
                           />
                         </FormControl>
                         <FormMessage />

@@ -55,3 +55,18 @@ export const SellSchema = z.object({
     .optional(),
   description: z.string().optional(),
 })
+
+export const BuySchema = z.object({
+  phoneNumber: z
+    .string()
+    .min(10, { message: 'Must be a valid mobile number' })
+    .max(12, { message: 'Must be a valid mobile number' }),
+  message: z
+    .string()
+    .max(250, { message: 'Exceeds 200 maximum characters' })
+    .optional(),
+  location: z
+    .string()
+    .max(250, { message: 'Exceeds 250 maximum characters' })
+    .optional(),
+})

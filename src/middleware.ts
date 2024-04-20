@@ -11,7 +11,9 @@ export function middleware(request: NextRequest) {
   const isLoggedIn = cookies.has('__Secure-next-auth.session-token')
 
   const isApiAuthRoute = request.nextUrl.pathname.startsWith(apiAuthPrefix)
-  const isPrivateRoute = privateRoutes.includes(nextUrl.pathname)
+  const isPrivateRoute =
+    privateRoutes.includes(nextUrl.pathname) ||
+    request.nextUrl.pathname.startsWith('/buy')
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
 
   if (isApiAuthRoute) {

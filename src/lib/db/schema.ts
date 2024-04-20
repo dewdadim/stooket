@@ -86,14 +86,18 @@ export const productImages = pgTable('product_image', {
 
 //purchases table
 export const purchases = pgTable('purchase', {
-  purchaseId: varchar('purchaseId', { length: 255 }).notNull().primaryKey(),
+  id: varchar('id', { length: 255 }).notNull().primaryKey(),
   seller: varchar('seller', { length: 255 })
     .notNull()
     .references(() => users.username, { onDelete: 'cascade' }),
   buyer: varchar('buyer', { length: 255 })
     .notNull()
     .references(() => users.username, { onDelete: 'cascade' }),
-  purchase_at: timestamp('post_at', { mode: 'date' }).defaultNow(),
+  buyerPhoneNumber: varchar('buyerPhoneNumber').notNull(),
+  message: text('message'),
+  location: text('location'),
+  totalPrice: real('totalPrice'),
+  purchase_at: timestamp('purchase_at', { mode: 'date' }).defaultNow(),
   cancel_at: timestamp('cancel _at', { mode: 'date' }),
   complete_at: timestamp('complete_at', { mode: 'date' }),
   productId: varchar('productId', { length: 255 })

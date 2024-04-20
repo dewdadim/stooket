@@ -85,13 +85,12 @@ function RegisterForm() {
     },
   })
 
-  const { fields, append, remove } = useFieldArray({
+  const { append, remove } = useFieldArray({
     name: 'productImages',
     control: form.control,
   })
 
   const onSubmit = async (values: z.infer<typeof SellSchema>) => {
-    console.log(JSON.stringify(values))
     startTransition(() => {
       sell(values)
         .then((data) => {

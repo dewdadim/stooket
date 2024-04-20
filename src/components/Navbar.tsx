@@ -7,6 +7,7 @@ import { Button } from './ui/button'
 import { Search } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/auth'
+import { NotificationToggle } from './notification_sheet/notification-toggle'
 
 export async function Navbar() {
   const session = await getServerSession(authOptions)
@@ -34,7 +35,7 @@ export async function Navbar() {
               <Search className="size-5" />
             </Button>
           </form>
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2">
             <Button
               size="icon"
               variant="ghost"
@@ -45,9 +46,14 @@ export async function Navbar() {
             <ModeToggle />
             {session?.user ? (
               <>
+                <NotificationToggle />
                 <ProfileToggle />
                 <Link href="/sell" className="hidden md:inline">
-                  <Button className="font-medium" variant="default" size="sm">
+                  <Button
+                    className="ml-2 font-medium"
+                    variant="default"
+                    size="sm"
+                  >
                     Sell Item
                   </Button>
                 </Link>

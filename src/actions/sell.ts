@@ -20,8 +20,6 @@ export const sell = async (values: z.infer<typeof SellSchema>) => {
     validatedFields.data
   const user = await currentUser()
 
-  console.log(thumbnail)
-
   await db.insert(products).values({
     id: id,
     username: user?.username!,
