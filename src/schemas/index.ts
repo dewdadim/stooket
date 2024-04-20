@@ -1,5 +1,9 @@
 import * as z from 'zod'
 
+const phoneValidation = new RegExp(
+  /^(\+?6?01)[02-46-9]-*[0-9]{7}$|^(\+?6?01)[1]-*[0-9]{8}$/,
+) //Malaysia phone number regex
+
 //login user form validation
 export const LoginSchema = z.object({
   email: z.string().email({
@@ -59,8 +63,7 @@ export const SellSchema = z.object({
 export const BuySchema = z.object({
   phoneNumber: z
     .string()
-    .min(10, { message: 'Must be a valid mobile number' })
-    .max(12, { message: 'Must be a valid mobile number' }),
+    .regex(phoneValidation, { message: 'Invalid phone number' }),
   message: z
     .string()
     .max(250, { message: 'Exceeds 200 maximum characters' })

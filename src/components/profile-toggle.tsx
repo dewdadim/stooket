@@ -32,10 +32,9 @@ export function ProfileToggle() {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-1">
-              <h4 className="truncate font-medium leading-none">
+              <div className="truncate font-medium leading-none">
                 {user?.name}
-              </h4>
-              <p className="text-xs">@{user?.username}</p>
+              </div>
             </div>
           </div>
 

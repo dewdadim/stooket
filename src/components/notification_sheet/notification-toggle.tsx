@@ -11,9 +11,24 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { Bell } from 'lucide-react'
+import { currentUser } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { products, purchases, users } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
+import { Bell, HandCoins } from 'lucide-react'
 
-export function NotificationToggle() {
+export async function NotificationToggle() {
+  const user = await currentUser()
+  const notification_buyer = await db.query.purchases.findMany({
+    where: eq(purchases.buyer, user?.username!),
+  })
+  const purchase_request = await db
+    .select()
+    .from(purchases)
+    .innerJoin(products, eq(products.id, purchases.productId))
+    .innerJoin(users, eq(users.username, purchases.buyer))
+    .where(eq(purchases.seller, user?.username!))
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -21,29 +36,37 @@ export function NotificationToggle() {
           <Bell className="size-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="md:max-w-[520px]">
         <SheetHeader>
-          <SheetTitle>Notifications</SheetTitle>
+          <SheetTitle>Updates</SheetTitle>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+        <section className="mt-4">
+          <div className="my-2">
+            Purchase Request ({purchase_request.length})
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter>
+          {purchase_request.map((request) => (
+            <div className="flex w-full items-center gap-4 rounded-md p-4 hover:bg-accent">
+              <HandCoins
+                className="size-10"
+                strokeWidth={1.5}
+                color="#285f73"
+              />
+              <div className="flex flex-col gap-1 " key={request.purchase.id}>
+                <div className="flex items-center gap-2">
+                  <div>
+                    <p className="text-sm">
+                      <span className="font-medium">
+                        @{request.user.username}
+                      </span>{' '}
+                      requests to buy:
+                    </p>
+                  </div>
+                </div>
+                <div className="">{request.product.title}</div>
+              </div>
+            </div>
+          ))}
+        </section>
       </SheetContent>
     </Sheet>
   )

@@ -34,6 +34,17 @@ import Image from 'next/image'
 import { AspectRatio } from '../ui/aspect-ratio'
 import Link from 'next/link'
 import { buy } from '@/actions/buy'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../ui/alert-dialog'
 
 type Product = {
   data: {
@@ -82,7 +93,7 @@ function BuyForm(product: Product) {
             setError('')
             form.reset()
             setSuccess(data.success)
-            router.refresh()
+            router.push('/')
           }
         })
         .catch(() => setError('Something went wrong'))
@@ -107,7 +118,7 @@ function BuyForm(product: Product) {
                   />
                 </AspectRatio>
               </div>
-              <div>
+              <div className="w-[60%]">
                 <h1 className="w-full truncate font-medium">
                   {product.data.title}
                 </h1>
