@@ -22,6 +22,19 @@ import { ProductCarousel } from '@/components/product-carousel'
 import { Metadata, ResolvingMetadata } from 'next'
 import { EyeOff, PenBoxIcon, Trash2 } from 'lucide-react'
 import { DeleteButton } from '@/components/ui/delete-button'
+import {
+  AlertDialogHeader,
+  AlertDialogFooter,
+} from '@/components/ui/alert-dialog'
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog'
 
 type Props = {
   params: { productId: string }
@@ -128,7 +141,38 @@ export default async function ProductDetails({ params }: Props) {
                         </div>
                       </Button>
                     </Link>
-                    <DeleteButton productId={product.id} />
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          variant="destructive"
+                        >
+                          <div className="flex flex-row items-center gap-4">
+                            <Trash2 size={16} />
+                            DELETE PRODUCT
+                          </div>
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete your account and remove your data from our
+                            servers.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction className="bg-white p-0">
+                            <DeleteButton productId={product.id} />
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 )}
               </div>
