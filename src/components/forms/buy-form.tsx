@@ -34,17 +34,6 @@ import Image from 'next/image'
 import { AspectRatio } from '../ui/aspect-ratio'
 import Link from 'next/link'
 import { buy } from '@/actions/buy'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '../ui/alert-dialog'
 
 type Product = {
   data: {

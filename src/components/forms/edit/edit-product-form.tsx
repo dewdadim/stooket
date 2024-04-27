@@ -1,7 +1,7 @@
 'use client'
 
 import * as z from 'zod'
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
@@ -32,8 +32,11 @@ import {
 import { sell } from '@/actions/sell'
 import { deleteFiles } from '@/server/uploadthing'
 import { toast } from 'sonner'
-import { AspectRatio } from '../ui/aspect-ratio'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { UploadButton } from '@/utils/uploadthing'
+import { db } from '@/lib/db'
+import { productImages } from '@/lib/db/schema'
+import { eq } from 'drizzle-orm'
 
 interface ImageProps {
   id: number
@@ -42,15 +45,35 @@ interface ImageProps {
   }
 }
 
-function SellForm() {
-  const MAX_IMAGES = 8
+type Product = {
+  data: {
+    title: string | null
+    id: string
+    description: string | null
+    username: string
+    category: string | null
+    price: number | null
+    thumbnail: string | null
+    post_at: Date | null
+    update_at: Date | null
+  }
+}
 
+function EditProductForm(product: Product) {
+  const MAX_IMAGES = 8
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const [imagePreviews, setImagePreview] = useState<ImageProps[]>([])
   const [thumbnail, setThumbnail] = useState('')
+
+  useEffect(() => {
+    const images = db
+      .select()
+      .from(productImages)
+      .where(eq(productImages.productId, product.data.id))
+  })
 
   const addImagePreview = (url: string) => {
     setImagePreview([
@@ -79,9 +102,10 @@ function SellForm() {
   const form = useForm<z.infer<typeof SellSchema>>({
     resolver: zodResolver(SellSchema),
     defaultValues: {
-      title: '',
-      category: '',
-      description: '',
+      title: product.data?.title!,
+      category: product.data?.category!,
+      price: product.data?.price!,
+      description: product.data?.description!,
     },
   })
 
@@ -111,14 +135,11 @@ function SellForm() {
 
   return (
     <div className="mt-24 flex justify-center md:mt-36">
-      <CardWrapper
-        header="What are you selling today?"
-        className="md:w-[650px]"
-      >
+      <CardWrapper header="Edit Product" className="md:w-[650px]">
         <Form {...form}>
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4">
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="productImages"
                 render={({ field }) => (
@@ -199,7 +220,7 @@ function SellForm() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <FormField
                 name="title"
                 control={form.control}
@@ -295,13 +316,28 @@ function SellForm() {
             <FormError message={error} />
             <FormSuccess message={success} />
             {isPending ? (
-              <Button disabled className="w-full">
-                <Loader2 className="h-4 w-4 animate-spin" />
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button disabled className="w-full">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </Button>
+                <Button disabled className="w-full">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </Button>
+              </div>
             ) : (
-              <Button disabled={isPending} type="submit" className="w-full">
-                Add Product
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button disabled={isPending} type="submit" className="w-full">
+                  Edit Product
+                </Button>
+                <Button
+                  disabled={isPending}
+                  className="w-full"
+                  variant="link"
+                  onClick={router.back}
+                >
+                  Cancel Edit
+                </Button>
+              </div>
             )}
           </form>
         </Form>
@@ -310,4 +346,4 @@ function SellForm() {
   )
 }
 
-export default SellForm
+export default EditProductForm

@@ -30,6 +30,7 @@ export const sell = async (values: z.infer<typeof SellSchema>) => {
     price: price,
   })
 
+  //insert product images into database
   for (let i = 0; i < productImages.length; i++) {
     await db.insert(productImagesDB).values({
       url: productImages[i].url,

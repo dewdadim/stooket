@@ -5,7 +5,6 @@ import { Header } from '@/components/forms/header'
 import { BackButton } from '@/components/forms/back-button'
 import { cn } from '@/lib/utils'
 import { Social } from './auth/social'
-import { Separator } from '../ui/separator'
 
 interface CardWrapperProps {
   children: React.ReactNode

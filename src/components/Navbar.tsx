@@ -36,11 +36,7 @@ export async function Navbar() {
             </Button>
           </form>
           <div className="flex items-center gap-2">
-            <Button
-              size="icon"
-              variant="ghost"
-              className="infline-flex rounded-l-none rounded-r-md lg:hidden"
-            >
+            <Button size="icon" variant="ghost" className="lg:hidden">
               <Search className="size-5" />
             </Button>
             <ModeToggle />

@@ -1,7 +1,7 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { getProductById } from '@/data/product'
 import { db } from '@/lib/db'
-import { productImages } from '@/lib/db/schema'
+import { productImages, products } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
 import {
@@ -20,6 +20,8 @@ import { currentUser } from '@/lib/auth'
 import * as React from 'react'
 import { ProductCarousel } from '@/components/product-carousel'
 import { Metadata, ResolvingMetadata } from 'next'
+import { EyeOff, PenBoxIcon, Trash2 } from 'lucide-react'
+import { DeleteButton } from '@/components/ui/delete-button'
 
 type Props = {
   params: { productId: string }
@@ -94,11 +96,41 @@ export default async function ProductDetails({ params }: Props) {
                 </span>
               </div>
               <div>
-                <Link href={user ? '/buy/' + params.productId : '/login'}>
-                  <Button type="submit" className="w-full">
-                    Buy Item
-                  </Button>
-                </Link>
+                {!user?.username.match(product.username) ? (
+                  <Link href={user ? '/buy/' + params.productId : '/login'}>
+                    <Button type="submit" className="w-full">
+                      Buy Item
+                    </Button>
+                  </Link>
+                ) : (
+                  <div className="flex flex-col gap-2 lg:gap-4">
+                    <Link href={'/edit/product/' + params.productId}>
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        variant="outline"
+                      >
+                        <div className="flex flex-row items-center gap-4">
+                          <EyeOff size={16} />
+                          Unlist Product
+                        </div>
+                      </Button>
+                    </Link>
+                    <Link href={'/edit/product/' + params.productId}>
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        variant="outline"
+                      >
+                        <div className="flex flex-row items-center gap-4">
+                          <PenBoxIcon size={16} />
+                          Edit Product
+                        </div>
+                      </Button>
+                    </Link>
+                    <DeleteButton productId={product.id} />
+                  </div>
+                )}
               </div>
             </div>
           </CardWrapper>

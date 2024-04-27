@@ -36,7 +36,7 @@ export async function NotificationToggle() {
           <Bell className="size-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="md:max-w-[520px]">
+      <SheetContent className="w-full p-3 md:max-w-[520px]">
         <SheetHeader>
           <SheetTitle>Updates</SheetTitle>
         </SheetHeader>
@@ -46,14 +46,9 @@ export async function NotificationToggle() {
           </div>
           {purchase_request.map((request) => (
             <div
-              className="flex w-full items-center gap-4 rounded-md p-4 hover:bg-accent"
+              className="flex w-full items-center gap-4 rounded-md p-2 hover:bg-accent"
               key={request.purchase.id}
             >
-              <HandCoins
-                className="size-10"
-                strokeWidth={1.5}
-                color="#285f73"
-              />
               <div className="flex flex-col gap-1 ">
                 <div className="flex items-center gap-2">
                   <div>
@@ -61,7 +56,7 @@ export async function NotificationToggle() {
                       <span className="font-medium">
                         @{request.user.username}
                       </span>{' '}
-                      requests to buy:
+                      purchases:
                     </p>
                   </div>
                 </div>
