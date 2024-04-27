@@ -1,6 +1,12 @@
 'use client'
 
-import { LayoutDashboard, LogOut, Settings, User2 } from 'lucide-react'
+import {
+  LayoutDashboard,
+  LogOut,
+  PlusSquare,
+  Settings,
+  User2,
+} from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Separator } from './ui/separator'
 import { signOut } from 'next-auth/react'
@@ -61,6 +67,13 @@ export function ProfileToggle() {
             >
               <LayoutDashboard />
               <p className="text-sm leading-none">Sales Manager</p>
+            </Link>
+            <Link
+              href="/sell"
+              className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground md:hidden"
+            >
+              <PlusSquare />
+              <p className="text-sm leading-none">Sell</p>
             </Link>
           </div>
 
