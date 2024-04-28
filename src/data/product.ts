@@ -1,5 +1,5 @@
-import { db } from '@/lib/db'
-import { products } from '@/lib/db/schema'
+import { db } from '@/drizzle'
+import { products } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 export async function getProductById(productId: string) {

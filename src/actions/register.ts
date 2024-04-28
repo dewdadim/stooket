@@ -4,10 +4,10 @@ import * as z from 'zod'
 import bcrypt from 'bcryptjs'
 import { v4 as uuidv4 } from 'uuid'
 
-import { db } from '@/lib/db'
+import { db } from '@/drizzle'
 import { RegisterSchema } from '@/schemas'
 import { getUserByEmail, getUserByUsername } from '@/data/user'
-import { users } from '@/lib/db/schema'
+import { users } from '@/drizzle/schema'
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values)

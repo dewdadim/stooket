@@ -1,6 +1,6 @@
-import { db } from "@/lib/db"
-import { accounts } from "@/lib/db/schema"
-import { eq } from "drizzle-orm"
+import { db } from '@/drizzle'
+import { accounts } from '@/drizzle/schema'
+import { eq } from 'drizzle-orm'
 
 export const getAccountByUserId = async (userId: string) => {
   try {

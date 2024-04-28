@@ -3,9 +3,9 @@
 import * as z from 'zod'
 import { createId } from '@paralleldrive/cuid2'
 
-import { db } from '@/lib/db'
+import { db } from '@/drizzle'
 import { BuySchema } from '@/schemas'
-import { purchases } from '@/lib/db/schema'
+import { purchases } from '@/drizzle/schema'
 import { currentUser } from '@/lib/auth'
 import { getProductById } from '@/data/product'
 

@@ -1,20 +1,20 @@
-import CredentialsProvider from "next-auth/providers/credentials"
-import { db } from "@/lib/db"
-import bcrypt from "bcryptjs"
-import { users } from "@/lib/db/schema"
-import { eq } from "drizzle-orm"
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { db } from '@/drizzle'
+import bcrypt from 'bcryptjs'
+import { users } from '@/drizzle/schema'
+import { eq } from 'drizzle-orm'
 
 export default {
   providers: [
     CredentialsProvider({
-      name: "credentials",
+      name: 'credentials',
       credentials: {
         email: {
-          label: "Email",
-          type: "email",
-          placeholder: "john.doe@example.com",
+          label: 'Email',
+          type: 'email',
+          placeholder: 'john.doe@example.com',
         },
-        password: { label: "Password", type: "password" },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {

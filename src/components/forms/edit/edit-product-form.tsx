@@ -34,8 +34,8 @@ import { deleteFiles } from '@/server/uploadthing'
 import { toast } from 'sonner'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { UploadButton } from '@/utils/uploadthing'
-import { db } from '@/lib/db'
-import { productImages } from '@/lib/db/schema'
+import { db } from '@/drizzle'
+import { productImages } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 interface ImageProps {

@@ -1,9 +1,9 @@
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
-import { db } from '@/lib/db/index'
+import { db } from '@/drizzle/index'
 import 'dotenv/config'
 
 const runMigrate = async () => {
-  if (!process.env.NEON_DATABASE_URL) {
+  if (!process.env.POSTGRES_URL) {
     throw new Error('DATABASE_HOST is not defined')
   }
 

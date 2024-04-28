@@ -1,5 +1,5 @@
-import { db } from '@/lib/db'
-import { productImages, products } from '@/lib/db/schema'
+import { db } from '@/drizzle'
+import { productImages, products } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { NextRequest, NextResponse } from 'next/server'
 import { deleteFiles } from '@/server/uploadthing'

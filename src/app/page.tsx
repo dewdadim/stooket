@@ -2,8 +2,8 @@ import { CategoryList } from '@/components/CategoryList'
 import { Header } from '@/components/Header'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { ProductCard } from '@/components/product-card'
-import { db } from '@/lib/db'
-import { products, users } from '@/lib/db/schema'
+import { db } from '@/drizzle'
+import { products, users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 export default async function Home() {

@@ -4,10 +4,10 @@ import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import 'dotenv/config'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
-import { db } from '@/lib/db'
+import { db } from '@/drizzle'
 import { Adapter } from 'next-auth/adapters'
 import bcrypt from 'bcryptjs'
-import { users } from './lib/db/schema'
+import { users } from './drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 export const authOptions: NextAuthOptions = {

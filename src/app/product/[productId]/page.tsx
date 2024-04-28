@@ -1,7 +1,7 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { getProductById } from '@/data/product'
-import { db } from '@/lib/db'
-import { productImages, products } from '@/lib/db/schema'
+import { db } from '@/drizzle'
+import { productImages, products } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
 import {
@@ -156,13 +156,11 @@ export default async function ProductDetails({ params }: Props) {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you absolutely sure?
-                          </AlertDialogTitle>
+                          <AlertDialogTitle>Delete Product</AlertDialogTitle>
                           <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete your account and remove your data from our
-                            servers.
+                            Are you sure want to delete this product? This
+                            action cannot be undone. It will permenantly delete
+                            this product from our server.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

@@ -1,21 +1,16 @@
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { currentUser } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { products, purchases, users } from '@/lib/db/schema'
+import { db } from '@/drizzle'
+import { products, purchases, users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
-import { Bell, HandCoins } from 'lucide-react'
+import { Bell } from 'lucide-react'
 
 export async function NotificationToggle() {
   const user = await currentUser()

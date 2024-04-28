@@ -3,9 +3,9 @@
 import * as z from 'zod'
 import { v4 as uuidv4 } from 'uuid'
 
-import { db } from '@/lib/db'
+import { db } from '@/drizzle'
 import { SellSchema } from '@/schemas'
-import { products, productImages as productImagesDB } from '@/lib/db/schema'
+import { products, productImages as productImagesDB } from '@/drizzle/schema'
 import { currentUser } from '@/lib/auth'
 
 export const sell = async (values: z.infer<typeof SellSchema>) => {

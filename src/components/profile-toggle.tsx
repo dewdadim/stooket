@@ -70,7 +70,7 @@ export function ProfileToggle() {
             </Link>
             <Link
               href="/sell"
-              className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground md:hidden"
+              className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <PlusSquare />
               <p className="text-sm leading-none">Sell</p>
