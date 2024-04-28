@@ -7,6 +7,7 @@ import {
   text,
   boolean,
   real,
+  pgEnum,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccount } from '@auth/core/adapters'
 import { relations } from 'drizzle-orm'
@@ -54,6 +55,11 @@ export const accounts = pgTable(
   }),
 )
 
+export const productStatusEnum = pgEnum('productStatus', [
+  'listed',
+  'unlisted',
+  'sold',
+])
 //products table
 export const products = pgTable('product', {
   username: varchar('username', { length: 255 })
@@ -65,7 +71,7 @@ export const products = pgTable('product', {
   description: text('description'),
   price: real('price'),
   thumbnail: varchar('thumbnail', { length: 255 }),
-  isListed: boolean('isListed').default(true),
+  status: productStatusEnum('status').default('listed'),
   post_at: timestamp('post_at', {
     mode: 'date',
     withTimezone: true,
