@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/dialog'
 import { CompleteAccountDialog } from '@/components/forms/complete-account-dialog'
 import { currentUser } from '@/lib/auth'
+import { getUserById } from '@/data/user'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -48,6 +49,7 @@ export default async function RootLayout({
 }>) {
   const session = await getServerSession()
   const user = await currentUser()
+  const userDetails = (await getUserById(user?.id!)) ?? null
 
   return (
     <html lang="en" className="h-full">
@@ -75,7 +77,8 @@ export default async function RootLayout({
             <main className="relative flex min-h-screen flex-col">
               <Navbar />
               <div className="flex-1 flex-grow">
-                {session?.user && (!user?.username || !user?.institute) ? (
+                {session?.user &&
+                (!userDetails?.username || !userDetails?.institute) ? (
                   <CompleteAccountDialog />
                 ) : null}
                 {children}
