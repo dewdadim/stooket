@@ -11,6 +11,7 @@ export default async function Home() {
     .select()
     .from(products)
     .innerJoin(users, eq(products.username, users.username))
+    .where(eq(products.status, 'listed'))
 
   return (
     <>

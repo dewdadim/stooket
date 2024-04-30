@@ -20,7 +20,7 @@ import { currentUser } from '@/lib/auth'
 import * as React from 'react'
 import { ProductCarousel } from '@/components/product-carousel'
 import { Metadata, ResolvingMetadata } from 'next'
-import { EyeOff, PenBoxIcon, Trash2 } from 'lucide-react'
+import { PenBoxIcon, Trash2 } from 'lucide-react'
 import { DeleteButton } from '@/components/ui/delete-button'
 import {
   AlertDialogHeader,
@@ -35,6 +35,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog'
+import { ListProductButton } from '@/components/ui/list-product-button'
 
 type Props = {
   params: { productId: string }
@@ -97,16 +98,20 @@ export default async function ProductDetails({ params }: Props) {
           <CardWrapper className="w-full lg:w-[400px]">
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <Avatar className="size-12 rounded-sm">
-                  <AvatarImage src={seller?.image!} alt="Profile" />
-                  <AvatarFallback className="size-8 rounded-sm bg-secondary">
-                    IMG
-                  </AvatarFallback>
-                </Avatar>
-                <span className="flex flex-wrap gap-2">
-                  <p className="font-semibold">{seller?.name}</p>
-                  <p className="">@{seller?.username}</p>
-                </span>
+                <Link href={'/' + seller?.username}>
+                  <Avatar className="size-12 rounded-sm">
+                    <AvatarImage src={seller?.image!} alt="Profile" />
+                    <AvatarFallback className="size-8 rounded-sm bg-secondary">
+                      IMG
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
+                <Link href={'/' + seller?.username}>
+                  <span className="flex flex-wrap gap-2">
+                    <p className="font-semibold">{seller?.name}</p>
+                    <p className="">@{seller?.username}</p>
+                  </span>
+                </Link>
               </div>
               <div>
                 {!user?.username.match(product.username) ? (
@@ -117,18 +122,10 @@ export default async function ProductDetails({ params }: Props) {
                   </Link>
                 ) : (
                   <div className="flex flex-col gap-2 lg:gap-4">
-                    <Link href={'/edit/product/' + params.productId}>
-                      <Button
-                        type="submit"
-                        className="w-full"
-                        variant="outline"
-                      >
-                        <div className="flex flex-row items-center gap-4">
-                          <EyeOff size={16} />
-                          Unlist Product
-                        </div>
-                      </Button>
-                    </Link>
+                    <ListProductButton
+                      id={params.productId}
+                      status={product.status!}
+                    />
                     <Link href={'/edit/product/' + params.productId}>
                       <Button
                         type="submit"
@@ -142,7 +139,7 @@ export default async function ProductDetails({ params }: Props) {
                       </Button>
                     </Link>
                     <AlertDialog>
-                      <AlertDialogTrigger>
+                      <AlertDialogTrigger asChild>
                         <Button
                           type="submit"
                           className="w-full"
@@ -165,8 +162,8 @@ export default async function ProductDetails({ params }: Props) {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction className="bg-white p-0">
-                            <DeleteButton productId={product.id} />
+                          <AlertDialogAction asChild>
+                            <DeleteButton id={product.id} />
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

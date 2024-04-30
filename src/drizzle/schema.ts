@@ -11,6 +11,7 @@ import {
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccount } from '@auth/core/adapters'
 import { relations } from 'drizzle-orm'
+import { register } from 'module'
 
 //users table
 export const users = pgTable('user', {
@@ -20,10 +21,17 @@ export const users = pgTable('user', {
   email: varchar('email', { length: 255 }).notNull().unique(),
   phoneNumber: varchar('phoneNumber', { length: 255 }),
   password: varchar('password', { length: 255 }),
-  emailVerified: timestamp('emailVerified', { mode: 'date' }),
+  emailVerified: timestamp('emailVerified', {
+    mode: 'date',
+    withTimezone: true,
+  }),
   image: varchar('image', { length: 255 }),
   institute: varchar('institute', { length: 255 }),
   isSeller: boolean('isSeller').default(false),
+  register_at: timestamp('register_at', {
+    mode: 'date',
+    withTimezone: true,
+  }).defaultNow(),
 })
 
 export const usersRelations = relations(users, ({ many }) => ({

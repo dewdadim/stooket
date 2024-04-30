@@ -1,13 +1,15 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
+import { GoogleProfile } from 'next-auth/providers/google'
+import { FacebookProfile } from 'next-auth/providers/facebook'
 import FacebookProvider from 'next-auth/providers/facebook'
 import 'dotenv/config'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db } from '@/drizzle'
 import { Adapter } from 'next-auth/adapters'
 import bcrypt from 'bcryptjs'
-import { users } from './drizzle/schema'
+import { institutes, users } from './drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 export const authOptions: NextAuthOptions = {
@@ -24,11 +26,33 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       allowDangerousEmailAccountLinking: true,
+      async profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          username: profile.username ?? null,
+          isSeller: profile.isSeller ?? false,
+          institute: profile.institute ?? null,
+        } as any
+      },
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
       allowDangerousEmailAccountLinking: true,
+      async profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          username: profile.username ?? null,
+          isSeller: profile.isSeller ?? false,
+          institute: profile.institute ?? null,
+        } as any
+      },
     }),
     CredentialsProvider({
       name: 'credentials',
@@ -65,35 +89,38 @@ export const authOptions: NextAuthOptions = {
           isSeller: user.isSeller,
           email: user.email,
           image: user.image,
+          institute: user.institute,
         } as any
       },
     }),
   ],
   callbacks: {
+    async jwt({ token, user, trigger, session, profile }) {
+      if (trigger === 'update') {
+        token.username = session.username
+        token.institute = session.institute
+      }
+
+      const account = await db.query.users.findFirst({
+        where: eq(users.email!, profile?.email!),
+      })
+
+      if (user) {
+        token.id = user.id
+        token.username = user.username ?? account?.username
+        token.isSeller = user.isSeller ?? account?.isSeller
+        token.institute = user.institute ?? account?.institute
+      }
+      return token
+    },
     async session({ token, session }) {
       if (token && session.user) {
         session.user.id = token.id
         session.user.username = token.username
         session.user.isSeller = token.isSeller
+        session.user.institute = token.institute
       }
       return session
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id
-        token.username = user.username
-          ? user.username
-          : user.email?.split('@')[0]!
-        token.isSeller = user.isSeller
-
-        if (!user.username) {
-          await db
-            .update(users)
-            .set({ username: token.username })
-            .where(eq(users.id, token.id))
-        }
-      }
-      return token
     },
   },
 }

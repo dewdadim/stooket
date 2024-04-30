@@ -1,3 +1,4 @@
+import { institutes } from '@/drizzle/schema'
 import * as z from 'zod'
 
 const phoneValidation = new RegExp(
@@ -20,16 +21,32 @@ export const RegisterSchema = z.object({
     .string()
     .min(5, { message: 'Minimum 5 characters required' })
     .max(15, { message: 'Username is too long' })
-    .refine((s) => !s.includes(' '), "Can't have spaces in username"),
-  email: z.string().email({
-    message: 'Email is required',
-  }),
-  password: z.string().min(6, {
-    message: 'Minimum 6 characters required',
-  }),
-  name: z.string().min(1, {
-    message: 'Name is required',
-  }),
+    .refine((s) => !s.includes(' '), "Can't have spaces in username")
+    .optional(),
+  email: z
+    .string()
+    .email({
+      message: 'Email is required',
+    })
+    .optional(),
+  password: z
+    .string()
+    .min(6, {
+      message: 'Minimum 6 characters required',
+    })
+    .optional(),
+  name: z
+    .string()
+    .min(1, {
+      message: 'Name is required',
+    })
+    .optional(),
+  institute: z
+    .string()
+    .min(1, {
+      message: 'Plese choose appropriate nstitute',
+    })
+    .optional(),
 })
 
 //sell form validation

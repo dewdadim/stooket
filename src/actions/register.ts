@@ -17,27 +17,21 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   }
 
   const id = uuidv4()
-  const { email, password, name, username } = validatedFields.data
-  const hashedPassword = await bcrypt.hash(password, 10)
+  const { email, password, name } = validatedFields.data
+  const hashedPassword = await bcrypt.hash(password!, 10)
 
   //check existing user
-  const existingEmail = await getUserByEmail(email)
-  const existingUsername = await getUserByUsername(username)
+  const existingEmail = await getUserByEmail(email!)
 
   if (existingEmail) {
     return { error: 'Email already in use!' }
   }
 
-  if (existingUsername) {
-    return { error: 'Username is not available!' }
-  }
-
   await db.insert(users).values({
     id: id,
-    username: username,
-    name: name,
-    email: email,
-    password: hashedPassword,
+    name: name!,
+    email: email!,
+    password: hashedPassword!,
     image: '/avatar/default.jpg',
   })
 

@@ -14,6 +14,16 @@ import {
   CheckCircle2,
   InfoIcon,
 } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { CompleteAccountDialog } from '@/components/forms/complete-account-dialog'
+import { currentUser } from '@/lib/auth'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -37,6 +47,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const session = await getServerSession()
+  const user = await currentUser()
 
   return (
     <html lang="en" className="h-full">
@@ -63,7 +74,12 @@ export default async function RootLayout({
             />
             <main className="relative flex min-h-screen flex-col">
               <Navbar />
-              <div className="flex-1 flex-grow">{children}</div>
+              <div className="flex-1 flex-grow">
+                {session?.user && (!user?.username || !user?.institute) ? (
+                  <CompleteAccountDialog />
+                ) : null}
+                {children}
+              </div>
               <Footer className="mt-16" />
             </main>
           </ThemeProvider>

@@ -8,17 +8,16 @@ import { getProductById } from '@/data/product'
 import 'dotenv/config'
 
 interface DeleteButtonProps {
-  productId: string
+  id: string
 }
 
-export const DeleteButton = ({ productId }: DeleteButtonProps) => {
+export const DeleteButton = ({ id }: DeleteButtonProps) => {
   const router = useRouter()
   async function handleClick() {
     try {
-      await fetch(`/api/product/${productId}`, {
+      await fetch(`/api/product/${id}`, {
         method: 'DELETE',
       })
-      console.log(process.env.PUBLIC_URL)
       toast.info(`Product deleted!`)
       router.back()
     } catch (e) {
@@ -26,12 +25,7 @@ export const DeleteButton = ({ productId }: DeleteButtonProps) => {
     }
   }
   return (
-    <Button
-      type="submit"
-      className="w-full"
-      variant="destructive"
-      onClick={handleClick}
-    >
+    <Button type="submit" variant="destructive" onClick={handleClick}>
       <div className="flex flex-row items-center gap-4">DELETE</div>
     </Button>
   )

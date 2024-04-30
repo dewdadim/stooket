@@ -48,7 +48,7 @@ export function ProfileToggle() {
 
           <div className="flex flex-col">
             <Link
-              href="/profile"
+              href={`/${user?.username}`}
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <User2 />
