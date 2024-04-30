@@ -5,10 +5,11 @@ import { getUserByUsername } from '@/data/user'
 import { currentUser } from '@/lib/auth'
 import * as React from 'react'
 import { Metadata, ResolvingMetadata } from 'next'
-import { ProfileCard } from '@/components/ui/profile-card'
+import { ProfileCard } from '@/components/profile/profile-card'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { ProductCard } from '@/components/product-card'
+import { ProfileProducts } from '@/components/profile/profile-products'
 
 type Props = {
   params: { username: string }
@@ -51,17 +52,7 @@ export default async function Profile({ params }: Props) {
           </ul>
           <Separator className="w-full bg-primary" />
           <div>
-            <div className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-3">
-              {products?.map((product) => (
-                <ProductCard
-                  key={product?.id}
-                  id={product?.id!}
-                  thumbnailUrl={product?.thumbnail!}
-                  title={product?.title!}
-                  price={product?.price?.toFixed(2)!}
-                />
-              ))}
-            </div>
+            <ProfileProducts profile={profile} />
           </div>
         </div>
       </div>

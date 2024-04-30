@@ -1,10 +1,10 @@
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { GraduationCap } from 'lucide-react'
 import Image from 'next/image'
-import { Separator } from './separator'
+import { Separator } from '../ui/separator'
 import { cn } from '@/lib/utils'
 import { currentUser } from '@/lib/auth'
-import { Button } from './button'
+import { Button } from '../ui/button'
 import Link from 'next/link'
 
 interface ProfileCardProps {
