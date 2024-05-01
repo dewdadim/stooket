@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { currentUser } from '@/lib/auth'
 import { Button } from '../ui/button'
 import Link from 'next/link'
+import { User } from 'next-auth'
 
 interface ProfileCardProps {
   profile: {
@@ -21,15 +22,19 @@ interface ProfileCardProps {
     isSeller: boolean | null
     register_at: Date | null
   }
+  user: User
   className?: string
 }
 
-export async function ProfileCard({ profile, className }: ProfileCardProps) {
+export async function ProfileCard({
+  profile,
+  user,
+  className,
+}: ProfileCardProps) {
   const currentDate = new Date()
   const userRegisterDate = profile.register_at
   const difference_inTime = currentDate.getTime() - userRegisterDate?.getTime()!
   const difference_inDay = Math.round(difference_inTime / (1000 * 3600 * 24))
-  const user = await currentUser()
 
   return (
     <div
@@ -38,7 +43,7 @@ export async function ProfileCard({ profile, className }: ProfileCardProps) {
         className,
       )}
     >
-      <div className="flex flex-row flex-wrap items-center gap-6">
+      <div className="flex flex-row flex-wrap items-center gap-4">
         <div className="size-28 md:size-40">
           <AspectRatio ratio={1 / 1}>
             <Image
@@ -57,6 +62,15 @@ export async function ProfileCard({ profile, className }: ProfileCardProps) {
           </div>
         </div>
       </div>
+      {user?.username.match(profile.username!) ? (
+        <>
+          <div className="space-y-2">
+            <Button variant="outline" className="w-full">
+              Edit Profile
+            </Button>
+          </div>
+        </>
+      ) : null}
       <Separator />
       <div>
         <div className="flex items-center gap-1">
@@ -65,16 +79,6 @@ export async function ProfileCard({ profile, className }: ProfileCardProps) {
         </div>
         <div>{profile.institute}</div>
       </div>
-      {user?.username.match(profile.username!) ? (
-        <>
-          <Separator />
-          <div className="space-y-2">
-            <Button variant="outline" className="w-full">
-              Edit Profile
-            </Button>
-          </div>
-        </>
-      ) : null}
     </div>
   )
 }

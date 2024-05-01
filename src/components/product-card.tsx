@@ -21,7 +21,6 @@ export function ProductCard(data: ProductCardProps) {
             <Link href={'/' + data.username}>
               <Avatar className="size-7 rounded-sm md:size-8">
                 <AvatarImage src={data.avatar} alt="Profile" />
-
                 <AvatarFallback className="size-8 rounded-sm bg-secondary">
                   IMG
                 </AvatarFallback>

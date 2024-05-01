@@ -1,19 +1,10 @@
-import {
-  LayoutDashboard,
-  LogOut,
-  PlusSquare,
-  Settings,
-  User2,
-} from 'lucide-react'
+import { LayoutDashboard, PlusSquare, Settings, User2 } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Separator } from './ui/separator'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import Link from 'next/link'
 import { Logout } from './forms/auth/logout'
 import { currentUser } from '@/lib/auth'
-import { db } from '@/drizzle'
-import { users } from '@/drizzle/schema'
-import { eq } from 'drizzle-orm'
 
 export async function ProfileToggle() {
   const user = await currentUser()
@@ -56,28 +47,28 @@ export async function ProfileToggle() {
               <p className="text-sm leading-none">Profile</p>
             </Link>
             <Link
-              href="/settings"
-              className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
-            >
-              <Settings />
-              <p className="text-sm leading-none">Settings</p>
-            </Link>
-            <Link
-              href="/sales-dashboard"
+              href="/seller-dashboard"
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <LayoutDashboard />
-              <p className="text-sm leading-none">Sales Manager</p>
+              <p className="text-sm leading-none">Seller Dashboard</p>
             </Link>
             <Link
               href="/sell"
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <PlusSquare />
-              <p className="text-sm leading-none">Sell</p>
+              <p className="text-sm leading-none">Sell Item</p>
             </Link>
           </div>
-
+          <Separator />
+          <Link
+            href="/settings"
+            className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
+          >
+            <Settings />
+            <p className="text-sm leading-none">Settings</p>
+          </Link>
           <Separator />
           <Logout />
         </div>

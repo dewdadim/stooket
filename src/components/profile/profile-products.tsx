@@ -23,16 +23,26 @@ interface ProfileProductsProps {
     isSeller: boolean | null
     register_at: Date | null
   }
+  products: {
+    id: string
+    username: string
+    description: string | null
+    title: string | null
+    category: string | null
+    price: number | null
+    thumbnail: string | null
+    status: 'listed' | 'unlisted' | 'sold' | null
+    post_at: Date | null
+    update_at: Date | null
+  }[]
   className?: string
 }
 
 export async function ProfileProducts({
   profile,
+  products,
   className,
 }: ProfileProductsProps) {
-  const user = await currentUser()
-  const products = await getProductsByUsername(profile?.username!)
-
   if (products.length === 0)
     return (
       <div className="mt-8 w-full text-center text-lg">
@@ -41,7 +51,9 @@ export async function ProfileProducts({
     )
 
   return (
-    <div className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-3">
+    <div
+      className={cn('mt-4 grid grid-cols-2 gap-1 lg:grid-cols-3', className)}
+    >
       {products?.map((product) => (
         <ProductCard
           key={product?.id}

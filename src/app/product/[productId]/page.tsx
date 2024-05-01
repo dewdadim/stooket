@@ -64,6 +64,10 @@ export default async function ProductDetails({ params }: Props) {
     .from(productImages)
     .where(eq(productImages.productId, product?.id!))
   const user = await currentUser()
+  const currentDate = new Date()
+  const userRegisterDate = product?.post_at
+  const difference_inTime = currentDate.getTime() - userRegisterDate?.getTime()!
+  const difference_inDay = Math.round(difference_inTime / (1000 * 3600 * 24))
 
   if (!product) return notFound()
 
@@ -88,11 +92,41 @@ export default async function ProductDetails({ params }: Props) {
       </Breadcrumb>
       <ProductCarousel productImages={productImg} />
       <div className="mt-4 flex flex-wrap gap-8 lg:flex-nowrap">
-        <section className="w-fit flex-auto space-y-4">
-          <h1 className="text-2xl font-semibold">{product.title}</h1>
-          <h1 className="text-2xl">RM{product.price?.toFixed(2)}</h1>
-          <h2 className="pt-16 text-xl font-semibold">Description</h2>
-          <p>{product.description}</p>
+        <section className="mb-40 w-fit flex-auto space-y-4 md:mb-8">
+          <div className="text-2xl font-semibold">{product.title}</div>
+          <div className="text-2xl">RM{product.price?.toFixed(2)}</div>
+          {product.description ? (
+            <>
+              <div className="pt-16 text-xl font-semibold">Description</div>
+              <p>{product.description}</p>
+            </>
+          ) : null}
+          <div className="pt-16 text-xl font-semibold">Details</div>
+          <div className="grid grid-cols-2">
+            <div className="space-y-1">
+              <p className="text-sm">Category</p>
+              <p>
+                <Link
+                  href={`/product?category=${product.category}`}
+                  className="text-blue-400 underline"
+                >
+                  {product.category}
+                </Link>
+              </p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm">Uploaded</p>
+              <p>
+                {`${difference_inDay} days ago by`}{' '}
+                <Link
+                  href={`/${product.username}`}
+                  className="text-blue-400 underline"
+                >
+                  {product.username}
+                </Link>
+              </p>
+            </div>
+          </div>
         </section>
         <section className="fixed inset-x-0 bottom-0 w-full flex-none shadow-2xl md:static md:shadow-none lg:static lg:w-auto">
           <CardWrapper className="w-full lg:w-[400px]">
@@ -108,8 +142,10 @@ export default async function ProductDetails({ params }: Props) {
                 </Link>
                 <Link href={'/' + seller?.username}>
                   <span className="flex flex-wrap gap-2">
-                    <p className="font-semibold">{seller?.name}</p>
-                    <p className="">@{seller?.username}</p>
+                    <p className="font-semibold hover:underline">
+                      {seller?.name}
+                    </p>
+                    <p className="hover:underline">@{seller?.username}</p>
                   </span>
                 </Link>
               </div>
