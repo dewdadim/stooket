@@ -1,5 +1,3 @@
-'use client'
-
 import {
   LayoutDashboard,
   LogOut,
@@ -9,13 +7,16 @@ import {
 } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Separator } from './ui/separator'
-import { signOut } from 'next-auth/react'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import Link from 'next/link'
-import { useCurrentUser } from '@/hooks/use-current-user'
+import { Logout } from './forms/auth/logout'
+import { currentUser } from '@/lib/auth'
+import { db } from '@/drizzle'
+import { users } from '@/drizzle/schema'
+import { eq } from 'drizzle-orm'
 
-export function ProfileToggle() {
-  const user = useCurrentUser()
+export async function ProfileToggle() {
+  const user = await currentUser()
 
   return (
     <Popover>
@@ -78,15 +79,7 @@ export function ProfileToggle() {
           </div>
 
           <Separator />
-          <div
-            className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
-            onClick={() => {
-              signOut()
-            }}
-          >
-            <LogOut />
-            <p className="text-sm leading-none">Logout</p>
-          </div>
+          <Logout />
         </div>
       </PopoverContent>
     </Popover>

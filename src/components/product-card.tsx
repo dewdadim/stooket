@@ -15,27 +15,25 @@ interface ProductCardProps {
 export function ProductCard(data: ProductCardProps) {
   return (
     <div className="w-auto rounded-md p-2 transition-shadow duration-200 hover:shadow-2xl dark:hover:border-solid dark:hover:bg-secondary">
-      <Link href={'/product/' + data.id}>
-        {data.avatar || data.username ? (
-          <div className="w-fit">
-            <div className="flex w-fit flex-row items-center gap-1 py-1 md:gap-2 md:py-2">
+      {data.avatar || data.username ? (
+        <div className="w-fit">
+          <div className="flex w-fit flex-row items-center gap-1 py-1 md:gap-2 md:py-2">
+            <Link href={'/' + data.username}>
               <Avatar className="size-7 rounded-sm md:size-8">
-                <Link href={'/' + data.username}>
-                  <AvatarImage src={data.avatar} alt="Profile" />
-                </Link>
-                <Link href={'/' + data.username}>
-                  <AvatarFallback className="size-8 rounded-sm bg-secondary">
-                    IMG
-                  </AvatarFallback>
-                </Link>
-              </Avatar>
-              <p className="text-sm md:text-base">
-                <Link href={'/' + data.username}>@{data.username}</Link>
-              </p>
-            </div>
-          </div>
-        ) : null}
+                <AvatarImage src={data.avatar} alt="Profile" />
 
+                <AvatarFallback className="size-8 rounded-sm bg-secondary">
+                  IMG
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+            <p className="text-sm md:text-base">
+              <Link href={'/' + data.username}>@{data.username}</Link>
+            </p>
+          </div>
+        </div>
+      ) : null}
+      <Link href={'/product/' + data.id}>
         <div className="py-2">
           <AspectRatio ratio={1 / 1} className="w-full bg-muted">
             <Image

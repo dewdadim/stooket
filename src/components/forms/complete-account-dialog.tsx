@@ -65,9 +65,9 @@ export function CompleteAccountDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        onInteractOutside={(e) => {
-          e.preventDefault()
-        }}
+      // onInteractOutside={(e) => {
+      //   e.preventDefault()
+      // }}
       >
         <DialogHeader>
           <DialogTitle>Please complete your account</DialogTitle>

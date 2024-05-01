@@ -35,8 +35,8 @@ export default async function Wishlist({ params }: Props) {
 
   if (!profile) return notFound()
   return (
-    <MaxWidthWrapper className="mt-16">
-      <div className="mt-24 flex flex-wrap gap-8">
+    <MaxWidthWrapper className="mt-16 lg:mt-24">
+      <div className="flex flex-wrap gap-8">
         <ProfileCard profile={profile} className="grid flex-none" />
         <div className="flex w-96 grow flex-col gap-2">
           <ul className="flex flex-row gap-6">

@@ -8,6 +8,7 @@ import { updateProductStatusById } from '@/utils/product'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import useState from 'react-usestateref'
 import { useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 
 interface ListProductButtonProps {
   id: string
@@ -19,6 +20,7 @@ export const ListProductButton = ({ id, status }: ListProductButtonProps) => {
     status as string,
   )
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   async function handleClick() {
     const product = await getProductById(id)
@@ -28,6 +30,7 @@ export const ListProductButton = ({ id, status }: ListProductButtonProps) => {
         updateProductStatusById(id, { status: 'unlisted' }).then(() => {
           setStatusDisplay('unlisted')
           toast.info(`Product has been ${statusDisplayRef.current}!`)
+          router.refresh
         })
       })
     }
@@ -37,6 +40,7 @@ export const ListProductButton = ({ id, status }: ListProductButtonProps) => {
         updateProductStatusById(id, { status: 'listed' }).then(() => {
           setStatusDisplay('listed')
           toast.info(`Product has been ${statusDisplayRef.current}!`)
+          router.refresh()
         })
       })
     }

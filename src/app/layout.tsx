@@ -78,6 +78,7 @@ export default async function RootLayout({
               <Navbar />
               <div className="flex-1 flex-grow">
                 {session?.user &&
+                userDetails &&
                 (!userDetails?.username || !userDetails?.institute) ? (
                   <CompleteAccountDialog />
                 ) : null}
