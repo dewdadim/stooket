@@ -38,7 +38,7 @@ interface ProfileProductsProps {
   className?: string
 }
 
-export async function ProfileProducts({
+export function ProfileProducts({
   profile,
   products,
   className,

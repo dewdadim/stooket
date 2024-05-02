@@ -26,11 +26,7 @@ interface ProfileCardProps {
   className?: string
 }
 
-export async function ProfileCard({
-  profile,
-  user,
-  className,
-}: ProfileCardProps) {
+export function ProfileCard({ profile, user, className }: ProfileCardProps) {
   const currentDate = new Date()
   const userRegisterDate = profile.register_at
   const difference_inTime = currentDate.getTime() - userRegisterDate?.getTime()!

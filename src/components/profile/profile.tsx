@@ -55,7 +55,7 @@ function Profile({ profile, user, products, className }: ProfileProps) {
                 href={`/${profile.username}`}
                 className={cn(
                   'px-4 py-2 hover:bg-accent',
-                  !tab ? 'border-b-2 border-primary font-medium' : '',
+                  !tab ? 'border-b-4 border-primary font-medium' : '',
                 )}
               >
                 Products
@@ -67,7 +67,7 @@ function Profile({ profile, user, products, className }: ProfileProps) {
                 className={cn(
                   'px-4 py-2 hover:bg-accent',
                   tab?.match('wishlists')
-                    ? 'border-b-2 border-primary font-medium'
+                    ? 'border-b-4 border-primary font-medium'
                     : '',
                 )}
               >
@@ -80,7 +80,7 @@ function Profile({ profile, user, products, className }: ProfileProps) {
                 className={cn(
                   'px-4 py-2 hover:bg-accent',
                   tab?.match('ratings')
-                    ? 'border-b-2 border-primary font-medium'
+                    ? 'border-b-4 border-primary font-medium'
                     : '',
                 )}
               >
