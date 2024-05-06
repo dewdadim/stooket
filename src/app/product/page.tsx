@@ -2,6 +2,7 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { ProductCard } from '@/components/product-card'
 import { db } from '@/drizzle'
 import { products, users } from '@/drizzle/schema'
+import { currentUser } from '@/lib/auth'
 import getAllProducts from '@/lib/getAllProducts'
 import { eq, ilike, and } from 'drizzle-orm'
 
@@ -11,9 +12,10 @@ type Props = {
 }
 
 export default async function Product({ params, searchParams }: Props) {
-  const search = searchParams['search'] as string
+  const user = await currentUser()
+  const username = user?.username
   const category = searchParams['category'] as string
-  const param = { category, search }
+  const param = { category, username }
 
   const productsData: Promise<ProductList[]> = getAllProducts(param)
   const products = await productsData

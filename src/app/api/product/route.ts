@@ -1,45 +1,33 @@
 import { db } from '@/drizzle'
-import { products, users } from '@/drizzle/schema'
+import { institutes, products, users } from '@/drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
-import { eq, ilike, and } from 'drizzle-orm'
+import { eq, ilike, and, ne } from 'drizzle-orm'
 
 export async function GET(req: NextRequest) {
-  const search = req.nextUrl.searchParams.get('search')
+  const username = req.nextUrl.searchParams.get('username')
   const category = req.nextUrl.searchParams.get('category')
+  const dataSet = {
+    id: products.id,
+    title: products.title,
+    price: products.price,
+    thumbnail: products.thumbnail,
+    seller: {
+      username: users.username,
+      image: users.image,
+      institute: users.institute,
+    },
+  }
 
   if (category) {
     const data = await db
-      .select({
-        id: products.id,
-        title: products.title,
-        price: products.price,
-        thumbnail: products.thumbnail,
-        seller: { username: users.username, image: users.image },
-      })
-      .from(products)
-      .innerJoin(users, eq(products.username, users.username))
-      .where(
-        and(eq(products.category, category), eq(products.status, 'listed')),
-      )
-
-    return NextResponse.json(data)
-  }
-
-  if (search) {
-    const data = await db
-      .select({
-        id: products.id,
-        title: products.title,
-        price: products.price,
-        thumbnail: products.thumbnail,
-        seller: { username: users.username, image: users.image },
-      })
+      .select(dataSet)
       .from(products)
       .innerJoin(users, eq(products.username, users.username))
       .where(
         and(
-          ilike(products.title, `%${search}%`),
+          eq(products.category, category),
           eq(products.status, 'listed'),
+          ne(users.username, username!),
         ),
       )
 
@@ -47,16 +35,10 @@ export async function GET(req: NextRequest) {
   }
 
   const data = await db
-    .select({
-      id: products.id,
-      title: products.title,
-      price: products.price,
-      thumbnail: products.thumbnail,
-      seller: { username: users.username, image: users.image },
-    })
+    .select(dataSet)
     .from(products)
     .innerJoin(users, eq(products.username, users.username))
-    .where(eq(products.status, 'listed'))
+    .where(and(eq(products.status, 'listed'), ne(users.username, username!)))
 
   return NextResponse.json(data)
 }

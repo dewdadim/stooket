@@ -102,7 +102,7 @@ export default async function ProductDetails({ params }: Props) {
             </>
           ) : null}
           <div className="pt-16 text-xl font-semibold">Details</div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 gap-y-16">
             <div className="space-y-1">
               <p className="text-sm">Category</p>
               <p>
@@ -125,6 +125,10 @@ export default async function ProductDetails({ params }: Props) {
                   {product.username}
                 </Link>
               </p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm">Available at</p>
+              <p>{user?.institute}</p>
             </div>
           </div>
         </section>
