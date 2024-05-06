@@ -4,7 +4,10 @@ import { eq } from 'drizzle-orm'
 import { NextRequest, NextResponse } from 'next/server'
 import { deleteFiles } from '@/server/uploadthing'
 
-export async function GET({ params }: { params: { productId: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { productId: string } },
+) {
   const product = await db
     .select()
     .from(products)
