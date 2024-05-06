@@ -27,7 +27,7 @@ export const sell = async (values: z.infer<typeof SellSchema>) => {
     category: category,
     thumbnail: thumbnail,
     title: title,
-    price: price,
+    price: price ?? 0,
   })
 
   //insert product images into database

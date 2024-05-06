@@ -6,23 +6,11 @@ import { cn } from '@/lib/utils'
 import { currentUser } from '@/lib/auth'
 import { Button } from '../ui/button'
 import Link from 'next/link'
-import { User } from 'next-auth'
+import { User as CurrentUser } from 'next-auth'
 
 interface ProfileCardProps {
-  profile: {
-    id: string
-    name: string | null
-    username: string | null
-    email: string
-    phoneNumber: string | null
-    password: string | null
-    emailVerified: Date | null
-    image: string | null
-    institute: string | null
-    isSeller: boolean | null
-    register_at: Date | null
-  }
-  user: User
+  profile: User
+  user: CurrentUser
   className?: string
 }
 

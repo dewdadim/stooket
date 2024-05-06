@@ -48,7 +48,7 @@ export function ProductCard(data: ProductCardProps) {
             {data.title}
           </div>
           <div className="text-lg font-bold tracking-tight text-primary">
-            RM{data.price}
+            {data.price !== '0.00' ? `RM${data.price}` : 'FREE'}
           </div>
         </div>
       </Link>

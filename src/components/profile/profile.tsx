@@ -8,35 +8,12 @@ import Link from 'next/link'
 import { ProfileProducts } from '@/components/profile/profile-products'
 import { cn } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
-import { User } from 'next-auth'
+import { User as CurrentUser } from 'next-auth'
 
 interface ProfileProps {
-  profile: {
-    id: string
-    name: string | null
-    username: string | null
-    email: string
-    phoneNumber: string | null
-    password: string | null
-    emailVerified: Date | null
-    image: string | null
-    institute: string | null
-    isSeller: boolean | null
-    register_at: Date | null
-  }
-  user: User
-  products: {
-    id: string
-    username: string
-    description: string | null
-    title: string | null
-    category: string | null
-    price: number | null
-    thumbnail: string | null
-    status: 'listed' | 'unlisted' | 'sold' | null
-    post_at: Date | null
-    update_at: Date | null
-  }[]
+  profile: User
+  user: CurrentUser
+  products: Product[]
   className?: string
 }
 
@@ -90,7 +67,7 @@ function Profile({ profile, user, products, className }: ProfileProps) {
           </ul>
           <Separator className="w-full bg-primary" />
           <div>
-            <ProfileProducts profile={profile} products={products} />
+            <ProfileProducts products={products} />
           </div>
         </div>
       </div>

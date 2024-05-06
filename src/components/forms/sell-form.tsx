@@ -34,6 +34,7 @@ import { deleteFiles } from '@/server/uploadthing'
 import { toast } from 'sonner'
 import { AspectRatio } from '../ui/aspect-ratio'
 import { UploadButton } from '@/utils/uploadthing'
+import categories from '@/data/category.json'
 
 interface ImageProps {
   id: number
@@ -232,19 +233,14 @@ function SellForm() {
                           <SelectValue placeholder="Select Category" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Free Items">Free Items</SelectItem>
-                          <SelectItem value="Food & Drinks">
-                            Food & Drinks
-                          </SelectItem>
-                          <SelectItem value="Services">Services</SelectItem>
-                          <SelectItem value="Tech & Gadgets">
-                            Tech & Gadgets
-                          </SelectItem>
-                          <SelectItem value="Hobby">Hobby</SelectItem>
-                          <SelectItem value="Books & Stationeries">
-                            Books & Stationeries
-                          </SelectItem>
-                          <SelectItem value="Sports">Sports</SelectItem>
+                          {categories.map((category) => (
+                            <SelectItem
+                              key={category.id}
+                              value={category.title}
+                            >
+                              {category.title}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
