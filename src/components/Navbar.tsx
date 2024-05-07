@@ -9,6 +9,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/auth'
 import { NotificationToggle } from './notification_sheet/notification-toggle'
 import { SearchBar } from './search-bar'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
 export async function Navbar() {
   const session = await getServerSession(authOptions)
@@ -22,11 +23,19 @@ export async function Navbar() {
               <Link href="/">Stooket</Link>
             </h1>
           </div>
-          <SearchBar />
+          <SearchBar className="hidden" />
           <div className="flex items-center gap-2">
-            <Button size="icon" variant="ghost" className="lg:hidden">
-              <Search className="size-5" />
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button size="icon" variant="ghost" className="lg:hidden">
+                  <Search className="size-5" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-screen">
+                <SearchBar />
+              </PopoverContent>
+            </Popover>
+
             <ModeToggle />
             {session?.user ? (
               <>

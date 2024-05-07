@@ -5,8 +5,13 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { cn } from '@/lib/utils'
 
-export function SearchBar(this: any) {
+interface SearchBarProps {
+  className?: string
+}
+
+export function SearchBar({ className }: SearchBarProps) {
   const [search, setSearch] = useState('')
   const router = useRouter()
 
@@ -16,7 +21,7 @@ export function SearchBar(this: any) {
   }
 
   return (
-    <form className="hidden gap-0 lg:flex" onSubmit={handleSubmit}>
+    <form className={cn('gap-0 lg:flex', className)} onSubmit={handleSubmit}>
       <Input
         type="text"
         placeholder="Search"
