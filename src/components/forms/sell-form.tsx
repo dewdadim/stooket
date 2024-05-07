@@ -35,6 +35,7 @@ import { toast } from 'sonner'
 import { AspectRatio } from '../ui/aspect-ratio'
 import { UploadButton } from '@/utils/uploadthing'
 import categories from '@/data/category.json'
+import { useCurrentUser } from '@/hooks/use-current-user'
 
 interface ImageProps {
   id: number
@@ -52,6 +53,7 @@ function SellForm() {
   const router = useRouter()
   const [imagePreviews, setImagePreview] = useState<ImageProps[]>([])
   const [thumbnail, setThumbnail] = useState('')
+  const currentUser = useCurrentUser()
 
   const addImagePreview = (url: string) => {
     setImagePreview([
@@ -103,7 +105,7 @@ function SellForm() {
             setError('')
             form.reset()
             setSuccess(data.success)
-            router.push('/')
+            router.push(`/${currentUser?.username!}`)
           }
         })
         .catch(() => setError('Something went wrong'))

@@ -3,16 +3,13 @@ type SearhParams = {
   username?: string
 }
 
-export default async function getAllProducts({
-  category,
-  username,
-}: SearhParams) {
+export default async function getAllProducts(params?: SearhParams) {
   const re = /&/gi
-  const categoryParams = category?.replace(re, '%26')
+  const categoryParams = params?.category?.replace(re, '%26')
 
-  if (category) {
+  if (params?.category) {
     const res = await fetch(
-      `https://stooket.com/api/product/?username=${username}&category=${categoryParams}`,
+      `https://stooket.com/api/product/?username=${params?.username}&category=${categoryParams}`,
     )
     if (!res.ok) throw new Error('Failed to fetch products')
 
@@ -20,7 +17,7 @@ export default async function getAllProducts({
   }
 
   const res = await fetch(
-    `https://stooket.com/api/product?username=${username}`,
+    `https://stooket.com/api/product?username=${params?.username}`,
   )
   if (!res.ok) throw new Error('Failed to fetch products')
 
