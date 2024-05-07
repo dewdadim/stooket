@@ -9,6 +9,8 @@ export async function GET(req: NextRequest) {
   const dataSet = {
     id: products.id,
     title: products.title,
+    description: products.description,
+    category: products.category,
     price: products.price,
     thumbnail: products.thumbnail,
     seller: {

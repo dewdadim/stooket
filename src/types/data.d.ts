@@ -14,6 +14,7 @@ type Product = {
 type ProductList = {
   id: string
   title: string
+  description: string
   price: number
   thumbnail: string
   seller: {

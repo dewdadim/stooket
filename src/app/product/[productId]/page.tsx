@@ -20,7 +20,7 @@ import { currentUser } from '@/lib/auth'
 import * as React from 'react'
 import { ProductCarousel } from '@/components/product-carousel'
 import { Metadata, ResolvingMetadata } from 'next'
-import { PenBoxIcon, Trash2 } from 'lucide-react'
+import { Loader2, PenBoxIcon, Trash2 } from 'lucide-react'
 import { DeleteButton } from '@/components/ui/delete-button'
 import {
   AlertDialogHeader,
@@ -128,7 +128,7 @@ export default async function ProductDetails({ params }: Props) {
             </div>
             <div className="space-y-1">
               <p className="text-sm">Available at</p>
-              <p>{user?.institute}</p>
+              <p>{seller?.institute}</p>
             </div>
           </div>
         </section>

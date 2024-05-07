@@ -8,6 +8,7 @@ import { Search } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/auth'
 import { NotificationToggle } from './notification_sheet/notification-toggle'
+import { SearchBar } from './search-bar'
 
 export async function Navbar() {
   const session = await getServerSession(authOptions)
@@ -21,20 +22,7 @@ export async function Navbar() {
               <Link href="/">Stooket</Link>
             </h1>
           </div>
-          <form className="hidden gap-0 lg:flex">
-            <Input
-              type="text"
-              placeholder="Search"
-              className=" z-10 w-72 rounded-l-md rounded-r-none "
-            />
-            <Button
-              size="icon"
-              variant="secondary"
-              className=" rounded-l-none rounded-r-md"
-            >
-              <Search className="size-5" />
-            </Button>
-          </form>
+          <SearchBar />
           <div className="flex items-center gap-2">
             <Button size="icon" variant="ghost" className="lg:hidden">
               <Search className="size-5" />

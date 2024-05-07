@@ -1,10 +1,8 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { ProductCard } from '@/components/product-card'
-import { db } from '@/drizzle'
-import { products, users } from '@/drizzle/schema'
+import Fuse from 'fuse.js'
 import { currentUser } from '@/lib/auth'
 import getAllProducts from '@/lib/getAllProducts'
-import { eq, ilike, and } from 'drizzle-orm'
 
 type Props = {
   params: { username: string }
@@ -15,23 +13,31 @@ export default async function Product({ params, searchParams }: Props) {
   const user = await currentUser()
   const username = user?.username
   const category = searchParams['category'] as string
+  const search = searchParams['search'] as string
   const param = { category, username }
 
   const productsData: Promise<ProductList[]> = getAllProducts(param)
   const products = await productsData
 
+  const fuse = new Fuse(products, {
+    keys: ['title', 'description'],
+  })
+
+  const results = fuse.search(search)
+  console.log(results)
+
   return (
     <MaxWidthWrapper className="mt-16">
       <div className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-4">
-        {products.map((product) => (
+        {results.map(({ item }) => (
           <ProductCard
-            key={product?.id}
-            id={product?.id!}
-            thumbnailUrl={product?.thumbnail!}
-            title={product?.title!}
-            price={product?.price?.toFixed(2)!}
-            username={product?.seller.username!}
-            avatar={product?.seller.image!}
+            key={item?.id}
+            id={item?.id!}
+            thumbnailUrl={item?.thumbnail!}
+            title={item?.title!}
+            price={item?.price?.toFixed(2)!}
+            username={item?.seller.username!}
+            avatar={item?.seller.image!}
           />
         ))}
       </div>
