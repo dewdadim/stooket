@@ -46,13 +46,13 @@ export default async function Product({ params, searchParams }: Props) {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink href={'#'}>
-              Search results for '{search}'
+              Search results for &apos;{search}&apos;
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <h3 className="my-2 text-2xl font-medium">
-        {results.length} search results for '{search}'
+        {results.length} search results for &apos;{search}&apos;
       </h3>
       {search ? (
         results.length !== 0 ? (

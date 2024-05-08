@@ -41,7 +41,7 @@ export default async function Category({ params, searchParams }: Props) {
         </BreadcrumbList>
       </Breadcrumb>
       <h3 className="my-2 text-2xl font-medium">
-        {products.length} search results for {categoryParams}'
+        {products.length} results in {categoryParams}
       </h3>
       <ProductList products={products} />
     </MaxWidthWrapper>
