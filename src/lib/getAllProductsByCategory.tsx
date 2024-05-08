@@ -9,7 +9,7 @@ export default async function getAllProductsByCategory(
 
   if (category) {
     const res = await fetch(
-      `http://localhost:3000/api/product/category/${categoryParams}?username=${username}`,
+      `https://stooket.com/api/product/category/${categoryParams}?username=${username}`,
     )
     if (!res.ok) throw new Error('Failed to fetch products')
 
