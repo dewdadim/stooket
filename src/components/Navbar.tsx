@@ -10,6 +10,11 @@ import { authOptions } from '@/auth'
 import { NotificationToggle } from './notification_sheet/notification-toggle'
 import { SearchBar } from './search-bar'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu'
 
 export async function Navbar() {
   const session = await getServerSession(authOptions)
@@ -25,17 +30,9 @@ export async function Navbar() {
           </div>
           <SearchBar className="hidden" />
           <div className="flex items-center gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button size="icon" variant="ghost" className="lg:hidden">
-                  <Search className="size-5" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-screen">
-                <SearchBar />
-              </PopoverContent>
-            </Popover>
-
+            <Button size="icon" variant="ghost" className="lg:hidden">
+              <Search className="size-5" />
+            </Button>
             <ModeToggle />
             {session?.user ? (
               <>

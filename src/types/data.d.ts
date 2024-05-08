@@ -13,15 +13,18 @@ type Product = {
 
 type ProductList = {
   id: string
-  title: string
-  description: string
-  price: number
-  thumbnail: string
+  title: string | null
+  description: string | null
+  category: string | null
+  price: number | null
+  thumbnail: string | null
+  post_at: Date | null
   seller: {
-    username: string
-    image: string
+    username: string | null
+    image: string | null
+    institute: string | null
   }
-}
+}[]
 
 type User = {
   id: string

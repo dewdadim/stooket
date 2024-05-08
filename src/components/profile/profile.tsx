@@ -9,11 +9,12 @@ import { ProfileProducts } from '@/components/profile/profile-products'
 import { cn } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
 import { User as CurrentUser } from 'next-auth'
+import { ProductList } from '../ProductList'
 
 interface ProfileProps {
   profile: User
   user: CurrentUser
-  products: Product[]
+  products: ProductList
   className?: string
 }
 
@@ -67,7 +68,10 @@ function Profile({ profile, user, products, className }: ProfileProps) {
           </ul>
           <Separator className="w-full bg-primary" />
           <div>
-            <ProfileProducts products={products} />
+            <ProductList
+              products={products}
+              className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-3"
+            />
           </div>
         </div>
       </div>

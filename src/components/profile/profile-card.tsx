@@ -3,9 +3,7 @@ import { GraduationCap } from 'lucide-react'
 import Image from 'next/image'
 import { Separator } from '../ui/separator'
 import { cn } from '@/lib/utils'
-import { currentUser } from '@/lib/auth'
 import { Button } from '../ui/button'
-import Link from 'next/link'
 import { User as CurrentUser } from 'next-auth'
 
 interface ProfileCardProps {
@@ -23,7 +21,7 @@ export function ProfileCard({ profile, user, className }: ProfileCardProps) {
   return (
     <div
       className={cn(
-        'flex w-full min-w-80 flex-col space-y-4 rounded-lg p-2 md:shadow-md lg:max-w-min lg:space-y-6 lg:p-6 dark:lg:border dark:lg:border-solid dark:lg:border-secondary',
+        'flex h-fit w-full min-w-80 flex-col space-y-4 rounded-lg p-2 md:shadow-md lg:max-w-min lg:space-y-6 lg:p-6 dark:lg:border dark:lg:border-solid dark:lg:border-secondary',
         className,
       )}
     >

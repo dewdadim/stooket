@@ -10,7 +10,7 @@ export function CategoryCard(data: CategoryCardProps) {
   const re = /&/gi
   const categoryParams = data.title.replace(re, '%26')
   return (
-    <Link href={`/product?category=${categoryParams}`}>
+    <Link href={`/category/${categoryParams}`}>
       <div className="flex flex-col items-center gap-1 rounded-sm p-2 hover:bg-primary-foreground">
         <Image
           className="size-16 rounded-md bg-secondary"

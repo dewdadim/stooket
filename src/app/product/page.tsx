@@ -3,6 +3,15 @@ import { ProductCard } from '@/components/product-card'
 import Fuse from 'fuse.js'
 import { currentUser } from '@/lib/auth'
 import getAllProducts from '@/lib/getAllProducts'
+import { ProductList } from '@/components/ProductList'
+import Image from 'next/image'
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 
 type Props = {
   params: { username: string }
@@ -11,40 +20,44 @@ type Props = {
 
 export default async function Product({ params, searchParams }: Props) {
   const user = await currentUser()
-  const username = user?.username
-  const category = searchParams['category'] as string
+  const username = user?.username ?? ''
   const search = searchParams['search'] as string
-  const param = { category, username }
 
-  const productsData: Promise<ProductList[]> = getAllProducts(param)
+  const productsData: Promise<ProductList> = getAllProducts(username)
   const products = await productsData
 
   const fuse = new Fuse(products, {
-    keys: ['title', 'description'],
+    keys: ['title', 'category', 'description'],
     includeScore: true,
-    threshold: 0.6,
+    threshold: 0.5,
     minMatchCharLength: 3,
     isCaseSensitive: false,
   })
 
-  const results = fuse.search(search ?? '')
+  const results = fuse.search(search)
 
   return (
-    <MaxWidthWrapper className="mt-16">
-      <div className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-4">
-        {results.length > 0
-          ? results.map(({ item }) => (
-              <ProductCard
-                key={item?.id}
-                id={item?.id!}
-                thumbnailUrl={item?.thumbnail!}
-                title={item?.title!}
-                price={item?.price?.toFixed(2)!}
-                username={item?.seller.username!}
-                avatar={item?.seller.image!}
-              />
-            ))
-          : products.map((item) => (
+    <MaxWidthWrapper>
+      <Breadcrumb className="mt-20">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={'#'}>
+              Search results for '{search}'
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <h3 className="my-2 text-2xl font-medium">
+        {results.length} search results for '{search}'
+      </h3>
+      {search ? (
+        results.length !== 0 ? (
+          <div className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-4">
+            {results.map(({ item }) => (
               <ProductCard
                 key={item?.id}
                 id={item?.id!}
@@ -55,7 +68,26 @@ export default async function Product({ params, searchParams }: Props) {
                 avatar={item?.seller.image!}
               />
             ))}
-      </div>
+          </div>
+        ) : (
+          <div className="mt-24 flex w-full flex-col items-center">
+            <Image
+              src="/emptylist.png"
+              width={200}
+              height={200}
+              alt="empty list"
+            />
+            <p className="text-center text-xl">
+              This seems weird? No items founded...
+            </p>
+          </div>
+        )
+      ) : (
+        <ProductList
+          products={products}
+          className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-4"
+        />
+      )}
     </MaxWidthWrapper>
   )
 }

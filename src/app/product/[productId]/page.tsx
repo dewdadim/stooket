@@ -1,7 +1,7 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { getProductById } from '@/data/product'
 import { db } from '@/drizzle'
-import { productImages, products } from '@/drizzle/schema'
+import { productImages } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { notFound } from 'next/navigation'
 import {
@@ -20,7 +20,7 @@ import { currentUser } from '@/lib/auth'
 import * as React from 'react'
 import { ProductCarousel } from '@/components/product-carousel'
 import { Metadata, ResolvingMetadata } from 'next'
-import { Loader2, PenBoxIcon, Trash2 } from 'lucide-react'
+import { PenBoxIcon, Trash2 } from 'lucide-react'
 import { DeleteButton } from '@/components/ui/delete-button'
 import {
   AlertDialogHeader,
@@ -36,6 +36,7 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog'
 import { ListProductButton } from '@/components/ui/list-product-button'
+import categories from '@/data/category.json'
 
 type Props = {
   params: { productId: string }
@@ -68,6 +69,8 @@ export default async function ProductDetails({ params }: Props) {
   const userRegisterDate = product?.post_at
   const difference_inTime = currentDate.getTime() - userRegisterDate?.getTime()!
   const difference_inDay = Math.round(difference_inTime / (1000 * 3600 * 24))
+  const re = /&/gi
+  const categoryParams = product?.category?.replace(re, '%26')
 
   if (!product) return notFound()
 
@@ -80,7 +83,9 @@ export default async function ProductDetails({ params }: Props) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href={'/'}>Categoryss</BreadcrumbLink>
+            <BreadcrumbLink href={`/category/${categoryParams}`}>
+              {product.category}
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

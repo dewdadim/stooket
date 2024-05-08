@@ -3,8 +3,8 @@
 import { Search } from 'lucide-react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 interface SearchBarProps {
@@ -14,6 +14,18 @@ interface SearchBarProps {
 export function SearchBar({ className }: SearchBarProps) {
   const [search, setSearch] = useState('')
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams],
+  )
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -31,6 +43,7 @@ export function SearchBar({ className }: SearchBarProps) {
         onChange={(e) => {
           setSearch(e.target.value)
         }}
+        autoComplete="off"
       />
       <Button
         size="icon"

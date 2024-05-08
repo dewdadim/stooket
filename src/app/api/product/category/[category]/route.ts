@@ -1,10 +1,15 @@
 import { db } from '@/drizzle'
-import { institutes, products, users } from '@/drizzle/schema'
+import { products, users } from '@/drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
-import { eq, ilike, and, ne } from 'drizzle-orm'
+import { eq, and, ne } from 'drizzle-orm'
 import { currentUser } from '@/lib/auth'
 
-export async function GET(req: NextRequest) {
+type Props = {
+  params: { category: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function GET(req: NextRequest, { params, searchParams }: Props) {
   const username = req.nextUrl.searchParams.get('username')
   const dataSet = {
     id: products.id,
@@ -26,7 +31,13 @@ export async function GET(req: NextRequest) {
       .select(dataSet)
       .from(products)
       .innerJoin(users, eq(products.username, users.username))
-      .where(and(eq(products.status, 'listed'), ne(users.username, username!)))
+      .where(
+        and(
+          eq(products.category, params.category),
+          eq(products.status, 'listed'),
+          ne(users.username, username!),
+        ),
+      )
 
     return NextResponse.json(data)
   }
@@ -35,7 +46,12 @@ export async function GET(req: NextRequest) {
     .select(dataSet)
     .from(products)
     .innerJoin(users, eq(products.username, users.username))
-    .where(eq(products.status, 'listed'))
+    .where(
+      and(
+        eq(products.status, 'listed'),
+        eq(products.category, params.category),
+      ),
+    )
 
   return NextResponse.json(data)
 }

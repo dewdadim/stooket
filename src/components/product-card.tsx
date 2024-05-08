@@ -18,7 +18,7 @@ export function ProductCard(data: ProductCardProps) {
       {data.avatar || data.username ? (
         <div className="w-fit">
           <div className="flex w-fit flex-row items-center gap-1 py-1 md:gap-2 md:py-2">
-            <Link href={'/' + data.username}>
+            <Link href={'/' + data.username} scroll={false}>
               <Avatar className="size-7 rounded-sm md:size-8">
                 <AvatarImage src={data.avatar} alt="Profile" />
                 <AvatarFallback className="size-8 rounded-sm bg-secondary">
@@ -27,12 +27,14 @@ export function ProductCard(data: ProductCardProps) {
               </Avatar>
             </Link>
             <p className="text-sm md:text-base">
-              <Link href={'/' + data.username}>@{data.username}</Link>
+              <Link href={'/' + data.username} scroll={false}>
+                @{data.username}
+              </Link>
             </p>
           </div>
         </div>
       ) : null}
-      <Link href={'/product/' + data.id}>
+      <Link href={'/product/' + data.id} scroll={false}>
         <div className="py-2">
           <AspectRatio ratio={1 / 1} className="w-full bg-muted">
             <Image
