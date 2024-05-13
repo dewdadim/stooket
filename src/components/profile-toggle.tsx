@@ -1,4 +1,10 @@
-import { LayoutDashboard, PlusSquare, Settings, User2 } from 'lucide-react'
+import {
+  LayoutDashboard,
+  PlusSquare,
+  Settings,
+  ShoppingBag,
+  User2,
+} from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from './ui/avatar'
 import { Separator } from './ui/separator'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
@@ -13,7 +19,11 @@ export async function ProfileToggle() {
     <Popover>
       <PopoverTrigger>
         <Avatar className="size-8 rounded-sm">
-          <AvatarImage src={user?.image!} alt="Profile" />
+          <AvatarImage
+            src={user?.image!}
+            alt="Profile"
+            className="object-cover"
+          />
           <AvatarFallback className="size-8 rounded-sm bg-secondary">
             IMG
           </AvatarFallback>
@@ -24,7 +34,11 @@ export async function ProfileToggle() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4 rounded-md p-2">
             <Avatar className="size-10 rounded-sm">
-              <AvatarImage src={user?.image!} alt="Profile" />
+              <AvatarImage
+                src={user?.image!}
+                alt="Profile"
+                className="object-cover"
+              />
               <AvatarFallback className="size-8 rounded-sm bg-secondary">
                 IMG
               </AvatarFallback>
@@ -47,6 +61,13 @@ export async function ProfileToggle() {
               <p className="text-sm leading-none">Profile</p>
             </Link>
             <Link
+              href="/purchase "
+              className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
+            >
+              <ShoppingBag />
+              <p className="text-sm leading-none">My Purhases</p>
+            </Link>
+            <Link
               href="/seller-dashboard"
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
@@ -63,7 +84,7 @@ export async function ProfileToggle() {
           </div>
           <Separator />
           <Link
-            href="/settings"
+            href="/settings/profile"
             className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
           >
             <Settings />

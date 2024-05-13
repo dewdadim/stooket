@@ -45,7 +45,7 @@ interface ImageProps {
   }
 }
 
-type Product = {
+type EditProductFormProps = {
   data: {
     title: string | null
     id: string
@@ -59,7 +59,7 @@ type Product = {
   }
 }
 
-function EditProductForm(product: Product) {
+function EditProductForm(product: EditProductFormProps) {
   const MAX_IMAGES = 8
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')

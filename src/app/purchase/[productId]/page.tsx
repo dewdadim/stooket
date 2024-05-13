@@ -1,8 +1,8 @@
-import BuyForm from '@/components/forms/buy-form'
 import { getProductById } from '@/data/product'
 import { notFound, redirect } from 'next/navigation'
 import { Metadata, ResolvingMetadata } from 'next'
 import { currentUser } from '@/lib/auth'
+import PurchaseForm from '@/components/forms/purchase-form'
 
 type Props = {
   params: { productId: string }
@@ -31,5 +31,5 @@ export default async function page({ params }: Props) {
   if (user?.username.match(product.username))
     return redirect('/product/' + product.id)
 
-  return <BuyForm data={product} />
+  return <PurchaseForm data={product} />
 }

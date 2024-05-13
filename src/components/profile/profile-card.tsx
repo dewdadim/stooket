@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Separator } from '../ui/separator'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
+import Link from 'next/link'
 import { User as CurrentUser } from 'next-auth'
 
 interface ProfileCardProps {
@@ -48,7 +49,7 @@ export function ProfileCard({ profile, user, className }: ProfileCardProps) {
         <>
           <div className="space-y-2">
             <Button variant="outline" className="w-full">
-              Edit Profile
+              <Link href="/settings/profile">Edit Profile</Link>
             </Button>
           </div>
         </>

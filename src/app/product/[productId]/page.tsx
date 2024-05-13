@@ -114,6 +114,7 @@ export default async function ProductDetails({ params }: Props) {
                 <Link
                   href={`/product?category=${product.category}`}
                   className="text-blue-400 underline"
+                  scroll={true}
                 >
                   {product.category}
                 </Link>
@@ -126,6 +127,7 @@ export default async function ProductDetails({ params }: Props) {
                 <Link
                   href={`/${product.username}`}
                   className="text-blue-400 underline"
+                  scroll={true}
                 >
                   {product.username}
                 </Link>
@@ -141,15 +143,19 @@ export default async function ProductDetails({ params }: Props) {
           <CardWrapper className="w-full lg:w-[400px]">
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <Link href={'/' + seller?.username}>
+                <Link href={'/' + seller?.username} scroll={true}>
                   <Avatar className="size-12 rounded-sm">
-                    <AvatarImage src={seller?.image!} alt="Profile" />
+                    <AvatarImage
+                      src={seller?.image!}
+                      alt="Profile"
+                      className="object-cover"
+                    />
                     <AvatarFallback className="size-8 rounded-sm bg-secondary">
                       IMG
                     </AvatarFallback>
                   </Avatar>
                 </Link>
-                <Link href={'/' + seller?.username}>
+                <Link href={'/' + seller?.username} scroll={true}>
                   <span className="flex flex-wrap gap-2">
                     <p className="font-semibold hover:underline">
                       {seller?.name}
@@ -160,7 +166,10 @@ export default async function ProductDetails({ params }: Props) {
               </div>
               <div>
                 {!user?.username.match(product.username) ? (
-                  <Link href={user ? '/buy/' + params.productId : '/login'}>
+                  <Link
+                    href={user ? '/purchase/' + params.productId : '/login'}
+                    scroll={true}
+                  >
                     <Button type="submit" className="w-full">
                       Buy Item
                     </Button>
@@ -171,7 +180,10 @@ export default async function ProductDetails({ params }: Props) {
                       id={params.productId}
                       status={product.status!}
                     />
-                    <Link href={'/edit/product/' + params.productId}>
+                    <Link
+                      href={'/edit/product/' + params.productId}
+                      scroll={true}
+                    >
                       <Button
                         type="submit"
                         className="w-full"

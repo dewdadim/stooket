@@ -7,7 +7,7 @@ const phoneValidation = new RegExp(
 
 //login user form validation
 export const LoginSchema = z.object({
-  email: z.string().email({
+  email: z.string().trim().email({
     message: 'Email is required',
   }),
   password: z.string().min(1, {
@@ -19,12 +19,14 @@ export const LoginSchema = z.object({
 export const RegisterSchema = z.object({
   username: z
     .string()
+    .trim()
     .min(5, { message: 'Minimum 5 characters required' })
     .max(15, { message: 'Username is too long' })
     .refine((s) => !s.includes(' '), "Can't have spaces in username")
     .optional(),
   email: z
     .string()
+    .trim()
     .email({
       message: 'Email is required',
     })
@@ -37,6 +39,7 @@ export const RegisterSchema = z.object({
     .optional(),
   name: z
     .string()
+    .trim()
     .min(1, {
       message: 'Name is required',
     })
@@ -49,15 +52,74 @@ export const RegisterSchema = z.object({
     .optional(),
 })
 
+//profile settings form schema
+export const ProfileSettingsSchema = z.object({
+  name: z.string().trim().min(1, {
+    message: 'Name is required',
+  }),
+  institute: z
+    .string()
+    .min(1, {
+      message: 'Plese choose appropriate nstitute',
+    })
+    .optional(),
+})
+
+//account settings form schema
+export const AccountSettingsSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(5, { message: 'Minimum 5 characters required' })
+    .max(15, { message: 'Username is too long' })
+    .refine((s) => !s.includes(' '), "Can't have spaces in username")
+    .optional(),
+  phoneNumber: z
+    .string()
+    .trim()
+    .regex(phoneValidation, { message: 'Invalid phone number' }),
+})
+
+//change password settings form schema
+export const ChangePasswordSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .min(6, {
+        message: 'Minimum 6 characters required',
+      })
+      .optional(),
+    newPassword: z
+      .string()
+      .min(6, {
+        message: 'Minimum 6 characters required',
+      })
+      .optional(),
+    confirmPassword: z.string().optional(),
+  })
+  .refine(
+    (values) => {
+      return values.newPassword === values.confirmPassword
+    },
+    {
+      message: 'Passwords must match!',
+      path: ['confirmPassword'],
+    },
+  )
+
 //sell form validation
 export const SellSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(1, {
       message: 'Product title is required',
     })
     .max(100, { message: 'Exceeds 100 maximum characters' }),
-  price: z.coerce.number().gte(1, 'Minimum price RM1.00'),
+  price: z.coerce
+    .number()
+    .gte(0, 'Please enter price')
+    .lte(10000, 'Price need to be less than RM10,000'),
   category: z.string().min(1, {
     message: 'Please select appropriate category',
   }),
@@ -80,6 +142,7 @@ export const SellSchema = z.object({
 export const BuySchema = z.object({
   phoneNumber: z
     .string()
+    .trim()
     .regex(phoneValidation, { message: 'Invalid phone number' }),
   message: z
     .string()

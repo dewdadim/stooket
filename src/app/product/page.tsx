@@ -59,6 +59,7 @@ export default async function Product({ params, searchParams }: Props) {
           <div className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-4">
             {results.map(({ item }) => (
               <ProductCard
+                isProfile
                 key={item?.id}
                 id={item?.id!}
                 thumbnailUrl={item?.thumbnail!}
@@ -84,6 +85,7 @@ export default async function Product({ params, searchParams }: Props) {
         )
       ) : (
         <ProductList
+          isProfile
           products={products}
           className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-4"
         />

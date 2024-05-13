@@ -189,6 +189,7 @@ function SellForm() {
                                     },
                                   }}
                                   appearance={{
+                                    button: 'text-primary',
                                     container:
                                       'size-36 bg-slate-400 bg-opacity-0 hover:bg-opacity-10',
                                   }}

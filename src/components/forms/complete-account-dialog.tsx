@@ -28,6 +28,15 @@ import { DialogDescription } from '@radix-ui/react-dialog'
 import { complete_account } from '@/actions/complete-account'
 import { useSession } from 'next-auth/react'
 import { useCurrentUser } from '@/hooks/use-current-user'
+import { useRouter } from 'next/navigation'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select'
+import institutes from '@/data/institute.json'
 
 export function CompleteAccountDialog() {
   const [open, setOpen] = useState(true)
@@ -36,10 +45,14 @@ export function CompleteAccountDialog() {
   const [isPending, startTransition] = useTransition()
   const { data: session, update } = useSession()
   const user = useCurrentUser()
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
-    defaultValues: {},
+    defaultValues: {
+      username: '',
+      institute: '',
+    },
   })
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
@@ -56,6 +69,8 @@ export function CompleteAccountDialog() {
             update({ username: values.username, institute: values.institute })
             setSuccess(data.success)
             setOpen(false)
+            router.push('/')
+            router.refresh()
           }
         })
         .catch(() => setError('Something went wrong'))
@@ -81,44 +96,54 @@ export function CompleteAccountDialog() {
                 onSubmit={form.handleSubmit(onSubmit)}
               >
                 <div className="space-y-4">
-                  {!user?.username ? (
-                    <FormField
-                      control={form.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              disabled={isPending}
-                              placeholder="Enter your username"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  ) : null}
-                  {!user?.institute ? (
-                    <FormField
-                      control={form.control}
-                      name="institute"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Institute</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              disabled={isPending}
-                              placeholder="******"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  ) : null}
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            disabled={isPending}
+                            placeholder="Enter your username"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="institute"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Institute</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select Category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {institutes.map((institute) => (
+                                <SelectItem
+                                  key={institute.id}
+                                  value={institute.name}
+                                >
+                                  {institute.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <FormError message={error} />
                 <FormSuccess message={success} />

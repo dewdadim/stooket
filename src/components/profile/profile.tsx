@@ -69,6 +69,7 @@ function Profile({ profile, user, products, className }: ProfileProps) {
           <Separator className="w-full bg-primary" />
           <div>
             <ProductList
+              isProfile={false}
               products={products}
               className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-3"
             />

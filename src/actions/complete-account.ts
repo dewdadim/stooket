@@ -1,12 +1,10 @@
 'use server'
 
 import * as z from 'zod'
-import bcrypt from 'bcryptjs'
-import { v4 as uuidv4 } from 'uuid'
 
 import { db } from '@/drizzle'
 import { RegisterSchema } from '@/schemas'
-import { getUserByEmail, getUserByUsername } from '@/data/user'
+import { getUserByUsername } from '@/data/user'
 import { users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { currentUser } from '@/lib/auth'
@@ -23,7 +21,7 @@ export const complete_account = async (
 
   const { username, institute } = validatedFields.data
 
-  //check existing user
+  //check existing username
   const existingUsername = await getUserByUsername(username!)
 
   if (existingUsername) {

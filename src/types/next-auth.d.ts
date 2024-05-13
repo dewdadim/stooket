@@ -7,6 +7,8 @@ declare module 'next-auth' {
     username: string
     isSeller: boolean
     institute: string
+    image: string
+    name: string
   }
   interface Session extends DefaultSession {
     user?: User
@@ -19,5 +21,7 @@ declare module 'next-auth/jwt' {
     username: string
     isSeller: boolean
     institute: string
+    image: string
+    name: string
   }
 }

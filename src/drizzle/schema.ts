@@ -72,7 +72,10 @@ export const productStatusEnum = pgEnum('productStatus', [
 export const products = pgTable('product', {
   username: varchar('username', { length: 255 })
     .notNull()
-    .references(() => users.username, { onDelete: 'cascade' }),
+    .references(() => users.username, {
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    }),
   id: varchar('id', { length: 255 }).notNull().primaryKey(),
   title: varchar('title', { length: 255 }),
   category: varchar('category', { length: 255 }),
@@ -135,9 +138,19 @@ export const purchases = pgTable('purchase', {
 
 //institutes table
 export const institutes = pgTable('institute', {
-  id: varchar('id', { length: 255 }).notNull().primaryKey(),
+  id: varchar('id').notNull().primaryKey(),
   name: text('name'),
   register_at: timestamp('register_at', {
+    mode: 'date',
+    withTimezone: true,
+  }).defaultNow(),
+})
+
+export const wishlists = pgTable('wishlist', {
+  id: varchar('id').notNull().primaryKey(),
+  username: varchar('username'),
+  productId: varchar('productId'),
+  add_at: timestamp('add_at', {
     mode: 'date',
     withTimezone: true,
   }).defaultNow(),

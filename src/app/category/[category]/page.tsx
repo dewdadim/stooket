@@ -43,7 +43,7 @@ export default async function Category({ params, searchParams }: Props) {
       <h3 className="my-2 text-2xl font-medium">
         {products.length} results in {categoryParams}
       </h3>
-      <ProductList products={products} />
+      <ProductList isProfile products={products} />
     </MaxWidthWrapper>
   )
 }

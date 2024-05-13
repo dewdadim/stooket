@@ -10,31 +10,36 @@ interface ProductCardProps {
   thumbnailUrl: string
   avatar?: string
   username?: string
+  isProfile: boolean
 }
 
 export function ProductCard(data: ProductCardProps) {
   return (
     <div className="w-auto rounded-md p-2 transition-shadow duration-200 hover:shadow-2xl dark:hover:border-solid dark:hover:bg-secondary">
-      {data.avatar || data.username ? (
+      {data.isProfile ? (
         <div className="w-fit">
           <div className="flex w-fit flex-row items-center gap-1 py-1 md:gap-2 md:py-2">
-            <Link href={'/' + data.username} scroll={false}>
+            <Link href={'/' + data.username} scroll={true}>
               <Avatar className="size-7 rounded-sm md:size-8">
-                <AvatarImage src={data.avatar} alt="Profile" />
+                <AvatarImage
+                  src={data.avatar}
+                  alt="Profile"
+                  className="object-cover"
+                />
                 <AvatarFallback className="size-8 rounded-sm bg-secondary">
                   IMG
                 </AvatarFallback>
               </Avatar>
             </Link>
             <p className="text-sm md:text-base">
-              <Link href={'/' + data.username} scroll={false}>
+              <Link href={'/' + data.username} scroll={true}>
                 @{data.username}
               </Link>
             </p>
           </div>
         </div>
       ) : null}
-      <Link href={'/product/' + data.id} scroll={false}>
+      <Link href={'/product/' + data.id} scroll={true}>
         <div className="py-2">
           <AspectRatio ratio={1 / 1} className="w-full bg-muted">
             <Image

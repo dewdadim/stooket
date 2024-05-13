@@ -18,6 +18,7 @@ export default async function Home() {
         <CategoryList />
         <div className="mt-12 text-2xl font-bold">Recommended for you</div>
         <ProductList
+          isProfile
           products={products}
           className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-4"
         />

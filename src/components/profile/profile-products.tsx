@@ -9,6 +9,7 @@ interface ProfileProductsProps {
 export function ProfileProducts({ products, className }: ProfileProductsProps) {
   return (
     <ProductList
+      isProfile={false}
       products={products}
       className={cn('mt-4 grid grid-cols-2 gap-1 lg:grid-cols-3', className)}
     />

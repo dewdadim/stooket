@@ -1,8 +1,6 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
-import { GoogleProfile } from 'next-auth/providers/google'
-import { FacebookProfile } from 'next-auth/providers/facebook'
 import FacebookProvider from 'next-auth/providers/facebook'
 import 'dotenv/config'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
@@ -96,9 +94,20 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, trigger, session, profile }) {
-      if (trigger === 'update') {
+      if (trigger === 'update' && session?.username) {
         token.username = session.username
+      }
+
+      if (trigger === 'update' && session?.institute) {
         token.institute = session.institute
+      }
+
+      if (trigger === 'update' && session?.name) {
+        token.name = session.name
+      }
+
+      if (trigger === 'update' && session?.image) {
+        token.image = session.image
       }
 
       const account = await db.query.users.findFirst({
@@ -110,15 +119,19 @@ export const authOptions: NextAuthOptions = {
         token.username = user.username ?? account?.username
         token.isSeller = user.isSeller ?? account?.isSeller
         token.institute = user.institute ?? account?.institute
+        token.image = user.image ?? account?.image
+        token.name = user.name ?? account?.name
       }
       return token
     },
     async session({ token, session }) {
       if (token && session.user) {
         session.user.id = token.id
+        session.user.image = token.image
         session.user.username = token.username
         session.user.isSeller = token.isSeller
         session.user.institute = token.institute
+        session.user.name = token.name
       }
       return session
     },

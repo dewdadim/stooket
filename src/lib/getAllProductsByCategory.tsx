@@ -1,4 +1,4 @@
-import { currentUser } from './auth'
+import axios from 'axios'
 
 export default async function getAllProductsByCategory(
   username?: string,
@@ -16,10 +16,12 @@ export default async function getAllProductsByCategory(
     return res.json()
   }
 
-  const res = await fetch(
-    `http://localhost:3000/api/product?username=${username}`,
-  )
-  if (!res.ok) throw new Error('Failed to fetch products')
-
-  return res.json()
+  await axios
+    .get(`/api/product?username=${username}`)
+    .then((res) => {
+      return res.data.json()
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }

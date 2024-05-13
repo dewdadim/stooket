@@ -4,8 +4,8 @@ import * as z from 'zod'
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
-import { LoginSchema } from '@/schemas'
+
+import { AccountSettingsSchema, ProfileSettingsSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import {
   Form,
@@ -19,38 +19,45 @@ import { CardWrapper } from '@/components/forms/card-wrapper'
 import { Button } from '@/components/ui/button'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
-import { login } from '@/actions/login'
+import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
+import { updateAccount } from '@/actions/update-account'
+import { useSession } from 'next-auth/react'
 
-function LoginForm() {
+interface AccountSettingsProps {
+  user: User
+  className?: string
+}
+
+function AccountSettings({ user, className }: AccountSettingsProps) {
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const { data: session, update } = useSession()
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof AccountSettingsSchema>>({
+    resolver: zodResolver(AccountSettingsSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      username: user?.username!,
+      phoneNumber: user?.phoneNumber! || '',
     },
   })
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof AccountSettingsSchema>) => {
     startTransition(() => {
-      login(values)
+      updateAccount(values)
         .then((data) => {
           if (data?.error) {
             setSuccess('')
             setError(data.error)
           }
-
           if (data?.success) {
             setError('')
             form.reset()
             setSuccess(data.success)
-            router.push('/')
-            router.refresh()
+            update({ username: values.username })
+            router.push(`/${user.username}`)
           }
         })
         .catch(() => setError('Something went wrong'))
@@ -58,47 +65,35 @@ function LoginForm() {
   }
 
   return (
-    <div className="mt-36 flex justify-center">
-      <CardWrapper
-        header="Stooket"
-        headerLabel="Welcome back as always!"
-        backButtonLabel="Don't have any account?"
-        backButtonHref="/register"
-        showSocial
-      >
+    <div className={className}>
+      <CardWrapper className="md:w-full md:shadow-md" header="Account">
         <Form {...form}>
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4">
               <FormField
+                name="username"
                 control={form.control}
-                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="user@example.com"
-                        type="email"
-                      />
+                      <Input {...field} disabled={isPending} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
+                name="phoneNumber"
                 control={form.control}
-                name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Phone Number</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder="******"
-                        type="password"
+                        placeholder="Enter your phone number"
                       />
                     </FormControl>
                     <FormMessage />
@@ -108,15 +103,24 @@ function LoginForm() {
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />
-            {isPending ? (
-              <Button disabled className="w-full">
-                <Loader2 className="h-4 w-4 animate-spin" />
-              </Button>
-            ) : (
-              <Button disabled={isPending} type="submit" className="w-full">
-                Login
-              </Button>
-            )}
+            <div className="flex w-full justify-end">
+              {isPending ? (
+                <Button disabled>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </Button>
+              ) : (
+                <Button
+                  disabled={
+                    isPending ||
+                    (!form.formState.dirtyFields.phoneNumber &&
+                      !form.formState.dirtyFields.username)
+                  }
+                  type="submit"
+                >
+                  Edit Account
+                </Button>
+              )}
+            </div>
           </form>
         </Form>
       </CardWrapper>
@@ -124,4 +128,4 @@ function LoginForm() {
   )
 }
 
-export default LoginForm
+export default AccountSettings

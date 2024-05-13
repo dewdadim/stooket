@@ -4,10 +4,15 @@ import Image from 'next/image'
 
 interface ProductListProps {
   products: ProductList
+  isProfile: boolean
   className?: string
 }
 
-export function ProductList({ products, className }: ProductListProps) {
+export function ProductList({
+  products,
+  isProfile,
+  className,
+}: ProductListProps) {
   return (
     <>
       {products.length > 0 ? (
@@ -19,6 +24,7 @@ export function ProductList({ products, className }: ProductListProps) {
         >
           {products.map((item) => (
             <ProductCard
+              isProfile={isProfile}
               key={item?.id}
               id={item?.id!}
               thumbnailUrl={item?.thumbnail!}

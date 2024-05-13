@@ -49,7 +49,7 @@ type Product = {
   }
 }
 
-function BuyForm(product: Product) {
+function PurchaseForm(product: Product) {
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
@@ -66,6 +66,7 @@ function BuyForm(product: Product) {
     defaultValues: {
       phoneNumber: '',
       message: '',
+      location: '',
     },
   })
 
@@ -116,7 +117,7 @@ function BuyForm(product: Product) {
               </div>
             </div>
           </CardWrapper>
-          <CardWrapper header="Request Order" className="md:w-[450px]">
+          <CardWrapper header="Request Purchase" className="md:w-[450px]">
             <Form {...form}>
               <form
                 className="space-y-6"
@@ -211,7 +212,7 @@ function BuyForm(product: Product) {
           <CardHeader className="flex flex-row items-start bg-muted/50">
             <div className="grid gap-0.5">
               <CardTitle className="group flex items-center gap-2 text-lg">
-                Order Details
+                Purchase Details
               </CardTitle>
               <CardDescription>Date: {dateNow}</CardDescription>
             </div>
@@ -241,4 +242,4 @@ function BuyForm(product: Product) {
   )
 }
 
-export default BuyForm
+export default PurchaseForm

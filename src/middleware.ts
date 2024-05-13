@@ -1,4 +1,4 @@
-import type { NextRequest } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
@@ -10,10 +10,14 @@ export function middleware(request: NextRequest) {
   const { nextUrl, cookies } = request
   const isLoggedIn = cookies.has('__Secure-next-auth.session-token')
 
+  const headers = new Headers(request.headers)
+  headers.set('x-current-path', request.nextUrl.pathname)
+
   const isApiAuthRoute = request.nextUrl.pathname.startsWith(apiAuthPrefix)
   const isPrivateRoute =
     privateRoutes.includes(nextUrl.pathname) ||
-    request.nextUrl.pathname.startsWith('/buy')
+    request.nextUrl.pathname.startsWith('/buy') ||
+    request.nextUrl.pathname.startsWith('/settings')
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
 
   if (isApiAuthRoute) {
@@ -31,7 +35,11 @@ export function middleware(request: NextRequest) {
     return Response.redirect(new URL('/login', nextUrl))
   }
 
-  return null
+  return NextResponse.next({
+    request: {
+      headers: headers,
+    },
+  })
 }
 
 export const config = {

@@ -1,10 +1,6 @@
-import MaxWidthWrapper from "@/components/MaxWidthWrapper"
+import MaxWidthWrapper from '@/components/MaxWidthWrapper'
+import { redirect } from 'next/navigation'
 
 export default function page() {
-  return (
-    <MaxWidthWrapper>
-      return{" "}
-      <div className="mt-32 text-2xl">Settings page in development... 🛠</div>
-    </MaxWidthWrapper>
-  )
+  return redirect('/settings/profile')
 }
