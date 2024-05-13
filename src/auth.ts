@@ -7,7 +7,7 @@ import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db } from '@/drizzle'
 import { Adapter } from 'next-auth/adapters'
 import bcrypt from 'bcryptjs'
-import { institutes, users } from './drizzle/schema'
+import { users } from './drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 export const authOptions: NextAuthOptions = {
