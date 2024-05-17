@@ -14,42 +14,30 @@ function SettingsNav({ currentPage, className }: SettingsNavProps) {
   return (
     <div className={cn('mt-8', className)}>
       <ul className="flex w-full flex-col gap-4">
-        <li
-          className={cn(
-            'p-2 px-4',
-            pathName.match('profile')
-              ? 'border-l-2 border-primary bg-accent lg:bg-transparent'
-              : null,
-          )}
-        >
-          <Link
-            href="/settings/profile"
+        <Link href="/settings/profile">
+          <li
             className={cn(
-              'w-full',
-              pathName.match('/settings/profile') ? 'font-medium' : null,
+              'p-2 px-4',
+              pathName.match('profile')
+                ? 'border-l-2 border-primary bg-accent font-medium'
+                : 'hover:bg-accent',
             )}
           >
             Edit Profile
-          </Link>
-        </li>
-        <li
-          className={cn(
-            'p-2 px-4',
-            pathName.match('account')
-              ? 'border-l-2 border-primary bg-accent lg:bg-transparent'
-              : null,
-          )}
-        >
-          <Link
-            href="/settings/account"
+          </li>
+        </Link>
+        <Link href="/settings/account">
+          <li
             className={cn(
-              'w-full',
-              pathName.match('/settings/account') ? 'font-medium' : null,
+              'p-2 px-4',
+              pathName.match('account')
+                ? 'border-l-2 border-primary bg-accent font-medium'
+                : 'hover:bg-accent',
             )}
           >
             Account
-          </Link>
-        </li>
+          </li>
+        </Link>
       </ul>
     </div>
   )

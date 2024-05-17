@@ -89,77 +89,74 @@ export function CompleteAccountDialog() {
           <DialogDescription>
             Fill up form below to complete your account
           </DialogDescription>
-          <div className="pt-6">
-            <Form {...form}>
-              <form
-                className="space-y-6"
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            disabled={isPending}
-                            placeholder="Enter your username"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="institute"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Institute</FormLabel>
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {institutes.map((institute) => (
-                                <SelectItem
-                                  key={institute.id}
-                                  value={institute.name}
-                                >
-                                  {institute.name}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormError message={error} />
-                <FormSuccess message={success} />
-                {isPending ? (
-                  <Button disabled className="w-full">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  </Button>
-                ) : (
-                  <Button disabled={isPending} type="submit" className="w-full">
-                    Submit
-                  </Button>
-                )}
-              </form>
-            </Form>
-          </div>
         </DialogHeader>
+        <div className="pt-6">
+          <Form {...form}>
+            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={isPending}
+                          placeholder="Enter your username"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="institute"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Institute</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {institutes.map((institute) => (
+                              <SelectItem
+                                key={institute.id}
+                                value={institute.name}
+                              >
+                                {institute.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <FormError message={error} />
+              <FormSuccess message={success} />
+              {isPending ? (
+                <Button disabled className="w-full">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </Button>
+              ) : (
+                <Button disabled={isPending} type="submit" className="w-full">
+                  Submit
+                </Button>
+              )}
+            </form>
+          </Form>
+        </div>
       </DialogContent>
     </Dialog>
   )

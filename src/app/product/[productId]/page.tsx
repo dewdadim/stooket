@@ -112,7 +112,7 @@ export default async function ProductDetails({ params }: Props) {
               <p className="text-sm">Category</p>
               <p>
                 <Link
-                  href={`/product?category=${product.category}`}
+                  href={`/category/${product.category}`}
                   className="text-blue-400 underline"
                   scroll={true}
                 >

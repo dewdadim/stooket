@@ -61,7 +61,7 @@ export async function ProfileToggle() {
               <p className="text-sm leading-none">Profile</p>
             </Link>
             <Link
-              href="/purchase "
+              href="/purchases"
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <ShoppingBag />

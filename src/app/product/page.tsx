@@ -34,7 +34,7 @@ export default async function Product({ params, searchParams }: Props) {
     isCaseSensitive: false,
   })
 
-  const results = fuse.search(search)
+  const results = fuse.search(search ?? '')
 
   return (
     <MaxWidthWrapper>

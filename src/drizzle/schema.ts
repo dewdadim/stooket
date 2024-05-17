@@ -1,5 +1,6 @@
 import {
   integer,
+  smallint,
   timestamp,
   pgTable,
   primaryKey,
@@ -8,6 +9,7 @@ import {
   boolean,
   real,
   pgEnum,
+  json,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccount } from '@auth/core/adapters'
 import { relations } from 'drizzle-orm'
@@ -15,18 +17,18 @@ import { register } from 'module'
 
 //users table
 export const users = pgTable('user', {
-  id: varchar('id', { length: 255 }).notNull().primaryKey(),
-  name: varchar('name', { length: 255 }),
-  username: varchar('username', { length: 255 }).unique(),
-  email: varchar('email', { length: 255 }).notNull().unique(),
-  phoneNumber: varchar('phoneNumber', { length: 255 }),
-  password: varchar('password', { length: 255 }),
+  id: varchar('id').notNull().primaryKey(),
+  name: varchar('name'),
+  username: varchar('username').unique(),
+  email: varchar('email').notNull().unique(),
+  phoneNumber: varchar('phoneNumber'),
+  password: varchar('password'),
   emailVerified: timestamp('emailVerified', {
     mode: 'date',
     withTimezone: true,
   }),
-  image: varchar('image', { length: 255 }),
-  institute: varchar('institute', { length: 255 }),
+  image: varchar('image'),
+  institute: varchar('institute'),
   isSeller: boolean('isSeller').default(false),
   register_at: timestamp('register_at', {
     mode: 'date',
@@ -63,12 +65,12 @@ export const accounts = pgTable(
   }),
 )
 
+//products table
 export const productStatusEnum = pgEnum('productStatus', [
   'listed',
   'unlisted',
   'sold',
 ])
-//products table
 export const products = pgTable('product', {
   username: varchar('username', { length: 255 })
     .notNull()
@@ -113,14 +115,26 @@ export const productImages = pgTable('product_image', {
 })
 
 //purchases table
+export const purchaseStatusEnum = pgEnum('purchaseStatus', [
+  'to-confirm',
+  'in-progress',
+  'completed',
+  'cancelled',
+])
 export const purchases = pgTable('purchase', {
-  id: varchar('id', { length: 255 }).notNull().primaryKey(),
-  seller: varchar('seller', { length: 255 })
+  id: varchar('id').notNull().primaryKey(),
+  seller: varchar('seller')
     .notNull()
-    .references(() => users.username, { onDelete: 'cascade' }),
-  buyer: varchar('buyer', { length: 255 })
+    .references(() => users.username, {
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    }),
+  buyer: varchar('buyer')
     .notNull()
-    .references(() => users.username, { onDelete: 'cascade' }),
+    .references(() => users.username, {
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    }),
   buyerPhoneNumber: varchar('buyerPhoneNumber').notNull(),
   message: text('message'),
   location: text('location'),
@@ -129,9 +143,10 @@ export const purchases = pgTable('purchase', {
     mode: 'date',
     withTimezone: true,
   }).defaultNow(),
-  cancel_at: timestamp('cancel _at', { mode: 'date', withTimezone: true }),
+  cancel_at: timestamp('cancel_at', { mode: 'date', withTimezone: true }),
   complete_at: timestamp('complete_at', { mode: 'date', withTimezone: true }),
-  productId: varchar('productId', { length: 255 })
+  status: purchaseStatusEnum('status').default('to-confirm'),
+  productId: varchar('productId')
     .notNull()
     .references(() => products.id, { onDelete: 'cascade' }),
 })
@@ -140,18 +155,35 @@ export const purchases = pgTable('purchase', {
 export const institutes = pgTable('institute', {
   id: varchar('id').notNull().primaryKey(),
   name: text('name'),
+  acronym: varchar('acronym'),
   register_at: timestamp('register_at', {
     mode: 'date',
     withTimezone: true,
   }).defaultNow(),
 })
 
-export const wishlists = pgTable('wishlist', {
+//reviews table
+export const reviews = pgTable('review', {
   id: varchar('id').notNull().primaryKey(),
-  username: varchar('username'),
-  productId: varchar('productId'),
-  add_at: timestamp('add_at', {
+  buyer: varchar('buyer')
+    .notNull()
+    .references(() => users.username, {
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    }),
+  seller: varchar('seller')
+    .notNull()
+    .references(() => users.username, {
+      onDelete: 'cascade',
+      onUpdate: 'cascade',
+    }),
+  rate: smallint('rate').default(1),
+  review: text('review'),
+  post_at: timestamp('post_at', {
     mode: 'date',
     withTimezone: true,
   }).defaultNow(),
+  productId: varchar('productId')
+    .notNull()
+    .references(() => products.id, { onDelete: 'cascade' }),
 })

@@ -48,9 +48,11 @@ export function ProfileCard({ profile, user, className }: ProfileCardProps) {
       {user?.username.match(profile.username!) ? (
         <>
           <div className="space-y-2">
-            <Button variant="outline" className="w-full">
-              <Link href="/settings/profile">Edit Profile</Link>
-            </Button>
+            <Link href="/settings/profile">
+              <Button variant="outline" className="w-full">
+                Edit Profile
+              </Button>
+            </Link>
           </div>
         </>
       ) : null}

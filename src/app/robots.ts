@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/private/', '/buy/', 'settings'],
+      disallow: ['/private/', '/buy/', '/settings'],
     },
     sitemap: 'https://www.stooket.com/sitemap.xml',
   }
