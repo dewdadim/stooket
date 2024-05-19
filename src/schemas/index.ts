@@ -151,5 +151,5 @@ export const BuySchema = z.object({
   location: z
     .string()
     .max(250, { message: 'Exceeds 250 maximum characters' })
-    .optional(),
+    .min(1, { message: 'Location is required' }),
 })

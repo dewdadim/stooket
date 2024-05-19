@@ -83,7 +83,8 @@ function PurchaseForm(product: Product) {
             setError('')
             form.reset()
             setSuccess(data.success)
-            router.push('/')
+            router.push('/purchases/in-progress')
+            router.refresh()
           }
         })
         .catch(() => setError('Something went wrong'))

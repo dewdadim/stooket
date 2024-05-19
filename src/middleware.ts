@@ -8,7 +8,7 @@ import {
 
 export function middleware(request: NextRequest) {
   const { nextUrl, cookies } = request
-  const isLoggedIn = cookies.has('__Secure-next-auth.session-token')
+  const isLoggedIn = cookies.has('next-auth.session-token')
 
   const headers = new Headers(request.headers)
   headers.set('x-current-path', request.nextUrl.pathname)
@@ -16,8 +16,9 @@ export function middleware(request: NextRequest) {
   const isApiAuthRoute = request.nextUrl.pathname.startsWith(apiAuthPrefix)
   const isPrivateRoute =
     privateRoutes.includes(nextUrl.pathname) ||
-    request.nextUrl.pathname.startsWith('/buy') ||
-    request.nextUrl.pathname.startsWith('/settings')
+    request.nextUrl.pathname.startsWith('/purchase') ||
+    request.nextUrl.pathname.startsWith('/settings') ||
+    request.nextUrl.pathname.startsWith('/purchases')
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
 
   if (isApiAuthRoute) {

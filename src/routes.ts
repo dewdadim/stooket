@@ -3,7 +3,13 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const privateRoutes = ['/settings', '/profile', '/sell', '/buy']
+export const privateRoutes = [
+  '/settings',
+  '/profile',
+  '/sell',
+  '/purchase',
+  '/purchases',
+]
 
 /**
  * An array of routes that are used for authentication

@@ -124,7 +124,7 @@ export function CompleteAccountDialog() {
                           defaultValue={field.value}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Select Category" />
+                            <SelectValue placeholder="Select Institute" />
                           </SelectTrigger>
                           <SelectContent>
                             {institutes.map((institute) => (

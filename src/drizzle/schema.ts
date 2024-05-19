@@ -143,9 +143,14 @@ export const purchases = pgTable('purchase', {
     mode: 'date',
     withTimezone: true,
   }).defaultNow(),
+  cancel: json('cancel').$type<{
+    by: 'buyer' | 'seller' | string
+    reason: string
+  }>(),
   cancel_at: timestamp('cancel_at', { mode: 'date', withTimezone: true }),
   complete_at: timestamp('complete_at', { mode: 'date', withTimezone: true }),
   status: purchaseStatusEnum('status').default('to-confirm'),
+  hasReview: boolean('hasReview').default(false),
   productId: varchar('productId')
     .notNull()
     .references(() => products.id, { onDelete: 'cascade' }),
@@ -183,7 +188,7 @@ export const reviews = pgTable('review', {
     mode: 'date',
     withTimezone: true,
   }).defaultNow(),
-  productId: varchar('productId')
+  purchaseId: varchar('purchaseId')
     .notNull()
-    .references(() => products.id, { onDelete: 'cascade' }),
+    .references(() => purchases.id, { onDelete: 'cascade' }),
 })

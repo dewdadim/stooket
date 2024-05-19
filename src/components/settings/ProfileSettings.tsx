@@ -107,7 +107,7 @@ function ProfileSettings({ user, className }: ProfileSettingsProps) {
                         defaultValue={field.value}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Category" />
+                          <SelectValue placeholder="Select Institute" />
                         </SelectTrigger>
                         <SelectContent>
                           {institutes.map((institute) => (
