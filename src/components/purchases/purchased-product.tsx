@@ -150,7 +150,7 @@ export function PurchasedProduct({
             </>
           ) : null}
           {status.match('completed') ? (
-            <Link href={'#'}>
+            <Link href={`/review/${id}`}>
               <Button>Send Review</Button>
             </Link>
           ) : null}

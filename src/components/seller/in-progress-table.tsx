@@ -3,7 +3,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -11,11 +10,6 @@ import {
 } from '../ui/table'
 import { Button } from '../ui/button'
 import Link from 'next/link'
-import { startTransition } from 'react'
-import { confirmPurchase } from '@/actions/purchases'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import { ScrollArea } from '../ui/scroll-area'
 import { ExternalLink } from 'lucide-react'
 
 interface InProgressTableProps {

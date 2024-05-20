@@ -5,6 +5,7 @@ import {
   CheckCheck,
   Dot,
   ReceiptText,
+  PlusSquare,
 } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 import { db } from '@/drizzle'
@@ -16,6 +17,8 @@ import { InProgressTable } from './in-progress-table'
 import { PurchasesTable } from './purchases-table'
 import { Tabs, TabsContent, TabsTrigger, TabsList } from '../ui/tabs'
 import { ProductsTable } from './products-table'
+import Link from 'next/link'
+import { Button } from '../ui/button'
 
 export default async function SellerDashboard() {
   const user = await currentUser()
@@ -156,13 +159,22 @@ export default async function SellerDashboard() {
                 <InProgressTable purchaseReq={inProgressPurchase} />
               </div>
             </section>
-            <section>
+            <section className="mt-4">
               <h4 className="mb-4 text-2xl font-medium">All purchases</h4>
               <PurchasesTable purchaseReq={purchase} />
             </section>
           </TabsContent>
           <TabsContent value="products">
             <section>
+              <div className="flex justify-between">
+                <h4 className="mb-4 text-2xl font-medium">All products</h4>
+                <Link href="/sell">
+                  <Button variant="outline">
+                    <PlusSquare className="mr-2" />
+                    New Product
+                  </Button>
+                </Link>
+              </div>
               <ProductsTable products={productData} />
             </section>
           </TabsContent>

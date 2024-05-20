@@ -41,19 +41,6 @@ function Profile({ profile, user, products, className }: ProfileProps) {
             </li>
             <li>
               <Link
-                href={`/${profile.username}?tab=wishlists`}
-                className={cn(
-                  'px-4 py-2 hover:bg-accent',
-                  tab?.match('wishlists')
-                    ? 'border-b-4 border-primary font-medium'
-                    : '',
-                )}
-              >
-                Wishlists
-              </Link>
-            </li>
-            <li>
-              <Link
                 href={`/${profile.username}?tab=ratings`}
                 className={cn(
                   'px-4 py-2 hover:bg-accent',
@@ -62,7 +49,7 @@ function Profile({ profile, user, products, className }: ProfileProps) {
                     : '',
                 )}
               >
-                Ratings
+                Reviews
               </Link>
             </li>
           </ul>

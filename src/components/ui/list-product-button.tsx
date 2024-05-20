@@ -13,9 +13,16 @@ import { useRouter } from 'next/navigation'
 interface ListProductButtonProps {
   id: string
   status: 'listed' | 'unlisted' | 'sold'
+  size?: 'sm' | 'default' | 'lg' | 'icon'
+  disableText?: boolean
 }
 
-export const ListProductButton = ({ id, status }: ListProductButtonProps) => {
+export const ListProductButton = ({
+  id,
+  status,
+  size,
+  disableText,
+}: ListProductButtonProps) => {
   const [statusDisplay, setStatusDisplay, statusDisplayRef] = useState<string>(
     status as string,
   )
@@ -30,7 +37,7 @@ export const ListProductButton = ({ id, status }: ListProductButtonProps) => {
         updateProductStatusById(id, { status: 'unlisted' }).then(() => {
           setStatusDisplay('unlisted')
           toast.info(`Product has been ${statusDisplayRef.current}!`)
-          router.refresh
+          router.refresh()
         })
       })
     }
@@ -49,14 +56,19 @@ export const ListProductButton = ({ id, status }: ListProductButtonProps) => {
   return (
     <>
       {isPending ? (
-        <Button disabled className="w-full" variant="outline">
+        <Button
+          disabled
+          className={!disableText ? 'w-full' : ''}
+          variant="outline"
+        >
           <Loader2 className="h-4 w-4 animate-spin" />
         </Button>
       ) : (
         <Button
           type="submit"
-          className="w-full"
+          className={!disableText ? 'w-full' : ''}
           variant="outline"
+          size={size ?? 'default'}
           onClick={handleClick}
           disabled={isPending}
         >
@@ -64,12 +76,12 @@ export const ListProductButton = ({ id, status }: ListProductButtonProps) => {
             {statusDisplay?.match('unlisted') ? (
               <>
                 <Eye size={16} />
-                List Product
+                {!disableText ? 'List Product' : null}
               </>
             ) : (
               <>
                 <EyeOff size={16} />
-                Unlist Product
+                {!disableText ? 'Unlist Product' : null}
               </>
             )}
           </div>

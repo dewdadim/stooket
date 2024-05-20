@@ -47,7 +47,7 @@ export const RegisterSchema = z.object({
   institute: z
     .string()
     .min(1, {
-      message: 'Plese choose appropriate nstitute',
+      message: 'Plese choose appropriate institute',
     })
     .optional(),
 })

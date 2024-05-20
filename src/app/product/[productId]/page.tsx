@@ -21,7 +21,7 @@ import * as React from 'react'
 import { ProductCarousel } from '@/components/product-carousel'
 import { Metadata, ResolvingMetadata } from 'next'
 import { PenBoxIcon, Trash2 } from 'lucide-react'
-import { DeleteButton } from '@/components/ui/delete-button'
+import { DeleteProductButton } from '@/components/ui/delete-product-button'
 import {
   AlertDialogHeader,
   AlertDialogFooter,
@@ -36,7 +36,6 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog'
 import { ListProductButton } from '@/components/ui/list-product-button'
-import categories from '@/data/category.json'
 
 type Props = {
   params: { productId: string }
@@ -212,15 +211,16 @@ export default async function ProductDetails({ params }: Props) {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Delete Product</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure want to delete this product? This
-                            action cannot be undone. It will permenantly delete
-                            this product from our server.
+                            Are you sure want to delete this product? It will
+                            permenantly delete this product from our server and
+                            cannot be undone. All your purchases record related
+                            to this product will gone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
                           <AlertDialogAction asChild>
-                            <DeleteButton id={product.id} />
+                            <DeleteProductButton id={product.id} />
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

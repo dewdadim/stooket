@@ -191,7 +191,7 @@ function PurchaseForm(product: Product) {
                         type="submit"
                         className="w-full"
                       >
-                        Submit Your Order
+                        Submit Your Request
                       </Button>
                     )}
                     <CardDescription className="pt-3 text-center lg:text-left">

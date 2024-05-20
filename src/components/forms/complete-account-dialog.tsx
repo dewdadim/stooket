@@ -10,6 +10,7 @@ import { useState, useTransition } from 'react'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -118,6 +119,10 @@ export function CompleteAccountDialog() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Institute</FormLabel>
+                      <FormDescription>
+                        You can always change your current institute in profile
+                        settings.
+                      </FormDescription>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}

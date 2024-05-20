@@ -15,6 +15,7 @@
   "dependencies": {
     "@auth/drizzle-adapter": "^0.7.0",
     "@hookform/resolvers": "^3.3.4",
+    "@neondatabase/serverless": "^0.9.3",
     "@next/env": "^14.2.3",
     "@paralleldrive/cuid2": "^2.2.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -71,7 +72,7 @@
     "@types/uniqid": "^5.3.4",
     "@types/uuid": "^9.0.8",
     "autoprefixer": "^10.0.1",
-    "drizzle-kit": "^0.21.1",
+    "drizzle-kit": "^0.21.2",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "postcss": "^8",

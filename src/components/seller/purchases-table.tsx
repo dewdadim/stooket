@@ -44,7 +44,7 @@ interface PurchasesTableProps {
 
 export function PurchasesTable({ purchaseReq }: PurchasesTableProps) {
   return (
-    <div className="h-[450px] overflow-auto rounded-md border">
+    <div className="max-h-[450px] overflow-auto rounded-md border">
       <Table>
         <TableHeader>
           <TableRow className="bg-accent">

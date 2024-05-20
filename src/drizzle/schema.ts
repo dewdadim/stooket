@@ -146,6 +146,7 @@ export const purchases = pgTable('purchase', {
   cancel: json('cancel').$type<{
     by: 'buyer' | 'seller' | string
     reason: string
+    at?: Date
   }>(),
   cancel_at: timestamp('cancel_at', { mode: 'date', withTimezone: true }),
   complete_at: timestamp('complete_at', { mode: 'date', withTimezone: true }),

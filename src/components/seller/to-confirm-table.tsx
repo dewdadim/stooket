@@ -3,7 +3,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -15,8 +14,17 @@ import { startTransition } from 'react'
 import { confirmPurchase } from '@/actions/purchases'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { ScrollArea } from '../ui/scroll-area'
 import { ExternalLink } from 'lucide-react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../ui/alert-dialog'
 
 interface ToConfirmTableProps {
   purchaseReq: {
@@ -101,13 +109,34 @@ export function ToConfirmTable({ purchaseReq }: ToConfirmTableProps) {
                     <Button size="sm" variant="link">
                       Cancel
                     </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleComplete(req.purchase.id)}
-                    >
-                      Confirm
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" variant="outline">
+                          Confirm
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogTitle>
+                          Are you sure to confirm this request?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Confirm purchase request of product{' '}
+                          {req.product.title} by @{req.purchase.buyer}
+                        </AlertDialogDescription>
+
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction asChild>
+                            <Button
+                              onClick={() => handleComplete(req.purchase.id)}
+                            >
+                              Confirm
+                            </Button>
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+
                     <Button size="sm" variant="outline">
                       <ExternalLink size={16} />
                     </Button>
