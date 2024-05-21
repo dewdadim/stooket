@@ -163,8 +163,9 @@ export function PurchasedProduct({
                   </AlertDialogTitle>
                   <AlertDialogDescription>
                     Have you got the product and satisfy with it? By proceeding
-                    to complete, the purchase will be consider as 'completed'
-                    and will have no further action.
+                    to complete, the purchase will be consider as
+                    &rsquo;completed&rsquo&rsquo; and will have no further
+                    action.
                   </AlertDialogDescription>
                   <AlertDialogFooter>
                     <AlertDialogAction asChild>
