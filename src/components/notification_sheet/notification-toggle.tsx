@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -10,9 +11,10 @@ import { currentUser } from '@/lib/auth'
 import { db } from '@/drizzle'
 import { products, purchases, users } from '@/drizzle/schema'
 import { eq, and, or } from 'drizzle-orm'
-import { Bell } from 'lucide-react'
+import { Bell, Dot, ExternalLink } from 'lucide-react'
 import { AspectRatio } from '../ui/aspect-ratio'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export async function NotificationToggle() {
   const user = await currentUser()
@@ -34,8 +36,11 @@ export async function NotificationToggle() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="relative">
           <Bell className="size-5" />
+          {purchase_request.length ? (
+            <Dot className="absolute -right-1 -top-2 size-10 text-red-600" />
+          ) : null}
         </Button>
       </SheetTrigger>
       <SheetContent className="w-full p-3 md:max-w-[520px]">
@@ -48,31 +53,41 @@ export async function NotificationToggle() {
           </div>
           {purchase_request.map((request) => (
             <div className="flex flex-row" key={request.purchase.id}>
-              <div className="flex w-full items-center justify-between gap-4 rounded-md px-2 py-4 hover:bg-accent">
+              <div className="flex w-full items-center justify-between gap-2 rounded-md px-1 py-4 hover:bg-accent md:gap-3 md:px-2">
+                <div className="w-16">
+                  <AspectRatio ratio={1 / 1} className="size-full">
+                    <Image
+                      src={request.product.thumbnail!}
+                      alt={request.product.title!}
+                      fill
+                      className="size-full rounded-md object-cover"
+                    />
+                  </AspectRatio>
+                </div>
                 <div className="flex gap-2">
-                  <div className="size-12">
-                    <AspectRatio ratio={1 / 1}>
-                      <Image
-                        src={request.product.thumbnail!}
-                        alt={request.product.title!}
-                        fill
-                        className="rounded-md object-cover"
-                      />
-                    </AspectRatio>
-                  </div>
-                  <div className="flex flex-col gap-1 ">
+                  <div className="flex flex-col">
                     <p className="text-sm">
                       <span className="font-medium">
                         @{request.user.username}
                       </span>{' '}
                       purchases:
                     </p>
-                    <div className="line-clamp-1">{request.product.title}</div>
+                    <div className="line-clamp-1 text-sm">
+                      {request.product.title}
+                    </div>
                   </div>
                 </div>
-                <Button size="sm" variant="outline">
-                  View Details
-                </Button>
+                <SheetClose asChild>
+                  <Link href={`/purchase/details/${request.purchase.id}`}>
+                    <Button size="sm" variant="outline">
+                      <p className="hidden md:inline-block">View Details</p>
+                      <ExternalLink
+                        className="inline-block md:hidden"
+                        size={16}
+                      />
+                    </Button>
+                  </Link>
+                </SheetClose>
               </div>
             </div>
           ))}

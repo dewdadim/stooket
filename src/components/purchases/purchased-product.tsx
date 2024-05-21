@@ -9,6 +9,16 @@ import { cancelPurchase, completePurchase } from '@/actions/purchases'
 import { startTransition } from 'react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../ui/alert-dialog'
 
 interface PurchasedProductProps {
   id: string
@@ -83,19 +93,21 @@ export function PurchasedProduct({
         </p>
       </div>
       <Separator />
-      <div className="flex gap-2 py-2">
-        <Image
-          className="size-20 rounded-md bg-secondary object-cover"
-          src={thumbnail}
-          width={100}
-          height={100}
-          alt="product image"
-        />
-        <div>
-          <h3 className="line-clamp-2 text-lg">{title}</h3>
-          <p className="text-sm font-light">Category: {category}</p>
+      <Link href={`/purchase/details/${id}`}>
+        <div className="flex gap-2 py-2">
+          <Image
+            className="size-20 rounded-md bg-secondary object-cover"
+            src={thumbnail}
+            width={100}
+            height={100}
+            alt="product image"
+          />
+          <div>
+            <h3 className="line-clamp-2 text-lg">{title}</h3>
+            <p className="text-sm font-light">Category: {category}</p>
+          </div>
         </div>
-      </div>
+      </Link>
       <Separator />
       <div className="flex flex-col items-end gap-8 rounded-md bg-primary-foreground p-2">
         <div className="flex w-full justify-between">
@@ -141,7 +153,28 @@ export function PurchasedProduct({
               <Button variant="link" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button onClick={handleComplete}>Complete</Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button size="sm">Complete</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogTitle>
+                    Proceed to complete purchase?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Have you got the product and satisfy with it? By proceeding
+                    to complete, the purchase will be consider as 'completed'
+                    and will have no further action.
+                  </AlertDialogDescription>
+                  <AlertDialogFooter>
+                    <AlertDialogAction asChild>
+                      <Button onClick={handleComplete}>Complete</Button>
+                    </AlertDialogAction>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
               <Link href={`https://wa.me/6${sellerPhone}`} target="_blank">
                 <Button variant="outline" className="hidden md:inline-block">
                   Contact Seller

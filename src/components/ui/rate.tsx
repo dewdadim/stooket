@@ -11,9 +11,13 @@ const ratingVariants = {
     star: 'text-red-500',
     emptyStar: 'text-red-200',
   },
+  blue: {
+    star: 'text-sky-900',
+    emptyStar: 'text-skye-900',
+  },
   yellow: {
-    star: 'text-yellow-500',
-    emptyStar: 'text-yellow-200',
+    star: 'text-yellow-600',
+    emptyStar: 'text-yellow-500',
   },
 }
 
@@ -91,7 +95,7 @@ export const Rate = ({
       onMouseLeave={handleMouseLeave}
       {...props}
     >
-      <div className="flex items-center" onMouseEnter={handleMouseEnter}>
+      <div className="flex items-center gap-4" onMouseEnter={handleMouseEnter}>
         {[...Array(fullStars)].map((_, i) =>
           React.cloneElement(Icon, {
             key: i,
@@ -119,9 +123,9 @@ export const Rate = ({
           }),
         )}
       </div>
-      <span className="text-xs font-semibold text-muted-foreground">
+      {/* <span className="text-xs font-semibold text-muted-foreground">
         Current Rating: {`${currentRating}`}
-      </span>
+      </span> */}
     </div>
   )
 }

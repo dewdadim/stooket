@@ -83,9 +83,11 @@ export function InProgressTable({ purchaseReq }: InProgressTableProps) {
                         Contact
                       </Button>
                     </Link>
-                    <Button size="sm" variant="outline">
-                      <ExternalLink size={16} />
-                    </Button>
+                    <Link href={`/purchase/details/${req.purchase.id}`}>
+                      <Button size="sm" variant="outline">
+                        <ExternalLink size={16} />
+                      </Button>
+                    </Link>
                   </div>
                 </TableCell>
               </TableRow>

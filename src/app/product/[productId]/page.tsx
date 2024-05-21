@@ -218,10 +218,10 @@ export default async function ProductDetails({ params }: Props) {
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
                           <AlertDialogAction asChild>
                             <DeleteProductButton id={product.id} />
                           </AlertDialogAction>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>

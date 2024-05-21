@@ -136,10 +136,11 @@ export function ToConfirmTable({ purchaseReq }: ToConfirmTableProps) {
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
-
-                    <Button size="sm" variant="outline">
-                      <ExternalLink size={16} />
-                    </Button>
+                    <Link href={`/purchase/details/${req.purchase.id}`}>
+                      <Button size="sm" variant="outline">
+                        <ExternalLink size={16} />
+                      </Button>
+                    </Link>
                   </div>
                 </TableCell>
               </TableRow>

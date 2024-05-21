@@ -106,10 +106,10 @@ export function ProductsTable({ products }: ProductsTableProps) {
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
                           <AlertDialogAction asChild>
                             <DeleteProductButton id={req.id} />
                           </AlertDialogAction>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
@@ -126,7 +126,10 @@ export function ProductsTable({ products }: ProductsTableProps) {
           ) : (
             <TableRow>
               <TableCell className="h-24 text-center" colSpan={6}>
-                No results.
+                No products found. <br />
+                <Link href={'/sell'} className="text-blue-400 underline">
+                  Sell product
+                </Link>
               </TableCell>
             </TableRow>
           )}

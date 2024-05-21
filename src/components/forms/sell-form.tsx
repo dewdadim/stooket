@@ -105,7 +105,7 @@ function SellForm() {
             setError('')
             form.reset()
             setSuccess(data.success)
-            router.push(`/${currentUser?.username!}`)
+            router.refresh()
           }
         })
         .catch(() => setError('Something went wrong'))

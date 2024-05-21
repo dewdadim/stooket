@@ -32,7 +32,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     name: name!,
     email: email!,
     password: hashedPassword!,
-    image: '/avatar/default.jpg',
+    image: '/avatar/default.png',
   })
 
   return { success: 'User created!' }

@@ -39,3 +39,18 @@ type User = {
   isSeller: boolean | null
   register_at: Date | null
 }
+
+type Purchase = {
+  id: string
+  status: 'to-confirm' | 'in-progress' | 'completed' | 'cancelled' | null
+  seller: string
+  productId: string
+  buyer: string
+  buyerPhoneNumber: string
+  message: string | null
+  location: string | null
+  purchase_at: Date | null
+  complete_at: Date | null
+  cancel_at: Date | null
+  hasReview: boolean | null
+}

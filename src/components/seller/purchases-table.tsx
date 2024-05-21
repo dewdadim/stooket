@@ -95,9 +95,11 @@ export function PurchasesTable({ purchaseReq }: PurchasesTableProps) {
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="outline">
-                      <ExternalLink size={16} />
-                    </Button>
+                    <Link href={`/purchase/details/${req.purchase.id}`}>
+                      <Button size="sm" variant="outline">
+                        <ExternalLink size={16} />
+                      </Button>
+                    </Link>
                   </div>
                 </TableCell>
               </TableRow>
