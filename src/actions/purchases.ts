@@ -2,7 +2,9 @@
 
 import { db } from '@/drizzle'
 import { purchases } from '@/drizzle/schema'
+import { CancelPurchaseSchema } from '@/schemas'
 import { eq } from 'drizzle-orm'
+import { z } from 'zod'
 
 export const completePurchase = async (id: string) => {
   const purchase = await db.query.purchases.findFirst({
@@ -21,14 +23,25 @@ export const completePurchase = async (id: string) => {
   return { success: 'Complete purchase!' }
 }
 
-export const cancelPurchase = async (id: string) => {
+export const cancelPurchase = async (
+  values: z.infer<typeof CancelPurchaseSchema>,
+) => {
   const currentDate = new Date()
+  const validatedFields = CancelPurchaseSchema.safeParse(values)
 
-  if (id.length < 1) return { error: 'Invalid purchase!' }
+  if (!validatedFields.success) {
+    return { error: 'Invalid purchase!' }
+  }
+
+  const { reason, by, id } = validatedFields.data
 
   await db
     .update(purchases)
-    .set({ status: 'cancelled', cancel_at: currentDate })
+    .set({
+      status: 'cancelled',
+      cancel_at: currentDate,
+      cancel: { reason: reason, by: by, at: currentDate },
+    })
     .where(eq(purchases.id, id))
 
   return { success: 'Purchase has been cancelled!' }

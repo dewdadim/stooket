@@ -17,6 +17,29 @@ export function Header({ className }: { className?: string }) {
     Autoplay({ delay: 4000, stopOnInteraction: false }),
   )
 
+  const data = [
+    {
+      id: 1,
+      img: '/image/stooketxumpsa.png',
+      alt: 'stooket x umpsa',
+    },
+    {
+      id: 2,
+      img: '/image/stooket.png',
+      alt: 'stooket',
+    },
+    {
+      id: 3,
+      img: '/image/stooketxumpsa.png',
+      alt: 'stooket',
+    },
+    {
+      id: 4,
+      img: '/image/stooket.png',
+      alt: 'stooket',
+    },
+  ]
+
   return (
     <Carousel
       opts={{
@@ -27,12 +50,12 @@ export function Header({ className }: { className?: string }) {
       plugins={[plugin.current]}
     >
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index} className="lg:basis-1/2">
+        {data.map((dt) => (
+          <CarouselItem key={dt.id} className="lg:basis-1/2">
             <AspectRatio ratio={5 / 2}>
               <Image
-                src="/image/Stooket.png"
-                alt="Photo by Drew Beamer"
+                src={dt.img}
+                alt={dt.alt}
                 fill
                 className="rounded-md object-cover"
               />

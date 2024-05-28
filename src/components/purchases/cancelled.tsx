@@ -28,6 +28,7 @@ export async function CancelledPurchases() {
             key={request.purchase.id}
             id={request.purchase.id}
             sellerName={request.user.name!}
+            sellerUsername={request.user.username!}
             sellerPhone={request.user.phoneNumber!}
             thumbnail={request.product.thumbnail!}
             title={request.product.title!}
@@ -36,6 +37,7 @@ export async function CancelledPurchases() {
             status={request.purchase.status!}
             date={request.purchase.purchase_at!}
             cancelledDate={request.purchase.cancel_at!}
+            cancel={request.purchase.cancel!}
           />
         ))
       ) : (

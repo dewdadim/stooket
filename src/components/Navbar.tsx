@@ -44,7 +44,7 @@ export async function Navbar() {
                     variant="default"
                     size="sm"
                   >
-                    Sell Item
+                    Sell Product
                   </Button>
                 </Link>
               </>

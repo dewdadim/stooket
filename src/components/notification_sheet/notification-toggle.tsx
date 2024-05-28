@@ -15,6 +15,12 @@ import { Bell, Dot, ExternalLink } from 'lucide-react'
 import { AspectRatio } from '../ui/aspect-ratio'
 import Image from 'next/image'
 import Link from 'next/link'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '../ui/accordion'
 
 export async function NotificationToggle() {
   const user = await currentUser()
@@ -48,49 +54,67 @@ export async function NotificationToggle() {
           <SheetTitle>Updates</SheetTitle>
         </SheetHeader>
         <section className="mt-4">
-          <div className="my-2">
-            Incoming purchases ({purchase_request.length})
-          </div>
-          {purchase_request.map((request) => (
-            <div className="flex flex-row" key={request.purchase.id}>
-              <div className="flex w-full items-center justify-between gap-2 rounded-md px-1 py-4 hover:bg-accent md:gap-3 md:px-2">
-                <div className="w-16">
-                  <AspectRatio ratio={1 / 1} className="size-full">
-                    <Image
-                      src={request.product.thumbnail!}
-                      alt={request.product.title!}
-                      fill
-                      className="size-full rounded-md object-cover"
-                    />
-                  </AspectRatio>
+          <Accordion type="single" defaultValue="item-1">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <div className="font-normal">
+                  Seller updates ({purchase_request.length})
                 </div>
-                <div className="flex gap-2">
-                  <div className="flex flex-col">
-                    <p className="text-sm">
-                      <span className="font-medium">
-                        @{request.user.username}
-                      </span>{' '}
-                      purchases:
-                    </p>
-                    <div className="line-clamp-1 text-sm">
-                      {request.product.title}
+              </AccordionTrigger>
+              <AccordionContent>
+                {purchase_request.map((request) => (
+                  <div className="flex flex-row" key={request.purchase.id}>
+                    <div className="flex w-full items-center justify-between gap-2 rounded-md px-1 py-4 hover:bg-accent md:gap-3 md:px-2">
+                      <div className="w-16">
+                        <AspectRatio ratio={1 / 1} className="size-full">
+                          <Image
+                            src={request.product.thumbnail!}
+                            alt={request.product.title!}
+                            fill
+                            className="size-full rounded-md object-cover"
+                          />
+                        </AspectRatio>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="flex flex-col">
+                          <p className="text-sm">
+                            <span className="font-medium">
+                              @{request.user.username}
+                            </span>{' '}
+                            purchases:
+                          </p>
+                          <div className="line-clamp-1 text-sm">
+                            {request.product.title}
+                          </div>
+                        </div>
+                      </div>
+                      <SheetClose asChild>
+                        <Link href={`/purchase/details/${request.purchase.id}`}>
+                          <Button size="sm" variant="outline">
+                            <p className="hidden md:inline-block">
+                              View Details
+                            </p>
+                            <ExternalLink
+                              className="inline-block md:hidden"
+                              size={16}
+                            />
+                          </Button>
+                        </Link>
+                      </SheetClose>
                     </div>
                   </div>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>
+                <div className="font-normal">
+                  Your purchases ({purchase_request.length})
                 </div>
-                <SheetClose asChild>
-                  <Link href={`/purchase/details/${request.purchase.id}`}>
-                    <Button size="sm" variant="outline">
-                      <p className="hidden md:inline-block">View Details</p>
-                      <ExternalLink
-                        className="inline-block md:hidden"
-                        size={16}
-                      />
-                    </Button>
-                  </Link>
-                </SheetClose>
-              </div>
-            </div>
-          ))}
+              </AccordionTrigger>
+              <AccordionContent>test</AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </section>
       </SheetContent>
     </Sheet>

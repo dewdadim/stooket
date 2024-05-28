@@ -39,19 +39,6 @@ function Profile({ profile, user, products, className }: ProfileProps) {
                 Products
               </Link>
             </li>
-            <li>
-              <Link
-                href={`/${profile.username}?tab=ratings`}
-                className={cn(
-                  'px-4 py-2 hover:bg-accent',
-                  tab?.match('ratings')
-                    ? 'border-b-4 border-primary font-medium'
-                    : '',
-                )}
-              >
-                Reviews
-              </Link>
-            </li>
           </ul>
           <Separator className="w-full bg-primary" />
           <div>

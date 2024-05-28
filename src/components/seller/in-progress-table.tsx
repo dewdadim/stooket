@@ -8,9 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '../ui/table'
-import { Button } from '../ui/button'
-import Link from 'next/link'
-import { ExternalLink } from 'lucide-react'
+import { TableData } from './table-data'
 
 interface InProgressTableProps {
   purchaseReq: {
@@ -53,44 +51,11 @@ export function InProgressTable({ purchaseReq }: InProgressTableProps) {
         <TableBody>
           {purchaseReq.length ? (
             purchaseReq.map((req) => (
-              <TableRow key={req.purchase.id!}>
-                <TableCell className="font-medium">
-                  <Link
-                    href={`/${req.purchase.buyer}`}
-                    className="hover:underline"
-                  >
-                    {req.purchase.buyer!}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link
-                    href={`/product/${req.product.id}`}
-                    className="line-clamp-2 hover:underline"
-                  >
-                    {req.product?.title!}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-wrap gap-1 md:flex-nowrap">
-                    <Button size="sm" variant="link">
-                      Cancel
-                    </Button>
-                    <Link
-                      href={`https://wa.me/6${req.purchase.buyerPhoneNumber}`}
-                      target="_blank"
-                    >
-                      <Button size="sm" variant="outline">
-                        Contact
-                      </Button>
-                    </Link>
-                    <Link href={`/purchase/details/${req.purchase.id}`}>
-                      <Button size="sm" variant="outline">
-                        <ExternalLink size={16} />
-                      </Button>
-                    </Link>
-                  </div>
-                </TableCell>
-              </TableRow>
+              <TableData
+                key={req.purchase.id}
+                product={req.product}
+                purchase={req.purchase}
+              />
             ))
           ) : (
             <TableRow>

@@ -72,6 +72,7 @@ export default async function ProductDetails({ params }: Props) {
   const categoryParams = product?.category?.replace(re, '%26')
 
   if (!product) return notFound()
+  if (product.status === 'unlisted') return notFound()
 
   return (
     <MaxWidthWrapper className="mt-16">

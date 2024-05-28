@@ -6,7 +6,6 @@ import { Separator } from '../ui/separator'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cancelPurchase, completePurchase } from '@/actions/purchases'
-import { startTransition } from 'react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import {
@@ -19,10 +18,35 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../ui/alert-dialog'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Textarea } from '../ui/textarea'
+import { useForm } from 'react-hook-form'
+import { CancelPurchaseSchema } from '@/schemas'
+import { z } from 'zod'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../ui/form'
+import { useTransition } from 'react'
 
 interface PurchasedProductProps {
   id: string
   sellerName: string
+  sellerUsername: string
   sellerPhone: string
   thumbnail: string
   title: string
@@ -32,11 +56,17 @@ interface PurchasedProductProps {
   date: Date
   cancelledDate?: Date
   completedDate?: Date
+  cancel?: {
+    by: string
+    reason: string
+    at?: Date | undefined
+  } | null
 }
 
 export function PurchasedProduct({
   id,
   sellerName,
+  sellerUsername,
   sellerPhone,
   category,
   date,
@@ -46,8 +76,19 @@ export function PurchasedProduct({
   status,
   thumbnail,
   title,
+  cancel,
 }: PurchasedProductProps) {
   const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+
+  const form = useForm<z.infer<typeof CancelPurchaseSchema>>({
+    resolver: zodResolver(CancelPurchaseSchema),
+    defaultValues: {
+      reason: '',
+      by: 'buyer',
+      id: id,
+    },
+  })
 
   function handleComplete() {
     startTransition(() => {
@@ -58,20 +99,22 @@ export function PurchasedProduct({
         if (data.success) {
           toast.success(data.success)
           router.push('/purchases/completed')
+          router.refresh()
         }
       })
     })
   }
 
-  function handleCancel() {
+  const handleCancel = async (values: z.infer<typeof CancelPurchaseSchema>) => {
     startTransition(() => {
-      cancelPurchase(id).then((data) => {
+      cancelPurchase(values).then((data) => {
         if (data.error) {
           return toast.info(data.error)
         }
         if (data.success) {
           toast.info(data.success)
           router.push('/purchases/cancelled')
+          router.refresh()
         }
       })
     })
@@ -81,7 +124,7 @@ export function PurchasedProduct({
     <div className="space-y-1">
       <div className="flex justify-between">
         <div className="flex items-baseline gap-4">
-          <Link href={`/${sellerName}`}>
+          <Link href={`/${sellerUsername}`}>
             <p className="font-medium">{sellerName}</p>
           </Link>
           <Link href={`https://wa.me/6${sellerPhone}`} target="_blank">
@@ -135,7 +178,14 @@ export function PurchasedProduct({
             <div className="flex items-center gap-2">
               <XSquareIcon size={16} />
               <div>
-                <p className="text-xs md:text-sm">Cancelled by you</p>
+                <p className="text-xs md:text-sm">
+                  Cancelled by{' '}
+                  {cancel?.by === 'seller'
+                    ? 'seller'
+                    : cancel?.by === 'buyer'
+                      ? 'you'
+                      : 'system'}
+                </p>
                 <p className="text-xs md:text-sm">
                   {cancelledDate?.toLocaleString()}
                 </p>
@@ -150,9 +200,52 @@ export function PurchasedProduct({
         <div className="space-x-2">
           {!status.match('completed') && !status.match('cancelled') ? (
             <>
-              <Button variant="link" onClick={handleCancel}>
-                Cancel
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="link">Cancel</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Cancel Purchase</DialogTitle>
+                    <DialogDescription>
+                      Having a problem? You have change your mind?
+                    </DialogDescription>
+                  </DialogHeader>
+                  <Form {...form}>
+                    <form
+                      className="space-y-6"
+                      onSubmit={form.handleSubmit(handleCancel)}
+                    >
+                      <FormField
+                        control={form.control}
+                        name="reason"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Product Title</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                {...field}
+                                placeholder="It is because..."
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <DialogFooter>
+                        <Button type="submit" disabled={isPending}>
+                          Cancel Purchase
+                        </Button>
+                        <DialogClose asChild className="mb-2">
+                          <Button type="button" variant="outline">
+                            Back
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button size="sm">Complete</Button>

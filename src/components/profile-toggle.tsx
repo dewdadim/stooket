@@ -79,7 +79,7 @@ export async function ProfileToggle() {
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <PlusSquare />
-              <p className="text-sm leading-none">Sell Item</p>
+              <p className="text-sm leading-none">Sell Product</p>
             </Link>
           </div>
           <Separator />

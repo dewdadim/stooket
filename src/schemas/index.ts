@@ -153,3 +153,10 @@ export const BuySchema = z.object({
     .max(250, { message: 'Exceeds 250 maximum characters' })
     .min(1, { message: 'Location is required' }),
 })
+
+//cancel purchase validation
+export const CancelPurchaseSchema = z.object({
+  reason: z.string().min(1, { message: 'Reason is required' }),
+  by: z.string(),
+  id: z.string(),
+})

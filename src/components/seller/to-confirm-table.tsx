@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../ui/alert-dialog'
+import { TableData } from './table-data'
 
 interface ToConfirmTableProps {
   purchaseReq: {
@@ -56,7 +57,7 @@ interface ToConfirmTableProps {
 export function ToConfirmTable({ purchaseReq }: ToConfirmTableProps) {
   const router = useRouter()
 
-  const handleComplete = (id: string) => {
+  const handleConfirm = (id: string) => {
     startTransition(() => {
       confirmPurchase(id)
         .then((data) => {
@@ -87,63 +88,11 @@ export function ToConfirmTable({ purchaseReq }: ToConfirmTableProps) {
         <TableBody>
           {purchaseReq.length ? (
             purchaseReq.map((req) => (
-              <TableRow key={req.purchase.id!}>
-                <TableCell className="font-medium">
-                  <Link
-                    href={`/${req.purchase.buyer}`}
-                    className="hover:underline"
-                  >
-                    {req.purchase.buyer!}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link
-                    href={`/product/${req.product.id}`}
-                    className="hover:underline"
-                  >
-                    {req.product?.title!}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-wrap gap-1 md:flex-nowrap">
-                    <Button size="sm" variant="link">
-                      Cancel
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button size="sm" variant="outline">
-                          Confirm
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogTitle>
-                          Are you sure to confirm this request?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Confirm purchase request of product{' '}
-                          {req.product.title} by @{req.purchase.buyer}
-                        </AlertDialogDescription>
-
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction asChild>
-                            <Button
-                              onClick={() => handleComplete(req.purchase.id)}
-                            >
-                              Confirm
-                            </Button>
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                    <Link href={`/purchase/details/${req.purchase.id}`}>
-                      <Button size="sm" variant="outline">
-                        <ExternalLink size={16} />
-                      </Button>
-                    </Link>
-                  </div>
-                </TableCell>
-              </TableRow>
+              <TableData
+                key={req.purchase.id}
+                product={req.product}
+                purchase={req.purchase}
+              />
             ))
           ) : (
             <TableRow>

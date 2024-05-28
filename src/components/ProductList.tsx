@@ -37,15 +37,13 @@ export function ProductList({
         </div>
       ) : (
         <div className="mt-24 flex w-full flex-col items-center">
-          <Image
+          {/* <Image
             src="/emptylist.png"
             width={200}
             height={200}
             alt="empty list"
-          />
-          <p className="text-center text-xl">
-            This seems weird? No items founded...
-          </p>
+          /> */}
+          <p className="text-center">No product found...</p>
         </div>
       )}
     </>

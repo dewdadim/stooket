@@ -30,6 +30,7 @@ export async function InProgressPurchases() {
             key={request.purchase.id}
             id={request.purchase.id}
             sellerName={request.user.name!}
+            sellerUsername={request.user.username!}
             sellerPhone={request.user.phoneNumber!}
             thumbnail={request.product.thumbnail!}
             title={request.product.title!}
