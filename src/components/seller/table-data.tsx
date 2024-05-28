@@ -197,12 +197,12 @@ export function TableData(req: TableDataProps) {
                 </AlertDialogDescription>
 
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction asChild>
                     <Button onClick={() => handleConfirm(req.purchase.id)}>
                       Confirm
                     </Button>
                   </AlertDialogAction>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
