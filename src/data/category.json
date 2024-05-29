@@ -2,36 +2,31 @@
   {
     "id": 1,
     "title": "Clothes & Fashion",
-    "icon": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+    "icon": "/icon/cloth-icon.png"
   },
   {
     "id": 2,
     "title": "Food & Drinks",
-    "icon": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+    "icon": "/icon/food-icon.png"
   },
   {
     "id": 3,
     "title": "Services",
-    "icon": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+    "icon": "/icon/service-icon.png"
   },
   {
     "id": 4,
     "title": "Tech & Gadgets",
-    "icon": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+    "icon": "/icon/tech-icon.png"
   },
   {
     "id": 5,
     "title": "Hobby",
-    "icon": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
-  },
-  {
-    "id": 6,
-    "title": "Books & Stationery",
-    "icon": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+    "icon": "/icon/hobby-icon.png"
   },
   {
     "id": 7,
     "title": "Sports",
-    "icon": "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+    "icon": "/icon/sport-icon.png"
   }
 ]

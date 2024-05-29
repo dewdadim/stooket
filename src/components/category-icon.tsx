@@ -13,7 +13,7 @@ export function CategoryCard(data: CategoryCardProps) {
     <Link href={`/category/${categoryParams}`}>
       <div className="flex flex-col items-center gap-1 rounded-sm p-2 hover:bg-primary-foreground">
         <Image
-          className="size-16 rounded-md bg-secondary"
+          className="size-16 rounded-md"
           src={data.icon}
           width={100}
           height={100}
