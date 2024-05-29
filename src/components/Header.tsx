@@ -25,17 +25,7 @@ export function Header({ className }: { className?: string }) {
     },
     {
       id: 2,
-      img: '/image/stooket.png',
-      alt: 'stooket',
-    },
-    {
-      id: 3,
-      img: '/image/stooketxumpsa.png',
-      alt: 'stooket',
-    },
-    {
-      id: 4,
-      img: '/image/stooket.png',
+      img: '/image/Stooket.png',
       alt: 'stooket',
     },
   ]
