@@ -37,6 +37,7 @@ export async function CompletedPurchases() {
             status={request.purchase.status!}
             date={request.purchase.purchase_at!}
             completedDate={request.purchase.complete_at!}
+            productId={request.product.id}
           />
         ))
       ) : (

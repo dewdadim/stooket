@@ -2,6 +2,7 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import PurchaseDetails from '@/components/purchases/purchase-details'
 import { getProductById } from '@/data/product'
 import { getPurchaseById } from '@/data/purchase'
+import { getUserById, getUserByUsername } from '@/data/user'
 import { currentUser } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 
@@ -14,6 +15,8 @@ export default async function page({ params }: Props) {
   const user = await currentUser()
   const purchase = await getPurchaseById(params.purchaseId)
   const product = await getProductById(purchase?.productId!)
+  const seller = await getUserByUsername(purchase?.seller!)
+  const buyer = await getUserByUsername(purchase?.buyer!)
 
   if (
     purchase?.buyer !== user?.username &&
@@ -27,7 +30,8 @@ export default async function page({ params }: Props) {
       <PurchaseDetails
         purchaseData={purchase!}
         productData={product!}
-        username={user?.username!}
+        seller={seller!}
+        buyer={buyer!}
         cancel={purchase?.cancel!}
       />
     </MaxWidthWrapper>

@@ -50,6 +50,7 @@ interface PurchasedProductProps {
   sellerPhone: string
   thumbnail: string
   title: string
+  productId?: string
   category: string
   price: number
   status: 'to-confirm' | 'in-progress' | 'cancelled' | 'completed' | string
@@ -71,6 +72,7 @@ export function PurchasedProduct({
   category,
   date,
   cancelledDate,
+  productId,
   completedDate,
   price,
   status,
@@ -277,8 +279,8 @@ export function PurchasedProduct({
             </>
           ) : null}
           {status.match('completed') ? (
-            <Link href={`/review/${id}`}>
-              <Button>Send Review</Button>
+            <Link href={`/purchase/${productId}`}>
+              <Button>Buy Again</Button>
             </Link>
           ) : null}
         </div>
