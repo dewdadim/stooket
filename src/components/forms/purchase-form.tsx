@@ -164,7 +164,7 @@ function PurchaseForm(product: Product) {
                     name="location"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Location</FormLabel>
+                        <FormLabel>Meet-up Location</FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
