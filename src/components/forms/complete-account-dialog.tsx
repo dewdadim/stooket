@@ -131,7 +131,14 @@ export function CompleteAccountDialog() {
                           <SelectTrigger>
                             <SelectValue placeholder="Select Institute" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent
+                            ref={(ref) => {
+                              if (!ref) return
+                              ref.ontouchstart = (e) => {
+                                e.preventDefault()
+                              }
+                            }}
+                          >
                             {institutes.map((institute) => (
                               <SelectItem
                                 key={institute.id}

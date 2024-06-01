@@ -20,7 +20,7 @@ export function SortFilterProduct() {
   const user = useCurrentUser()
 
   return (
-    <div className="flex gap-2 overflow-auto">
+    <div className="flex flex-wrap gap-2 py-2">
       <Select
         defaultValue={searchParams.get('sort')?.toString() ?? 'bestMatch'}
         onValueChange={(value) => {
@@ -32,11 +32,20 @@ export function SortFilterProduct() {
           router.push(sortURL)
         }}
       >
-        <SelectTrigger className="w-[200px] focus:ring-0">
-          <p className="text-paragraph">Sort:</p>
-          <SelectValue placeholder="Select sort" />
+        <SelectTrigger className="w-[220px] font-medium focus:ring-0">
+          <div className="line-clamp-1 flex gap-2">
+            <p className="font-normal text-paragraph">Sort:</p>
+            <SelectValue placeholder="Select sort" />
+          </div>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent
+          ref={(ref) => {
+            if (!ref) return
+            ref.ontouchstart = (e) => {
+              e.preventDefault()
+            }
+          }}
+        >
           <SelectGroup>
             <SelectItem value="bestMatch">Best Match</SelectItem>
             <SelectItem value="lowPrice">Price - Low to High</SelectItem>
@@ -61,12 +70,21 @@ export function SortFilterProduct() {
           router.push(instituteURL)
         }}
       >
-        <SelectTrigger className="w-[500px] focus:ring-0">
-          <p className="text-paragraph">Institute:</p>
-          <SelectValue placeholder="Select Institute" />
+        <SelectTrigger className="w-[500px] font-medium focus:ring-0">
+          <div className="line-clamp-1 flex gap-2">
+            <p className="font-normal text-paragraph">Institute:</p>
+            <SelectValue placeholder="Select Institute" />
+          </div>
         </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All Institutes</SelectItem>
+        <SelectContent
+          ref={(ref) => {
+            if (!ref) return
+            ref.ontouchstart = (e) => {
+              e.preventDefault()
+            }
+          }}
+        >
+          <SelectItem value="all">All Institutes (No Filter)</SelectItem>
           {institutes.map((institute) => (
             <SelectItem key={institute.id} value={institute.name}>
               {institute.name}
