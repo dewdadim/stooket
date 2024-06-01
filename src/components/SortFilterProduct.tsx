@@ -32,8 +32,8 @@ export function SortFilterProduct() {
           router.push(sortURL)
         }}
       >
-        <SelectTrigger className="w-[220px] font-medium focus:ring-0">
-          <div className="line-clamp-1 flex gap-2">
+        <SelectTrigger className="w-[220px] text-start font-medium focus:ring-0">
+          <div className="flex gap-2">
             <p className="font-normal text-paragraph">Sort:</p>
             <SelectValue placeholder="Select sort" />
           </div>
@@ -70,8 +70,8 @@ export function SortFilterProduct() {
           router.push(instituteURL)
         }}
       >
-        <SelectTrigger className="w-[500px] font-medium focus:ring-0">
-          <div className="line-clamp-1 flex gap-2">
+        <SelectTrigger className="w-[500px] text-start font-medium focus:ring-0">
+          <div className="flex gap-2">
             <p className="font-normal text-paragraph">Institute:</p>
             <SelectValue placeholder="Select Institute" />
           </div>
