@@ -52,6 +52,17 @@ export const RegisterSchema = z.object({
     .optional(),
 })
 
+//register seller form validation
+export const RegisterSellerSchema = z.object({
+  phoneNumber: z
+    .string()
+    .trim()
+    .regex(phoneValidation, { message: 'Invalid phone number' }),
+  studentCard: z
+    .string()
+    .min(1, { message: 'Student card picture is required' }),
+})
+
 //profile settings form schema
 export const ProfileSettingsSchema = z.object({
   name: z.string().trim().min(1, {

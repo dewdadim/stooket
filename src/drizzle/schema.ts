@@ -30,6 +30,7 @@ export const users = pgTable('user', {
   image: varchar('image'),
   institute: varchar('institute'),
   isSeller: boolean('isSeller').default(false),
+  studentCard: varchar('studentCard'),
   register_at: timestamp('register_at', {
     mode: 'date',
     withTimezone: true,

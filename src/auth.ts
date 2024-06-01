@@ -110,6 +110,10 @@ export const authOptions: NextAuthOptions = {
         token.image = session.image
       }
 
+      if (trigger === 'update' && session?.isSeller) {
+        token.isSeller = session.isSeller
+      }
+
       const account = await db.query.users.findFirst({
         where: eq(users.email!, profile?.email!),
       })
