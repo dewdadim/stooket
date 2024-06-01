@@ -172,36 +172,44 @@ export default function PurchaseDetails({
             <div className="py-2">
               <h3 className="mb-4 font-medium">Seller Information</h3>
               <div className="flex items-center gap-2">
-                <Avatar className="size-10 rounded-sm">
-                  <AvatarImage
-                    src={seller?.image!}
-                    alt="Profile"
-                    className="object-cover"
-                  />
-                  <AvatarFallback className="size-8 rounded-sm bg-secondary">
-                    IMG
-                  </AvatarFallback>
-                </Avatar>
-                <p className="font-medium">{seller.name}</p>
-                <p className="text-sm">@{seller.username}</p>
+                <Link href={`/${seller.username}`}>
+                  <Avatar className="size-10 rounded-sm">
+                    <AvatarImage
+                      src={seller?.image!}
+                      alt="Profile"
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="size-8 rounded-sm bg-secondary">
+                      IMG
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
+                <Link href={`/${seller.username}`}>
+                  <p className="font-medium">{seller.name}</p>
+                  <p className="text-sm hover:underline">@{seller.username}</p>
+                </Link>
               </div>
             </div>
           ) : (
             <div className="py-2">
               <h3 className="mb-4 font-medium">Buyer Information</h3>
               <div className="flex items-center gap-2">
-                <Avatar className="size-10 rounded-sm">
-                  <AvatarImage
-                    src={buyer?.image!}
-                    alt="Profile"
-                    className="object-cover"
-                  />
-                  <AvatarFallback className="size-8 rounded-sm bg-secondary">
-                    IMG
-                  </AvatarFallback>
-                </Avatar>
-                <p className="font-medium">{buyer.name}</p>
-                <p className="text-sm">@{buyer.username}</p>
+                <Link href={`/${buyer.username}`}>
+                  <Avatar className="size-10 rounded-sm">
+                    <AvatarImage
+                      src={buyer?.image!}
+                      alt="Profile"
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="size-8 rounded-sm bg-secondary">
+                      IMG
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
+                <Link href={`/${buyer.username}`}>
+                  <p className="font-medium">{buyer.name}</p>
+                  <p className="text-sm hover:underline">@{buyer.username}</p>
+                </Link>
               </div>
             </div>
           )}
