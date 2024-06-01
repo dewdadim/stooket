@@ -73,6 +73,7 @@ function RegisterSellerForm() {
             setSuccess(data.success)
             update({ isSeller: true })
             router.back()
+            router.refresh()
           }
         })
         .catch(() => setError('Something went wrong'))

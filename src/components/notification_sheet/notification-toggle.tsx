@@ -60,7 +60,7 @@ export async function NotificationToggle() {
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="size-5" />
-          {purchase_request.length ? (
+          {purchase_request.length || your_purchases.length ? (
             <Dot className="absolute -right-1 -top-2 size-10 text-red-600" />
           ) : null}
         </Button>
