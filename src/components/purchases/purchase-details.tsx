@@ -133,7 +133,7 @@ export default function PurchaseDetails({
   }
 
   return (
-    <main className="mt-24 flex justify-center md:mt-36">
+    <main className="mt-24 flex justify-center md:mt-28">
       <Card className="w-full md:w-[700px]">
         <CardHeader>
           <div className="flex items-center justify-between py-2">

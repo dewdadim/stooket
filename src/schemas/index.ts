@@ -171,3 +171,22 @@ export const CancelPurchaseSchema = z.object({
   by: z.string(),
   id: z.string(),
 })
+
+//edit product validation
+export const EditProductSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(1, {
+      message: 'Product title is required',
+    })
+    .max(100, { message: 'Exceeds 100 maximum characters' }),
+  price: z.coerce
+    .number()
+    .gte(0, 'Please enter price')
+    .lte(10000, 'Price need to be less than RM10,000'),
+  category: z.string().min(1, {
+    message: 'Please select appropriate category',
+  }),
+  description: z.string().optional(),
+})

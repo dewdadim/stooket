@@ -1,11 +1,10 @@
 'use client'
 
 import * as z from 'zod'
-import { useEffect, useState, useTransition } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useState, useTransition } from 'react'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Image from 'next/image'
-import { SellSchema } from '@/schemas'
+import { EditProductSchema, SellSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import {
   Form,
@@ -20,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
 import { useRouter } from 'next/navigation'
-import { Loader2, X } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Select,
@@ -29,14 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { sell } from '@/actions/sell'
-import { deleteFiles } from '@/server/uploadthing'
-import { toast } from 'sonner'
-import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { UploadButton } from '@/utils/uploadthing'
-import { db } from '@/drizzle'
-import { productImages } from '@/drizzle/schema'
-import { eq } from 'drizzle-orm'
+import { editProduct } from '@/actions/products'
 
 interface ImageProps {
   id: number
@@ -60,47 +52,13 @@ type EditProductFormProps = {
 }
 
 function EditProductForm(product: EditProductFormProps) {
-  const MAX_IMAGES = 8
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
-  const [imagePreviews, setImagePreview] = useState<ImageProps[]>([])
-  const [thumbnail, setThumbnail] = useState('')
 
-  useEffect(() => {
-    const images = db
-      .select()
-      .from(productImages)
-      .where(eq(productImages.productId, product.data.id))
-  })
-
-  const addImagePreview = (url: string) => {
-    setImagePreview([
-      ...imagePreviews,
-      {
-        id: imagePreviews.length,
-        value: {
-          url: url,
-        },
-      },
-    ])
-  }
-
-  const deleteImagePreview = async (imagePreview: string) => {
-    try {
-      const UUID = imagePreview.split('/').slice(-1)[0]
-      await deleteFiles(UUID)
-      setImagePreview(imagePreviews.filter((a) => a.value.url !== imagePreview))
-
-      console.log(imagePreviews)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const form = useForm<z.infer<typeof SellSchema>>({
-    resolver: zodResolver(SellSchema),
+  const form = useForm<z.infer<typeof EditProductSchema>>({
+    resolver: zodResolver(EditProductSchema),
     defaultValues: {
       title: product.data?.title!,
       category: product.data?.category!,
@@ -109,14 +67,10 @@ function EditProductForm(product: EditProductFormProps) {
     },
   })
 
-  const { append, remove } = useFieldArray({
-    name: 'productImages',
-    control: form.control,
-  })
-
-  const onSubmit = async (values: z.infer<typeof SellSchema>) => {
+  const onSubmit = async (values: z.infer<typeof EditProductSchema>) => {
+    console.log('clickkk')
     startTransition(() => {
-      sell(values)
+      editProduct(values, product.data.id)
         .then((data) => {
           if (data?.error) {
             setSuccess('')
@@ -126,7 +80,8 @@ function EditProductForm(product: EditProductFormProps) {
             setError('')
             form.reset()
             setSuccess(data.success)
-            router.push('/')
+            router.push(`/product/${product.data.id}`)
+            router.refresh()
           }
         })
         .catch(() => setError('Something went wrong'))
@@ -139,88 +94,6 @@ function EditProductForm(product: EditProductFormProps) {
         <Form {...form}>
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4">
-              {/* <FormField
-                control={form.control}
-                name="productImages"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Product Images</FormLabel>
-                    <div>
-                      <div className="overflow-auto">
-                        <div>
-                          <div className="flex flex-wrap gap-4 md:gap-2">
-                            {imagePreviews.map((imagePreview) => (
-                              <div
-                                className="size-40 rounded-md bg-slate-400 md:size-36"
-                                key={imagePreview.id}
-                              >
-                                <div className="absolute z-10 flex size-40 items-center justify-center rounded-md opacity-0 hover:bg-black hover:bg-opacity-45 hover:opacity-100 md:size-36">
-                                  <X
-                                    className="z-10 size-10 cursor-pointer rounded-md"
-                                    onClick={() => {
-                                      remove(imagePreview.id)
-                                      deleteImagePreview(imagePreview.value.url)
-                                    }}
-                                    color="#ffff"
-                                  />
-                                </div>
-                                <AspectRatio ratio={1 / 1}>
-                                  <Image
-                                    src={imagePreview.value.url}
-                                    alt="image"
-                                    className="rounded-md object-cover"
-                                    fill
-                                  />
-                                </AspectRatio>
-                              </div>
-                            ))}
-                            {imagePreviews.length < MAX_IMAGES ? (
-                              <div className="flex size-40 items-center justify-center rounded-md border-2 border-dashed border-secondary md:size-36">
-                                <UploadButton
-                                  endpoint="imageUploader"
-                                  onClientUploadComplete={(res) => {
-                                    addImagePreview(res[0].url)
-                                    form.setValue('thumbnail', res[0].url)
-                                    append({ url: res[0].url })
-                                    toast.dismiss('onUploadBegin')
-                                    toast.success('File uploaded!')
-                                  }}
-                                  onUploadError={() => {
-                                    toast.error('File is too big!')
-                                  }}
-                                  onUploadBegin={() =>
-                                    toast.info('File uploading...', {
-                                      duration: 60000,
-                                      id: 'onUploadBegin',
-                                    })
-                                  }
-                                  content={{
-                                    button({ isUploading }) {
-                                      if (isUploading)
-                                        return (
-                                          <Loader2 className="size-4 animate-spin" />
-                                        )
-                                      return <h2>Upload Image</h2>
-                                    },
-                                    allowedContent() {
-                                      return <div>Image (max 4MB)</div>
-                                    },
-                                  }}
-                                  appearance={{
-                                    container:
-                                      'size-36 bg-slate-400 bg-opacity-0 hover:bg-opacity-10',
-                                  }}
-                                />
-                              </div>
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 name="title"
                 control={form.control}
@@ -320,18 +193,34 @@ function EditProductForm(product: EditProductFormProps) {
                 <Button disabled className="w-full">
                   <Loader2 className="h-4 w-4 animate-spin" />
                 </Button>
-                <Button disabled className="w-full">
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                <Button
+                  disabled
+                  className="w-full"
+                  type="button"
+                  variant="link"
+                >
+                  Cancel Edit
                 </Button>
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                <Button disabled={isPending} type="submit" className="w-full">
+                <Button
+                  disabled={
+                    isPending ||
+                    (!form.formState.dirtyFields.category &&
+                      !form.formState.dirtyFields.price &&
+                      !form.formState.dirtyFields.title &&
+                      !form.formState.dirtyFields.description)
+                  }
+                  type="submit"
+                  className="w-full"
+                >
                   Edit Product
                 </Button>
                 <Button
                   disabled={isPending}
                   className="w-full"
+                  type="button"
                   variant="link"
                   onClick={router.back}
                 >

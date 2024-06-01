@@ -2,9 +2,11 @@
 
 import { getPurchasesByProductId } from '@/data/purchase'
 import { db } from '@/drizzle'
-import { productImages, products, purchases } from '@/drizzle/schema'
+import { productImages, products } from '@/drizzle/schema'
+import { EditProductSchema, SellSchema } from '@/schemas'
 import { deleteFiles } from '@/server/uploadthing'
 import { eq } from 'drizzle-orm'
+import { z } from 'zod'
 
 export const deleteProduct = async (id: string) => {
   const pendingPurchase = await (
@@ -40,15 +42,29 @@ export const deleteProduct = async (id: string) => {
   return { success: 'Product has been deleted!' }
 }
 
-export const updatePurchase = async (id: string) => {
+export const editProduct = async (
+  values: z.infer<typeof EditProductSchema>,
+  id: string,
+) => {
   const currentDate = new Date()
+  const validatedFields = EditProductSchema.safeParse(values)
 
-  if (id.length < 1) return { error: 'Invalid purchase!' }
+  if (!validatedFields.success) {
+    return { error: 'Invalid fields!' }
+  }
+
+  const { title, category, price, description } = validatedFields.data
 
   await db
-    .update(purchases)
-    .set({ status: 'in-progress', cancel_at: currentDate })
-    .where(eq(purchases.id, id))
+    .update(products)
+    .set({
+      title: title,
+      category: category,
+      description: description,
+      update_at: currentDate,
+      price: price,
+    })
+    .where(eq(products.id, id))
 
-  return { success: 'Purchase has been confirmed!' }
+  return { success: 'Product has been edited!' }
 }
