@@ -9,9 +9,10 @@ import { cn } from '@/lib/utils'
 
 interface SearchBarProps {
   className?: string
+  inputClassName?: string
 }
 
-export function SearchBar({ className }: SearchBarProps) {
+export function SearchBar({ className, inputClassName }: SearchBarProps) {
   const [search, setSearch] = useState('')
   const router = useRouter()
   const pathname = usePathname()
@@ -33,12 +34,15 @@ export function SearchBar({ className }: SearchBarProps) {
   }
 
   return (
-    <form className={cn('gap-0 lg:flex', className)} onSubmit={handleSubmit}>
+    <form
+      className={cn('flex gap-0 lg:flex', className)}
+      onSubmit={handleSubmit}
+    >
       <Input
         type="text"
         placeholder="Search"
         name="search"
-        className=" z-10 w-72 rounded-l-md rounded-r-none "
+        className={cn('z-10 w-72 rounded-l-md rounded-r-none ', inputClassName)}
         value={search}
         onChange={(e) => {
           setSearch(e.target.value)

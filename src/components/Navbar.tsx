@@ -4,17 +4,17 @@ import { ModeToggle } from './mode-toggle'
 import { ProfileToggle } from './profile-toggle'
 import Link from 'next/link'
 import { Button } from './ui/button'
-import { Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/auth'
 import { NotificationToggle } from './notification_sheet/notification-toggle'
 import { SearchBar } from './search-bar'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu'
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverTrigger,
+} from './ui/popover'
 
 export async function Navbar() {
   const session = await getServerSession(authOptions)
@@ -28,11 +28,29 @@ export async function Navbar() {
               <Link href="/">Stooket</Link>
             </h1>
           </div>
-          <SearchBar className="hidden" />
+          <SearchBar className="hidden lg:inline-flex" />
           <div className="flex items-center gap-2">
-            <Button size="icon" variant="ghost" className="lg:hidden">
-              <Search className="size-5" />
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button size="icon" variant="ghost" className="lg:hidden">
+                  <Search className="size-5" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="z-[100] w-screen"
+                side="top"
+                sideOffset={-50}
+              >
+                <div className="flex w-full items-center justify-center gap-2">
+                  <SearchBar className="w-full" inputClassName="flex-1" />
+                  <PopoverClose>
+                    <Button variant="ghost" size="icon">
+                      <X />
+                    </Button>
+                  </PopoverClose>
+                </div>
+              </PopoverContent>
+            </Popover>
             <ModeToggle />
             {session?.user ? (
               <>
