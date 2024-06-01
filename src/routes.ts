@@ -9,6 +9,8 @@ export const privateRoutes = [
   '/sell',
   '/purchase',
   '/purchases',
+  '/seller-registeration',
+  '/not-seller',
   '/seller-dashboard',
 ]
 

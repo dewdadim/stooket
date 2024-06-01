@@ -55,26 +55,6 @@ interface ToConfirmTableProps {
 }
 
 export function ToConfirmTable({ purchaseReq }: ToConfirmTableProps) {
-  const router = useRouter()
-
-  const handleConfirm = (id: string) => {
-    startTransition(() => {
-      confirmPurchase(id)
-        .then((data) => {
-          if (data.error) {
-            return toast.info(data.error)
-          }
-          if (data.success) {
-            toast.success(data.success)
-            router.refresh()
-          }
-        })
-        .catch(() => {
-          toast.error('Something went wrong!')
-        })
-    })
-  }
-
   return (
     <div className="rounded-md border">
       <Table>

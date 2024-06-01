@@ -41,17 +41,22 @@ import { Textarea } from '../ui/textarea'
 import { CancelPurchaseSchema } from '@/schemas'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { cancelPurchase, completePurchase } from '@/actions/purchases'
+import {
+  cancelPurchase,
+  completePurchase,
+  confirmPurchase,
+} from '@/actions/purchases'
 import { toast } from 'sonner'
 import { useTransition } from 'react'
 import Link from 'next/link'
-import { ImWhatsapp } from 'react-icons/im'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 interface PurchaseDetailsProps {
   purchaseData: Purchase
   productData: Product
   seller: User
   buyer: User
+  user: User
   cancel: {
     by: string
     reason: string
@@ -64,6 +69,7 @@ export default function PurchaseDetails({
   productData,
   seller,
   buyer,
+  user,
   cancel,
 }: PurchaseDetailsProps) {
   const router = useRouter()
@@ -73,7 +79,7 @@ export default function PurchaseDetails({
     resolver: zodResolver(CancelPurchaseSchema),
     defaultValues: {
       reason: '',
-      by: 'buyer',
+      by: user.username === purchaseData.buyer ? 'buyer' : 'seller',
       id: purchaseData.id,
     },
   })
@@ -108,11 +114,29 @@ export default function PurchaseDetails({
     })
   }
 
+  const handleConfirm = (id: string) => {
+    startTransition(() => {
+      confirmPurchase(id)
+        .then((data) => {
+          if (data.error) {
+            return toast.info(data.error)
+          }
+          if (data.success) {
+            toast.success(data.success)
+            router.refresh()
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong!')
+        })
+    })
+  }
+
   return (
     <main className="mt-24 flex justify-center md:mt-36">
       <Card className="w-full md:w-[700px]">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between py-2">
             <Button
               variant="outline"
               size="sm"
@@ -143,6 +167,45 @@ export default function PurchaseDetails({
               </p>
             </div>
           </div>
+          <Separator />
+          {purchaseData.buyer === user.username ? (
+            <div className="py-2">
+              <h3 className="mb-4 font-medium">Seller Information</h3>
+              <div className="flex items-center gap-2">
+                <Avatar className="size-10 rounded-sm">
+                  <AvatarImage
+                    src={seller?.image!}
+                    alt="Profile"
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="size-8 rounded-sm bg-secondary">
+                    IMG
+                  </AvatarFallback>
+                </Avatar>
+                <p className="font-medium">{seller.name}</p>
+                <p className="text-sm">@{seller.username}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="py-2">
+              <h3 className="mb-4 font-medium">Buyer Information</h3>
+              <div className="flex items-center gap-2">
+                <Avatar className="size-10 rounded-sm">
+                  <AvatarImage
+                    src={buyer?.image!}
+                    alt="Profile"
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="size-8 rounded-sm bg-secondary">
+                    IMG
+                  </AvatarFallback>
+                </Avatar>
+                <p className="font-medium">{buyer.name}</p>
+                <p className="text-sm">@{buyer.username}</p>
+              </div>
+            </div>
+          )}
+          <Separator />
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           <div className="flex gap-2 md:gap-4">
@@ -244,11 +307,12 @@ export default function PurchaseDetails({
               ) : purchaseData.status === 'cancelled' ? (
                 <CardContent>
                   <p className="text-red-500">
-                    Cancelled by {cancel.by ?? 'system'} at{' '}
+                    Cancelled by {cancel?.by ?? 'system'} at{' '}
                     {purchaseData.cancel_at?.toLocaleString()}
                   </p>
                   <p className="text-red-500">
-                    <span className="font-medium">Reason:</span> {cancel.reason}
+                    <span className="font-medium">Reason:</span>{' '}
+                    {cancel?.reason ?? 'null'}
                   </p>
                 </CardContent>
               ) : null}
@@ -308,39 +372,79 @@ export default function PurchaseDetails({
                   </DialogContent>
                 </Dialog>
 
-                <Link
-                  href={`https://wa.me/6${seller.phoneNumber}`}
-                  target="_blank"
-                >
-                  <Button variant="outline" className="w-full py-6">
-                    Contact Seller
-                  </Button>
-                </Link>
-
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button size="sm" className="w-full py-6">
-                      Complete
+                {purchaseData.seller !== user.username ? (
+                  <Link
+                    href={`https://wa.me/6${seller.phoneNumber}`}
+                    target="_blank"
+                  >
+                    <Button variant="outline" className="w-full py-6">
+                      Contact Seller
                     </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogTitle>
-                      Proceed to complete purchase?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Have you got the product and satisfy with it? By
-                      proceeding to complete, the purchase will be consider as
-                      &rsquo;completed&rsquo&rsquo; and will have no further
-                      action.
-                    </AlertDialogDescription>
-                    <AlertDialogFooter>
-                      <AlertDialogAction asChild>
-                        <Button onClick={handleComplete}>Complete</Button>
-                      </AlertDialogAction>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                  </Link>
+                ) : (
+                  <Link
+                    href={`https://wa.me/6${purchaseData.buyerPhoneNumber}`}
+                    target="_blank"
+                  >
+                    <Button variant="outline" className="w-full py-6">
+                      Contact Buyer
+                    </Button>
+                  </Link>
+                )}
+
+                {purchaseData.buyer === user.username ? (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" className="w-full py-6">
+                        Complete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogTitle>
+                        Proceed to complete purchase?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Have you got the product and satisfy with it? By
+                        proceeding to complete, the purchase will be consider as
+                        &rsquo;completed&rsquo&rsquo; and will have no further
+                        action.
+                      </AlertDialogDescription>
+                      <AlertDialogFooter>
+                        <AlertDialogAction asChild>
+                          <Button onClick={handleComplete}>Complete</Button>
+                        </AlertDialogAction>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                ) : purchaseData.status === 'to-confirm' &&
+                  purchaseData.seller === user.username ? (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button className="w-full py-6">Confirm</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogTitle>
+                        Are you sure to confirm this request?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Confirm purchase request of product {productData.title}{' '}
+                        by @{purchaseData.buyer}
+                      </AlertDialogDescription>
+
+                      <AlertDialogFooter>
+                        <AlertDialogAction asChild>
+                          <Button
+                            onClick={() => handleConfirm(purchaseData.id)}
+                          >
+                            Confirm
+                          </Button>
+                        </AlertDialogAction>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                ) : null}
               </>
             ) : purchaseData.status === 'completed' ? (
               <Link href={`/purchase/${productData.id}`}>

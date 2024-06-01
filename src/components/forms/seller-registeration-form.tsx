@@ -90,7 +90,7 @@ function RegisterSellerForm() {
       >
         <Form {...form}>
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <FormField
                 name="phoneNumber"
                 control={form.control}

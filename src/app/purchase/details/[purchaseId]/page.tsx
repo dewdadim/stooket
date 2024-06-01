@@ -17,6 +17,7 @@ export default async function page({ params }: Props) {
   const product = await getProductById(purchase?.productId!)
   const seller = await getUserByUsername(purchase?.seller!)
   const buyer = await getUserByUsername(purchase?.buyer!)
+  const userDt = await getUserByUsername(user?.username!)
 
   if (
     purchase?.buyer !== user?.username &&
@@ -31,6 +32,7 @@ export default async function page({ params }: Props) {
         purchaseData={purchase!}
         productData={product!}
         seller={seller!}
+        user={userDt!}
         buyer={buyer!}
         cancel={purchase?.cancel!}
       />
