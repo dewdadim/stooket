@@ -1,5 +1,6 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { ProductList } from '@/components/ProductList'
+import { SortFilterProduct } from '@/components/SortFilterProduct'
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -43,6 +44,7 @@ export default async function Category({ params, searchParams }: Props) {
       <h3 className="my-2 text-2xl font-medium">
         {products.length} results in {categoryParams}
       </h3>
+      <SortFilterProduct />
       <ProductList isProfile products={products} />
     </MaxWidthWrapper>
   )
