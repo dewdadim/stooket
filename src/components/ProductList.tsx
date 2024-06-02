@@ -100,6 +100,7 @@ export function ProductList({
               isProfile={isProfile}
               key={item?.id}
               id={item?.id!}
+              status={item.status!}
               thumbnailUrl={item?.thumbnail!}
               title={item?.title!}
               price={item?.price?.toFixed(2)!}

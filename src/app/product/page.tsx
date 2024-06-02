@@ -4,7 +4,6 @@ import Fuse from 'fuse.js'
 import { currentUser } from '@/lib/auth'
 import getAllProducts from '@/lib/getAllProducts'
 import { ProductList } from '@/components/ProductList'
-import Image from 'next/image'
 import {
   Breadcrumb,
   BreadcrumbList,

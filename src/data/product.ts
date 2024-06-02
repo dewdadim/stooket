@@ -12,6 +12,7 @@ const dataSet = {
   price: products.price,
   thumbnail: products.thumbnail,
   post_at: products.post_at,
+  status: products.status,
   seller: {
     username: users.username,
     image: users.image,

@@ -19,6 +19,7 @@ type ProductList = {
   price: number | null
   thumbnail: string | null
   post_at: Date | null
+  status: 'listed' | 'unlisted' | 'sold' | null
   seller: {
     username: string | null
     image: string | null

@@ -33,7 +33,6 @@ export const deleteProduct = async (id: string) => {
       deleteFiles(image.url.split('/').slice(-1)[0])
     })
   } catch (e) {
-    console.error(e)
     return {
       error: 'Something went wrong',
     }
@@ -67,4 +66,35 @@ export const editProduct = async (
     .where(eq(products.id, id))
 
   return { success: 'Product has been edited!' }
+}
+
+export const soldProduct = async (id: string) => {
+  if (id.length < 1) return { error: 'Invalid product!' }
+
+  try {
+    await db.update(products).set({ status: 'sold' }).where(eq(products.id, id))
+  } catch (e) {
+    return {
+      error: 'Something went wrong',
+    }
+  }
+
+  return { success: 'Product has been sold!' }
+}
+
+export const unsoldProduct = async (id: string) => {
+  if (id.length < 1) return { error: 'Invalid product!' }
+
+  try {
+    await db
+      .update(products)
+      .set({ status: 'listed' })
+      .where(eq(products.id, id))
+  } catch (e) {
+    return {
+      error: 'Something went wrong',
+    }
+  }
+
+  return { success: 'Product is back on sell!' }
 }

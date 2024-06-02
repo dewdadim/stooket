@@ -9,7 +9,6 @@ import { ProfileProducts } from '@/components/profile/profile-products'
 import { cn } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
 import { User as CurrentUser } from 'next-auth'
-import { ProductList } from '../ProductList'
 
 interface ProfileProps {
   profile: User
@@ -21,6 +20,12 @@ interface ProfileProps {
 function Profile({ profile, user, products, className }: ProfileProps) {
   const searchParams = useSearchParams()
   const tab = searchParams.get('tab')
+
+  if (!user?.username || user.username !== profile.username) {
+    products = products.filter((e) => {
+      return !e.status?.includes('unlisted')
+    })
+  }
 
   return (
     <MaxWidthWrapper className={cn('mt-16 lg:mt-24', className)}>
@@ -42,11 +47,7 @@ function Profile({ profile, user, products, className }: ProfileProps) {
           </ul>
           <Separator className="w-full bg-primary" />
           <div>
-            <ProductList
-              isProfile={false}
-              products={products}
-              className="mt-4 grid grid-cols-2 gap-1 lg:grid-cols-3"
-            />
+            <ProfileProducts products={products} />
           </div>
         </div>
       </div>

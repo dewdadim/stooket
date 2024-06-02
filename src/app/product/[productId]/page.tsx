@@ -3,7 +3,7 @@ import { getProductById } from '@/data/product'
 import { db } from '@/drizzle'
 import { productImages } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -36,6 +36,9 @@ import {
   AlertDialogAction,
 } from '@/components/ui/alert-dialog'
 import { ListProductButton } from '@/components/ui/list-product-button'
+import { ProductUnlisted } from '@/components/product-unlisted'
+import { SoldProductButton } from '@/components/sold-product-button'
+import { UnsoldProductButton } from '@/components/unsold-product-button'
 
 type Props = {
   params: { productId: string }
@@ -72,7 +75,8 @@ export default async function ProductDetails({ params }: Props) {
   const categoryParams = product?.category?.replace(re, '%26')
 
   if (!product) return notFound()
-  if (product.status === 'unlisted') return notFound()
+  if (product.status === 'unlisted' && user?.username !== product.username)
+    return <ProductUnlisted />
 
   return (
     <MaxWidthWrapper className="mt-16">
@@ -170,62 +174,170 @@ export default async function ProductDetails({ params }: Props) {
                     href={user ? '/purchase/' + params.productId : '/login'}
                     scroll={true}
                   >
-                    <Button type="submit" className="w-full">
-                      Buy Item
+                    <Button
+                      type="button"
+                      className="w-full"
+                      disabled={product.status === 'sold'}
+                    >
+                      {product.status !== 'sold' ? 'Buy Item' : 'Sold'}
                     </Button>
                   </Link>
                 ) : (
                   <div className="flex flex-col gap-2 lg:gap-4">
-                    <ListProductButton
-                      id={params.productId}
-                      status={product.status!}
-                    />
-                    <Link
-                      href={'/edit/product/' + params.productId}
-                      scroll={true}
-                    >
-                      <Button
-                        type="submit"
-                        className="w-full"
-                        variant="outline"
-                      >
-                        <div className="flex flex-row items-center gap-4">
-                          <PenBoxIcon size={16} />
-                          Edit Product
-                        </div>
-                      </Button>
-                    </Link>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          type="submit"
-                          className="w-full"
-                          variant="destructive"
+                    {product.status !== 'sold' ? (
+                      <>
+                        <ListProductButton
+                          id={params.productId}
+                          status={product.status!}
+                        />
+                        <Link
+                          href={'/edit/product/' + params.productId}
+                          scroll={true}
                         >
-                          <div className="flex flex-row items-center gap-4">
-                            <Trash2 size={16} />
-                            DELETE PRODUCT
-                          </div>
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Product</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure want to delete this product? It will
-                            permenantly delete this product from our server and
-                            cannot be undone. All your purchases record related
-                            to this product will gone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogAction asChild>
-                            <DeleteProductButton id={product.id} />
-                          </AlertDialogAction>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                          <Button
+                            type="button"
+                            className="w-full"
+                            variant="outline"
+                          >
+                            <div className="flex flex-row items-center gap-4">
+                              <PenBoxIcon size={16} />
+                              Edit Product
+                            </div>
+                          </Button>
+                        </Link>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button type="button" className="w-full">
+                              <div className="flex flex-row items-center gap-4">
+                                Product Sold Out?
+                              </div>
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Product Sold Out?'
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Product already out of stock/sold? Mark it
+                                assold so no one can requet to purchase the
+                                product.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogAction>
+                                <SoldProductButton id={product.id} />
+                              </AlertDialogAction>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              type="submit"
+                              className="w-full"
+                              variant="destructive"
+                            >
+                              <div className="flex flex-row items-center gap-4">
+                                <Trash2 size={16} />
+                                DELETE PRODUCT
+                              </div>
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Delete Product
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure want to delete this product? It
+                                will permenantly delete this product from our
+                                server and cannot be undone. All your purchases
+                                record related to this product will gone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogAction asChild>
+                                <DeleteProductButton id={product.id} />
+                              </AlertDialogAction>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </>
+                    ) : (
+                      <>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button type="button" className="w-full">
+                              <div className="flex flex-row items-center gap-4">
+                                {product.status !== 'sold'
+                                  ? 'Product Sold Out?'
+                                  : 'Product back in sell?'}
+                              </div>
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                {product.status !== 'sold'
+                                  ? 'Product Sold Out?'
+                                  : 'Product back in sell?'}
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {product.status !== 'sold'
+                                  ? 'Product already out of stock/sold? Mark it assold so no one can requet to purchase the product.'
+                                  : 'Prouct has been restocked or back to business?'}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogAction>
+                                {product.status !== 'sold' ? (
+                                  <SoldProductButton id={product.id} />
+                                ) : (
+                                  <UnsoldProductButton id={product.id} />
+                                )}
+                              </AlertDialogAction>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              type="submit"
+                              className="w-full"
+                              variant="destructive"
+                            >
+                              <div className="flex flex-row items-center gap-4">
+                                <Trash2 size={16} />
+                                DELETE PRODUCT
+                              </div>
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Delete Product
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure want to delete this product? It
+                                will permenantly delete this product from our
+                                server and cannot be undone. All your purchases
+                                record related to this product will gone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogAction asChild>
+                                <DeleteProductButton id={product.id} />
+                              </AlertDialogAction>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
