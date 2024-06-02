@@ -72,7 +72,7 @@ function RegisterSellerForm() {
             form.reset()
             setSuccess(data.success)
             update({ isSeller: true })
-            router.back()
+            router.push('/seller-dashboard')
             router.refresh()
           }
         })
