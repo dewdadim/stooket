@@ -216,7 +216,7 @@ export default async function ProductDetails({ params }: Props) {
                           <AlertDialogContent>
                             <AlertDialogHeader>
                               <AlertDialogTitle>
-                                Product Sold Out?'
+                                Product Sold Out?
                               </AlertDialogTitle>
                               <AlertDialogDescription>
                                 Product already out of stock/sold? Mark it
