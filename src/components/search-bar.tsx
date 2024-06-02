@@ -54,6 +54,7 @@ export function SearchBar({ className, inputClassName }: SearchBarProps) {
         variant="secondary"
         className=" rounded-l-none rounded-r-md"
         type="submit"
+        disabled={search.length === 0}
       >
         <Search className="size-5" />
       </Button>
