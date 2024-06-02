@@ -137,8 +137,9 @@ function SellForm() {
                                 key={imagePreview.id}
                               >
                                 <div className="absolute z-10 flex size-40 items-center justify-center rounded-md opacity-0 hover:bg-black hover:bg-opacity-45 hover:opacity-100 md:size-36">
-                                  <X
-                                    className="z-10 size-10 cursor-pointer rounded-md"
+                                  <Button
+                                    variant="link"
+                                    disabled={isPending}
                                     onClick={() => {
                                       if (isPending) {
                                         return null
@@ -146,8 +147,12 @@ function SellForm() {
                                       remove(imagePreview.id)
                                       deleteImagePreview(imagePreview.value.url)
                                     }}
-                                    color="#ffff"
-                                  />
+                                  >
+                                    <X
+                                      className="z-10 size-10 cursor-pointer rounded-md"
+                                      color="#ffff"
+                                    />
+                                  </Button>
                                 </div>
                                 <AspectRatio ratio={1 / 1}>
                                   <Image
