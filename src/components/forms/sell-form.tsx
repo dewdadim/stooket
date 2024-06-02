@@ -140,6 +140,9 @@ function SellForm() {
                                   <X
                                     className="z-10 size-10 cursor-pointer rounded-md"
                                     onClick={() => {
+                                      if (isPending) {
+                                        return null
+                                      }
                                       remove(imagePreview.id)
                                       deleteImagePreview(imagePreview.value.url)
                                     }}
