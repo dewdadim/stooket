@@ -16,41 +16,52 @@ export const LoginSchema = z.object({
 })
 
 //register user form validation
-export const RegisterSchema = z.object({
-  username: z
-    .string()
-    .trim()
-    .min(5, { message: 'Minimum 5 characters required' })
-    .max(15, { message: 'Username is too long' })
-    .refine((s) => !s.includes(' '), "Can't have spaces in username")
-    .optional(),
-  email: z
-    .string()
-    .trim()
-    .email({
-      message: 'Email is required',
-    })
-    .optional(),
-  password: z
-    .string()
-    .min(6, {
-      message: 'Minimum 6 characters required',
-    })
-    .optional(),
-  name: z
-    .string()
-    .trim()
-    .min(1, {
-      message: 'Name is required',
-    })
-    .optional(),
-  institute: z
-    .string()
-    .min(1, {
-      message: 'Plese choose appropriate institute',
-    })
-    .optional(),
-})
+export const RegisterSchema = z
+  .object({
+    username: z
+      .string()
+      .trim()
+      .min(5, { message: 'Minimum 5 characters required' })
+      .max(15, { message: 'Username is too long' })
+      .refine((s) => !s.includes(' '), "Can't have spaces in username")
+      .optional(),
+    email: z
+      .string()
+      .trim()
+      .email({
+        message: 'Email is required',
+      })
+      .optional(),
+    password: z
+      .string()
+      .min(6, {
+        message: 'Minimum 6 characters required',
+      })
+      .optional(),
+    confirmPassword: z.string().optional(),
+    name: z
+      .string()
+      .trim()
+      .min(1, {
+        message: 'Name is required',
+      })
+      .optional(),
+    institute: z
+      .string()
+      .min(1, {
+        message: 'Plese choose appropriate institute',
+      })
+      .optional(),
+  })
+  .refine(
+    (values) => {
+      return values.password === values.confirmPassword
+    },
+    {
+      message: 'Passwords must match!',
+      path: ['confirmPassword'],
+    },
+  )
 
 //register seller form validation
 export const RegisterSellerSchema = z.object({
