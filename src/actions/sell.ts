@@ -38,5 +38,5 @@ export const sell = async (values: z.infer<typeof SellSchema>) => {
     })
   }
 
-  return { success: 'Product created!' }
+  return { success: 'Product created!', id: id }
 }

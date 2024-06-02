@@ -105,7 +105,7 @@ function SellForm() {
             setError('')
             form.reset()
             setSuccess(data.success)
-            router.refresh()
+            router.push(`/product/${data.id}`)
           }
         })
         .catch(() => setError('Something went wrong'))
