@@ -22,7 +22,7 @@ export default async function page() {
             Are you a student? You can register to become seller by clicking the
             link below
           </p>
-          <Link href="/seller-registeration">
+          <Link href="/seller-registration">
             <div className="flex w-full justify-center">
               <Button className="mt-4 w-fit">Become a seller</Button>
             </div>

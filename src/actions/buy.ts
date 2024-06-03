@@ -35,5 +35,9 @@ export const buy = async (
     productId: productId,
   })
 
-  return { success: 'Order successfully requested!' }
+  if (product?.status === 'sold' || product?.status === 'unlisted') {
+    return { error: 'Product cannot be purchased!' }
+  }
+
+  return { success: 'Purchase successfully requested!' }
 }

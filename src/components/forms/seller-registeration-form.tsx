@@ -228,7 +228,7 @@ function RegisterSellerForm() {
               </Button>
             ) : (
               <Button disabled={isPending} type="submit" className="w-full">
-                Request to Become Seller
+                Become a Seller
               </Button>
             )}
           </form>

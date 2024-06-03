@@ -274,7 +274,7 @@ export default async function ProductDetails({ params }: Props) {
                               <div className="flex flex-row items-center gap-4">
                                 {product.status !== 'sold'
                                   ? 'Product Sold Out?'
-                                  : 'Product back in sell?'}
+                                  : 'Product back to sell?'}
                               </div>
                             </Button>
                           </AlertDialogTrigger>
@@ -283,7 +283,7 @@ export default async function ProductDetails({ params }: Props) {
                               <AlertDialogTitle>
                                 {product.status !== 'sold'
                                   ? 'Product Sold Out?'
-                                  : 'Product back in sell?'}
+                                  : 'Product back to sell?'}
                               </AlertDialogTitle>
                               <AlertDialogDescription>
                                 {product.status !== 'sold'
