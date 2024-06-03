@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { editProduct } from '@/actions/products'
+import categories from '@/data/category.json'
 
 interface ImageProps {
   id: number
@@ -126,19 +127,14 @@ function EditProductForm(product: EditProductFormProps) {
                           <SelectValue placeholder="Select Category" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Free Items">Free Items</SelectItem>
-                          <SelectItem value="Food & Drinks">
-                            Food & Drinks
-                          </SelectItem>
-                          <SelectItem value="Services">Services</SelectItem>
-                          <SelectItem value="Tech & Gadgets">
-                            Tech & Gadgets
-                          </SelectItem>
-                          <SelectItem value="Hobby">Hobby</SelectItem>
-                          <SelectItem value="Books & Stationeries">
-                            Books & Stationeries
-                          </SelectItem>
-                          <SelectItem value="Sports">Sports</SelectItem>
+                          {categories.map((category) => (
+                            <SelectItem
+                              key={category.id}
+                              value={category.title}
+                            >
+                              {category.title}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
