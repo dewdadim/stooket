@@ -28,5 +28,10 @@
     "id": 7,
     "title": "Sports",
     "icon": "/icon/sport-icon.png"
+  },
+  {
+    "id": 8,
+    "title": "Others",
+    "icon": "/icon/others.png"
   }
 ]
