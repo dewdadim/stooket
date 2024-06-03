@@ -20,6 +20,7 @@ export const RegisterSchema = z
   .object({
     username: z
       .string()
+      .toLowerCase()
       .trim()
       .min(5, { message: 'Minimum 5 characters required' })
       .max(15, { message: 'Username is too long' })
