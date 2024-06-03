@@ -5,6 +5,10 @@ const phoneValidation = new RegExp(
   /^(\+?6?01)[02-46-9]-*[0-9]{7}$|^(\+?6?01)[1]-*[0-9]{8}$/,
 ) //Malaysia phone number regex
 
+const usernameValidation = new RegExp(
+  /^(?![0-9._])(?!.*[0-9._]$)(?!.*\d_)(?!.*_\d)[a-zA-Z0-9_]+$/,
+)
+
 //login user form validation
 export const LoginSchema = z.object({
   email: z.string().trim().email({
@@ -21,6 +25,7 @@ export const RegisterSchema = z
     username: z
       .string()
       .toLowerCase()
+      .regex(usernameValidation, { message: 'Invalid username' })
       .trim()
       .min(5, { message: 'Minimum 5 characters required' })
       .max(15, { message: 'Username is too long' })
@@ -93,6 +98,8 @@ export const AccountSettingsSchema = z.object({
   username: z
     .string()
     .trim()
+    .toLowerCase()
+    .regex(usernameValidation, { message: 'Invalid username' })
     .min(5, { message: 'Minimum 5 characters required' })
     .max(15, { message: 'Username is too long' })
     .refine((s) => !s.includes(' '), "Can't have spaces in username")
