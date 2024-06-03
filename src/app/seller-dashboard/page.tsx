@@ -7,8 +7,9 @@ export default async function page() {
   const user = await currentUser()
 
   if (user?.isSeller === false) {
-    return redirect('/not-seller')
+    redirect('/not-seller')
   }
+
   return (
     <MaxWidthWrapper className="mt-24">
       <SellerDashboard />

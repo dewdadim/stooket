@@ -40,7 +40,9 @@ export default async function page({ params }: Props) {
     return 0
   })
 
-  if (!profile) return notFound()
+  if (!profile) {
+    notFound()
+  }
 
   return <Profile profile={profile} user={user!} products={products} />
 }
