@@ -285,7 +285,7 @@ export default function PurchaseDetails({
                       <Clock size={32} className="text-sky-500" />
                       <CardTitle className="text-xl text-sky-500">
                         {purchaseData.status === 'in-progress'
-                          ? 'Purcase in progress'
+                          ? 'Purchase in progress'
                           : 'Waiting for Seller Confirmation'}
                       </CardTitle>
                     </div>
