@@ -1,4 +1,3 @@
-import { institutes } from '@/drizzle/schema'
 import * as z from 'zod'
 
 const phoneValidation = new RegExp(

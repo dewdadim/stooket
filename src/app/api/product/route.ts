@@ -1,5 +1,5 @@
 import { db } from '@/drizzle'
-import { institutes, products, users } from '@/drizzle/schema'
+import { products, users } from '@/drizzle/schema'
 import { NextRequest, NextResponse } from 'next/server'
 import { eq, ilike, and, ne } from 'drizzle-orm'
 import { currentUser } from '@/lib/auth'

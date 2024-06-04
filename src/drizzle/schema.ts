@@ -73,18 +73,18 @@ export const productStatusEnum = pgEnum('productStatus', [
   'sold',
 ])
 export const products = pgTable('product', {
-  username: varchar('username', { length: 255 })
+  username: varchar('username')
     .notNull()
     .references(() => users.username, {
       onDelete: 'cascade',
       onUpdate: 'cascade',
     }),
-  id: varchar('id', { length: 255 }).notNull().primaryKey(),
-  title: varchar('title', { length: 255 }),
-  category: varchar('category', { length: 255 }),
+  id: varchar('id').notNull().primaryKey(),
+  title: varchar('title'),
+  category: varchar('category'),
   description: text('description'),
   price: real('price'),
-  thumbnail: varchar('thumbnail', { length: 255 }),
+  thumbnail: varchar('thumbnail'),
   status: productStatusEnum('status').default('listed'),
   post_at: timestamp('post_at', {
     mode: 'date',
@@ -158,39 +158,39 @@ export const purchases = pgTable('purchase', {
     .references(() => products.id, { onDelete: 'cascade' }),
 })
 
-//institutes table
-export const institutes = pgTable('institute', {
-  id: varchar('id').notNull().primaryKey(),
-  name: text('name'),
-  acronym: varchar('acronym'),
-  register_at: timestamp('register_at', {
-    mode: 'date',
-    withTimezone: true,
-  }).defaultNow(),
-})
+// //institutes table
+// export const institutes = pgTable('institute', {
+//   id: varchar('id').notNull().primaryKey(),
+//   name: text('name'),
+//   acronym: varchar('acronym'),
+//   register_at: timestamp('register_at', {
+//     mode: 'date',
+//     withTimezone: true,
+//   }).defaultNow(),
+// })
 
-//reviews table
-export const reviews = pgTable('review', {
-  id: varchar('id').notNull().primaryKey(),
-  buyer: varchar('buyer')
-    .notNull()
-    .references(() => users.username, {
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    }),
-  seller: varchar('seller')
-    .notNull()
-    .references(() => users.username, {
-      onDelete: 'cascade',
-      onUpdate: 'cascade',
-    }),
-  rate: smallint('rate').default(1),
-  review: text('review'),
-  post_at: timestamp('post_at', {
-    mode: 'date',
-    withTimezone: true,
-  }).defaultNow(),
-  purchaseId: varchar('purchaseId')
-    .notNull()
-    .references(() => purchases.id, { onDelete: 'cascade' }),
-})
+// //reviews table
+// export const reviews = pgTable('review', {
+//   id: varchar('id').notNull().primaryKey(),
+//   buyer: varchar('buyer')
+//     .notNull()
+//     .references(() => users.username, {
+//       onDelete: 'cascade',
+//       onUpdate: 'cascade',
+//     }),
+//   seller: varchar('seller')
+//     .notNull()
+//     .references(() => users.username, {
+//       onDelete: 'cascade',
+//       onUpdate: 'cascade',
+//     }),
+//   rate: smallint('rate').default(1),
+//   review: text('review'),
+//   post_at: timestamp('post_at', {
+//     mode: 'date',
+//     withTimezone: true,
+//   }).defaultNow(),
+//   purchaseId: varchar('purchaseId')
+//     .notNull()
+//     .references(() => purchases.id, { onDelete: 'cascade' }),
+// })

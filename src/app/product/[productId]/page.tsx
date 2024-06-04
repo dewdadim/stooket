@@ -225,7 +225,7 @@ export default async function ProductDetails({ params }: Props) {
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogAction>
+                              <AlertDialogAction asChild>
                                 <SoldProductButton id={product.id} />
                               </AlertDialogAction>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -292,7 +292,7 @@ export default async function ProductDetails({ params }: Props) {
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogAction>
+                              <AlertDialogAction asChild>
                                 {product.status !== 'sold' ? (
                                   <SoldProductButton id={product.id} />
                                 ) : (
