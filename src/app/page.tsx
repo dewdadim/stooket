@@ -127,28 +127,52 @@ export default async function Home() {
           </div>
         ) : null} */}
         <div className="mb-12 mt-28">
-          <h3 className="mb-4 text-2xl font-bold">
-            Frequently Ask Question (FAQ)
+          <h3 className="mb-6 text-2xl font-bold">
+            Frequently Asked Question (FAQ)
           </h3>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
-              <AccordionTrigger>Is it accessible?</AccordionTrigger>
-              <AccordionContent>
-                Yes. It adheres to the WAI-ARIA design pattern.
+              <AccordionTrigger>What is Stooket?</AccordionTrigger>
+              <AccordionContent className="text-base">
+                Stooket is an online marketplace that is only targeted for the
+                university/college ecosystem. Stooket is mainly focused on
+                buy/sell activity in the campus area. This will open the
+                opportunity for students to start their small business or just
+                selling their pre-loved.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger>Is it styled?</AccordionTrigger>
+              <AccordionTrigger>
+                Who can become seller in Stooket?
+              </AccordionTrigger>
               <AccordionContent>
-                Yes. It comes with default styles that matches the other
-                components&apos; aesthetic.
+                Stooket only giving permission to sell to student for now...
+                Maybe more in future?
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionTrigger>
+                Who can buy product in Stooket?
+              </AccordionTrigger>
               <AccordionContent>
-                Yes. It&apos;s animated by default, but you can disable it if
-                you prefer.
+                Everyone have ability to buy! You just need to be in the campus
+                to find your wanted stuff.
+                <Link href={'/register'} className="text-sky-500">
+                  {' '}
+                  Register Now
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger>
+                How purchasing product in Stooket works?
+              </AccordionTrigger>
+              <AccordionContent>
+                You have to be registered with Stooket. Find and purchase
+                product you wanted, then contact the seller to meet-up or
+                negotiate. Payments only happen between you and seller. We
+                recommended you to Cash on Delivery (COD) to prevent scammer.
+                Beware of Scammer!
               </AccordionContent>
             </AccordionItem>
           </Accordion>
