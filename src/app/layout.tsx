@@ -67,6 +67,7 @@ export default async function RootLayout({
               richColors
               position="top-center"
               visibleToasts={1}
+              closeButton={true}
               icons={{
                 success: <CheckCircle2 />,
                 info: <InfoIcon />,

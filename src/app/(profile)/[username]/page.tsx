@@ -28,6 +28,7 @@ export default async function page({ params }: Props) {
   const profile = await getUserByUsername(username)
   const products = await getProductsByUsername(profile?.username!)
   const user = await currentUser()
+
   products.sort((i, j) => {
     if (i.status! > j.status!) {
       return 1

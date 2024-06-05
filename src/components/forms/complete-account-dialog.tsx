@@ -70,11 +70,15 @@ export function CompleteAccountDialog() {
             update({ username: values.username, institute: values.institute })
             setSuccess(data.success)
             setOpen(false)
-            router.push('/')
             router.refresh()
+            location.reload()
           }
         })
-        .catch(() => setError('Something went wrong'))
+        .catch(() => {
+          setError('Something went wrong')
+          router.refresh()
+          location.reload()
+        })
     })
   }
 

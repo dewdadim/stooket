@@ -126,14 +126,18 @@ export default async function Product({ params, searchParams }: Props) {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink href={'#'}>
-              Search results for &apos;{search}&apos;
+              {results.length !== 0
+                ? `Search results for '${search}';`
+                : 'All products'}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <h3 className="my-2 text-2xl font-medium">
-        {results.length} search results for &apos;{search}&apos;
-      </h3>
+      {results.length !== 0 ? (
+        <h3 className="my-2 text-2xl font-medium">
+          {results.length} search results for &apos;{search}&apos;
+        </h3>
+      ) : null}
       <SortFilterProduct />
       {search ? (
         results.length !== 0 ? (

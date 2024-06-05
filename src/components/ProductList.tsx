@@ -8,12 +8,14 @@ interface ProductListProps {
   products: ProductList
   isProfile: boolean
   className?: string
+  limit?: number
 }
 
 export function ProductList({
   products,
   isProfile,
   className,
+  limit,
 }: ProductListProps) {
   const searchParams = useSearchParams()
   const sortSearchParams = searchParams.get('sort')
@@ -95,19 +97,21 @@ export function ProductList({
             className,
           )}
         >
-          {results?.map((item) => (
-            <ProductCard
-              isProfile={isProfile}
-              key={item?.id}
-              id={item?.id!}
-              status={item.status!}
-              thumbnailUrl={item?.thumbnail!}
-              title={item?.title!}
-              price={item?.price?.toFixed(2)!}
-              username={item?.seller.username!}
-              avatar={item?.seller.image!}
-            />
-          ))}
+          {results
+            ?.slice(0, limit)
+            .map((item) => (
+              <ProductCard
+                isProfile={isProfile}
+                key={item?.id}
+                id={item?.id!}
+                status={item.status!}
+                thumbnailUrl={item?.thumbnail!}
+                title={item?.title!}
+                price={item?.price?.toFixed(2)!}
+                username={item?.seller.username!}
+                avatar={item?.seller.image!}
+              />
+            ))}
         </div>
       ) : (
         <div className="mt-24 flex w-full flex-col items-center">
