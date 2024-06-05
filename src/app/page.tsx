@@ -133,7 +133,7 @@ export default async function Home() {
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger>What is Stooket?</AccordionTrigger>
-              <AccordionContent className="text-base">
+              <AccordionContent>
                 Stooket is an online marketplace that is only targeted for the
                 university/college ecosystem. Stooket is mainly focused on
                 buy/sell activity in the campus area. This will open the
