@@ -10,6 +10,18 @@ export default async function Home() {
   const productsData: Promise<ProductList> = getAllProducts(user?.username)
   const products = await productsData
 
+  products.sort((i, j) => {
+    if (i.id > j.id) {
+      return 1
+    }
+
+    if (i.id < j.id) {
+      return -1
+    }
+
+    return 0
+  })
+
   return (
     <>
       <MaxWidthWrapper>

@@ -28,6 +28,18 @@ export default async function Product({ params, searchParams }: Props) {
   const productsData: Promise<ProductList> = getAllProducts(username)
   const products = await productsData
 
+  products.sort((i, j) => {
+    if (i.id > j.id) {
+      return 1
+    }
+
+    if (i.id < j.id) {
+      return -1
+    }
+
+    return 0
+  })
+
   const fuse = new Fuse(products, {
     keys: ['title', 'category', 'description'],
     includeScore: true,
