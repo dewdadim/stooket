@@ -14,14 +14,6 @@ import {
   CheckCircle2,
   InfoIcon,
 } from 'lucide-react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
 import { CompleteAccountDialog } from '@/components/forms/complete-account-dialog'
 import { currentUser } from '@/lib/auth'
 import { getUserById } from '@/data/user'

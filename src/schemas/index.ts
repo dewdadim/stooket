@@ -106,7 +106,8 @@ export const AccountSettingsSchema = z.object({
   phoneNumber: z
     .string()
     .trim()
-    .regex(phoneValidation, { message: 'Invalid phone number' }),
+    .regex(phoneValidation, { message: 'Invalid phone number' })
+    .optional(),
 })
 
 //change password settings form schema

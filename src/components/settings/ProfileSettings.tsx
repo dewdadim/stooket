@@ -65,7 +65,7 @@ function ProfileSettings({ user, className }: ProfileSettingsProps) {
             form.reset()
             setSuccess(data.success)
             update({ name: values.name })
-            router.push(`/${user.username}`)
+            location.reload()
           }
         })
         .catch(() => setError('Something went wrong'))

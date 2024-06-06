@@ -40,7 +40,7 @@ function AccountSettings({ user, className }: AccountSettingsProps) {
     resolver: zodResolver(AccountSettingsSchema),
     defaultValues: {
       username: user?.username!,
-      phoneNumber: user?.phoneNumber! || '',
+      ...(user.phoneNumber && { phoneNumber: user?.phoneNumber! }),
     },
   })
 
@@ -57,7 +57,7 @@ function AccountSettings({ user, className }: AccountSettingsProps) {
             form.reset()
             setSuccess(data.success)
             update({ username: values.username })
-            router.push(`/${user.username}`)
+            location.reload()
           }
         })
         .catch(() => setError('Something went wrong'))

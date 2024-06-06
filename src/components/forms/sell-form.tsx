@@ -52,7 +52,7 @@ function SellForm() {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const [imagePreviews, setImagePreview] = useState<ImageProps[]>([])
-  const [thumbnail, setThumbnail] = useState('')
+  const [uploading, setUploading] = useState(false)
   const currentUser = useCurrentUser()
 
   const addImagePreview = (url: string) => {
@@ -172,18 +172,20 @@ function SellForm() {
                                     addImagePreview(res[0].url)
                                     form.setValue('thumbnail', res[0].url)
                                     append({ url: res[0].url })
+                                    setUploading(false)
                                     toast.dismiss('onUploadBegin')
                                     toast.success('File uploaded!')
                                   }}
                                   onUploadError={() => {
                                     toast.error('File is too big!')
                                   }}
-                                  onUploadBegin={() =>
+                                  onUploadBegin={() => {
+                                    setUploading(true)
                                     toast.info('File uploading...', {
                                       duration: 60000,
                                       id: 'onUploadBegin',
                                     })
-                                  }
+                                  }}
                                   content={{
                                     button({ isUploading }) {
                                       if (isUploading)
@@ -306,7 +308,11 @@ function SellForm() {
                 <Loader2 className="h-4 w-4 animate-spin" />
               </Button>
             ) : (
-              <Button disabled={isPending} type="submit" className="w-full">
+              <Button
+                disabled={isPending || uploading}
+                type="submit"
+                className="w-full"
+              >
                 Add Product
               </Button>
             )}

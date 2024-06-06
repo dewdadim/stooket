@@ -13,7 +13,7 @@ export function Footer({ className }: FooterProps) {
       className={cn('bg-primary-foreground py-6 text-primary', className)}
     >
       <div className="container mx-auto flex flex-col items-center justify-between px-4 md:flex-row md:px-6">
-        <div className="text-2xl font-bold text-primary">
+        <div className="mb-2 text-2xl font-bold text-primary md:mb-0">
           <Link href="/">Stooket</Link>
         </div>
         <div className="mb-4 text-center md:mb-0 md:text-left">
