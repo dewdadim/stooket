@@ -11,9 +11,11 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import Link from 'next/link'
 import { Logout } from './forms/auth/logout'
 import { currentUser } from '@/lib/auth'
+import { getUserById } from '@/data/user'
 
 export async function ProfileToggle() {
   const user = await currentUser()
+  const userDt = await getUserById(user?.id!)
 
   return (
     <Popover>
@@ -47,6 +49,7 @@ export async function ProfileToggle() {
               <div className="truncate font-medium leading-none">
                 {user?.name}
               </div>
+              <p className="text-sm">@{userDt?.username}</p>
             </div>
           </div>
 
@@ -54,7 +57,7 @@ export async function ProfileToggle() {
 
           <div className="flex flex-col">
             <Link
-              href={`/${user?.username}`}
+              href={`/${userDt?.username}`}
               className="flex cursor-pointer items-center justify-start gap-2 rounded-md p-2 hover:bg-primary-foreground"
             >
               <User2 />
