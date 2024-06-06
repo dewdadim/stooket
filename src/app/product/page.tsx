@@ -43,7 +43,7 @@ export default async function Product({ params, searchParams }: Props) {
   const fuse = new Fuse(products, {
     keys: ['title', 'category', 'description'],
     includeScore: true,
-    threshold: 0.5,
+    threshold: 0.3,
     minMatchCharLength: 3,
     isCaseSensitive: false,
   })

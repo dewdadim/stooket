@@ -1,12 +1,15 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { Button } from '@/components/ui/button'
+import { getUserById } from '@/data/user'
 import { currentUser } from '@/lib/auth'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export default async function page() {
   const user = await currentUser()
-  if (user?.isSeller) {
+  const userDt = await getUserById(user?.id!)
+
+  if (userDt?.isSeller) {
     redirect('/')
   }
 

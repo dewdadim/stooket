@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { currentUser } from '@/lib/auth'
 import getAllProductsByCategory from '@/lib/getAllProductsByCategory'
+import { shuffle } from '@/utils/shuffle'
 
 type Props = {
   params: { category: string }
@@ -27,6 +28,18 @@ export default async function Category({ params, searchParams }: Props) {
   )
   const products = await productsData
   const categoryParams = category?.replaceAll('%26', '&').replaceAll('%20', ' ')
+
+  products.sort((i, j) => {
+    if (i.id > j.id) {
+      return 1
+    }
+
+    if (i.id < j.id) {
+      return -1
+    }
+
+    return 0
+  })
 
   return (
     <MaxWidthWrapper className="mt-16">

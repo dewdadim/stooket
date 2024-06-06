@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { currentUser } from '@/lib/auth'
 import getAllProducts from '@/lib/getAllProducts'
+import { shuffle } from '@/utils/shuffle'
 import { ArrowUpRight, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
@@ -20,23 +21,6 @@ export default async function Home() {
   const products = await productsData
   let products_pekan
   let products_gambang
-
-  function shuffle(array: ProductList) {
-    let currentIndex = array.length
-
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-      // Pick a remaining element...
-      let randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex--
-
-      // And swap it with the current element.
-      ;[array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ]
-    }
-  }
 
   products_pekan = products.filter((item) => {
     return item.seller.institute?.toLowerCase().includes('pekan')
@@ -126,7 +110,7 @@ export default async function Home() {
             />
           </div>
         ) : null} */}
-        <div className="mb-12 mt-28">
+        <div className="mt-28 md:mb-12">
           <h3 className="mb-6 text-2xl font-bold">
             Frequently Asked Question (FAQ)
           </h3>

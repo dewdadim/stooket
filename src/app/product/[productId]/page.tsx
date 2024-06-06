@@ -2,7 +2,7 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { getProductById } from '@/data/product'
 import { db } from '@/drizzle'
 import { productImages } from '@/drizzle/schema'
-import { eq } from 'drizzle-orm'
+import { desc, eq } from 'drizzle-orm'
 import { notFound, redirect } from 'next/navigation'
 import {
   Breadcrumb,
@@ -66,6 +66,7 @@ export default async function ProductDetails({ params }: Props) {
     .select()
     .from(productImages)
     .where(eq(productImages.productId, product?.id!))
+    .orderBy(desc(productImages.post_at))
   const user = await currentUser()
   const currentDate = new Date()
   const userRegisterDate = product?.post_at

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { ProductList } from '../ProductList'
 import { ProductCard } from '../product-card'
 
 interface ProfileProductsProps {
@@ -7,6 +8,17 @@ interface ProfileProductsProps {
 }
 
 export function ProfileProducts({ products, className }: ProfileProductsProps) {
+  if (!products.length) {
+    return (
+      <div className="mt-24 flex w-full flex-col items-center">
+        <p className="mb-3 text-center text-5xl">🤔</p>
+        <p className="text-center text-2xl font-semibold">
+          No product found...
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div
       className={cn('mt-4 grid grid-cols-2 gap-1 lg:grid-cols-3', className)}
