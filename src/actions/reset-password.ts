@@ -1,52 +1,51 @@
 'use server'
 
-import { LoginSchema } from '@/schemas'
 import * as z from 'zod'
-import { getUserByEmail } from '@/data/user'
-import crypto from 'crypto'
-import { db } from '@/drizzle'
-import { users } from '@/drizzle/schema'
-import { eq } from 'drizzle-orm'
-import { Resend } from 'resend'
-import { ResetPasswordEmail } from '@/components/emails/reset-password-email'
-import 'dotenv/config'
 
-export const resetPassword = async (values: z.infer<typeof LoginSchema>) => {
-  const validatedFields = LoginSchema.safeParse(values)
+import { db } from '@/drizzle'
+import { ChangePasswordSchema } from '@/schemas'
+import { users } from '@/drizzle/schema'
+import { currentUser } from '@/lib/auth'
+import bcrypt from 'bcryptjs'
+import { getUserById } from '@/data/user'
+import { eq } from 'drizzle-orm'
+
+export const resetPassword = async (
+  values: z.infer<typeof ChangePasswordSchema>,
+  userId: string,
+) => {
+  const validatedFields = ChangePasswordSchema.safeParse(values)
 
   if (!validatedFields.success) {
     return { error: 'Invalid fields!' }
   }
+  const { newPassword } = validatedFields.data
 
-  const { email } = validatedFields.data
-  const user = await getUserByEmail(email!)
+  const user = await getUserById(userId)
+  const hashedNewPassword = await bcrypt.hash(newPassword!, 10)
 
   if (!user) {
-    return { error: 'Account does not exist' }
+    return { error: 'User not found!' }
   }
 
-  const resetPasswordToken = crypto.randomBytes(32).toString('base64url')
-  const today = new Date()
-  const expiryDate = new Date(today.setTime(today.getHours() + 5))
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  if (!user.resetPasswordTokenExpiry) {
+    return { error: 'Token expired!' }
+  }
+
+  const currentDateTime = new Date()
+
+  if (currentDateTime > user.resetPasswordTokenExpiry) {
+    return { error: 'Token expired!' }
+  }
 
   await db
     .update(users)
     .set({
-      resetPasswordToken: resetPasswordToken,
-      resetPasswordTokenExpiry: expiryDate,
+      password: hashedNewPassword,
+      resetPasswordToken: null,
+      resetPasswordTokenExpiry: null,
     })
-    .where(eq(users.id, user.id))
+    .where(eq(users.id, user?.id!))
 
-  await resend.emails.send({
-    from: 'Stooket <noreply@stooket.com>',
-    to: user.email,
-    subject: 'Reset your password',
-    react: ResetPasswordEmail({
-      userFirstname: user.name!,
-      resetPasswordToken: resetPasswordToken,
-    }),
-  })
-
-  return { success: 'Email has been sent!', email: user.email }
+  return { success: 'Password successfully changed!' }
 }

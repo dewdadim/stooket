@@ -4,8 +4,7 @@ import * as z from 'zod'
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
-import { LoginSchema } from '@/schemas'
+import { ChangePasswordSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import {
   Form,
@@ -20,35 +19,40 @@ import { Button } from '@/components/ui/button'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
 import { Loader2 } from 'lucide-react'
-import { forgotPassword } from '@/actions/forgot-password'
+import { resetPassword } from '@/actions/reset-password'
+import { useRouter } from 'next/navigation'
 
-function ForgotPasswordForm() {
+interface ResetPasswordFormProps {
+  userId: string
+}
+
+function ResetPasswordForm({ userId }: ResetPasswordFormProps) {
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
-  const [email, setEmail] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof ChangePasswordSchema>>({
+    resolver: zodResolver(ChangePasswordSchema),
     defaultValues: {
-      email: '',
+      newPassword: '',
+      confirmPassword: '',
     },
   })
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof ChangePasswordSchema>) => {
     startTransition(() => {
-      forgotPassword(values)
+      resetPassword(values, userId)
         .then((data) => {
           if (data?.error) {
             setSuccess('')
             setError(data.error)
           }
-
           if (data?.success) {
             setError('')
             form.reset()
             setSuccess(data.success)
-            setEmail(data.email)
+            router.push('/login')
           }
         })
         .catch(() => setError('Something went wrong'))
@@ -58,8 +62,7 @@ function ForgotPasswordForm() {
   return (
     <div className="mt-36 flex justify-center">
       <CardWrapper
-        header="Forgot Password?"
-        headerLabel="Please enter your email, we will send you a link to Reset your password."
+        header="Reset Password"
         backButtonLabel="Login account"
         backButtonHref="/login"
         className="md:w-[450px]"
@@ -69,16 +72,34 @@ function ForgotPasswordForm() {
             <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="email"
+                name="newPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>New Password</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder="user@example.com"
-                        type="email"
+                        placeholder="******"
+                        type="password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="******"
+                        type="password"
                       />
                     </FormControl>
                     <FormMessage />
@@ -86,25 +107,19 @@ function ForgotPasswordForm() {
                 )}
               />
             </div>
-            {success ? (
-              <div className="flex items-center gap-x-2 rounded-md bg-sky-500/15 p-3 text-sm text-sky-700">
-                <p>
-                  Email has been sent to {email}. Make sure to check your email
-                  inbox or spam.
-                </p>
-              </div>
-            ) : null}
             <FormError message={error} />
             <FormSuccess message={success} />
-            {isPending ? (
-              <Button disabled className="w-full">
-                <Loader2 className="h-4 w-4 animate-spin" />
-              </Button>
-            ) : (
-              <Button disabled={isPending} type="submit" className="w-full">
-                Email me recovery link
-              </Button>
-            )}
+            <div className="flex w-full justify-end">
+              {isPending ? (
+                <Button disabled className="w-full">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </Button>
+              ) : (
+                <Button className="w-full" disabled={isPending} type="submit">
+                  Reset your password
+                </Button>
+              )}
+            </div>
           </form>
         </Form>
       </CardWrapper>
@@ -112,4 +127,4 @@ function ForgotPasswordForm() {
   )
 }
 
-export default ForgotPasswordForm
+export default ResetPasswordForm

@@ -12,11 +12,13 @@ import {
 import * as React from 'react'
 
 interface ResetPasswordEmailProps {
+  userId: string
   userFirstname?: string
   resetPasswordToken: string
 }
 
 export const ResetPasswordEmail = ({
+  userId,
   userFirstname,
   resetPasswordToken,
 }: ResetPasswordEmailProps) => {
@@ -29,7 +31,7 @@ export const ResetPasswordEmail = ({
           <Img
             src={`https://stooket.com/logo/stooket-logo.png`}
             width="40"
-            height="33"
+            height="40"
             alt="Stooket"
           />
           <Section>
@@ -40,7 +42,7 @@ export const ResetPasswordEmail = ({
             </Text>
             <Button
               style={button}
-              href={`https://stooket.com/reset-password?token=${resetPasswordToken}`}
+              href={`https://stooket.com/reset-password?token=${resetPasswordToken}&userId=${userId}`}
             >
               Reset password
             </Button>
