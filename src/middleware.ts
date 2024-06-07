@@ -8,7 +8,7 @@ import {
 
 export function middleware(request: NextRequest) {
   const { nextUrl, cookies } = request
-  const isLoggedIn = cookies.has('next-auth.session-token')
+  const isLoggedIn = cookies.has('__Secure-next-auth.session-token')
 
   const headers = new Headers(request.headers)
   headers.set('x-current-path', request.nextUrl.pathname)
