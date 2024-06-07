@@ -39,7 +39,7 @@ export const users = pgTable('user', {
   resetPasswordTokenExpiry: timestamp('resetPasswordTokenExpiry', {
     mode: 'date',
     withTimezone: true,
-  }).defaultNow(),
+  }),
 })
 
 export const usersRelations = relations(users, ({ many }) => ({
