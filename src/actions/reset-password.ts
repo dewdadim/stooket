@@ -9,6 +9,7 @@ import { users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import { Resend } from 'resend'
 import { ResetPasswordEmail } from '@/components/emails/reset-password-email'
+import 'dotenv/config'
 
 export const resetPassword = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values)
@@ -27,7 +28,7 @@ export const resetPassword = async (values: z.infer<typeof LoginSchema>) => {
   const resetPasswordToken = crypto.randomBytes(32).toString('base64url')
   const today = new Date()
   const expiryDate = new Date(today.setTime(today.getHours() + 5))
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  const resend = new Resend(process.env.RESEND_API_KEY!)
 
   await db
     .update(users)
