@@ -8,24 +8,30 @@ import {
   Preview,
   Section,
   Text,
+  Link,
 } from '@react-email/components'
 import * as React from 'react'
 
-interface ResetPasswordEmailProps {
-  userId: string
-  userFirstname?: string
-  resetPasswordToken: string
+interface BuyerCancelEmailProps {
+  product: Product
+  buyer: User
+  purchaseId: string
+  reason: string
+  purchase?: Purchase & {
+    cancel: { by: 'buyer' | 'seller' | string; at: Date; reason: string }
+  }
 }
 
-export const ResetPasswordEmail = ({
-  userId,
-  userFirstname,
-  resetPasswordToken,
-}: ResetPasswordEmailProps) => {
+export const BuyerCancelPurchaseEmail = ({
+  product,
+  buyer,
+  reason,
+  purchaseId,
+}: BuyerCancelEmailProps) => {
   return (
     <Html>
       <Head />
-      <Preview>Stooket reset your password</Preview>
+      <Preview>Purchase has been cancelled by buyer</Preview>
       <Body style={main}>
         <Container style={container}>
           <Img
@@ -35,25 +41,19 @@ export const ResetPasswordEmail = ({
             alt="Stooket"
           />
           <Section>
-            <Text style={text}>Hi {userFirstname},</Text>
+            <Text style={text}>Hi {buyer.name}</Text>
             <Text style={text}>
-              Someone recently requested a password change for your Stooket
-              account. If this was you, you can set a new password here:
+              @{buyer.username} has cancelled purchase of {product.title} | ID:{' '}
+              {purchaseId.toUpperCase()}
+              because of some circumstances:
             </Text>
+            <Text style={text}>{reason}</Text>
             <Button
               style={button}
-              href={`https://stooket.com/reset-password?token=${resetPasswordToken}&userId=${userId}`}
+              href={`https://www.stooket.com/purchase/details/${purchaseId}`}
             >
-              Reset password
+              View Details
             </Button>
-            <Text style={text}>
-              If you don&apos;t want to change your password or didn&apos;t
-              request this, just ignore and delete this message.
-            </Text>
-            <Text style={text}>
-              To keep your account secure, please don&apos;t forward this email
-              to anyone.
-            </Text>
           </Section>
         </Container>
       </Body>
@@ -96,4 +96,5 @@ const button = {
 
 const anchor = {
   textDecoration: 'underline',
+  padding: '14px 7px',
 }

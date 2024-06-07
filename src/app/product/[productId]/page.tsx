@@ -180,7 +180,9 @@ export default async function ProductDetails({ params }: Props) {
                       className="w-full"
                       disabled={product.status === 'sold'}
                     >
-                      {product.status !== 'sold' ? 'Buy Item' : 'Sold'}
+                      {product.status !== 'sold'
+                        ? 'Purchase Item'
+                        : 'Item Sold'}
                     </Button>
                   </Link>
                 ) : (

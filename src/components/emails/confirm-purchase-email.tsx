@@ -8,24 +8,27 @@ import {
   Preview,
   Section,
   Text,
+  Link,
 } from '@react-email/components'
 import * as React from 'react'
 
-interface ResetPasswordEmailProps {
-  userId: string
-  userFirstname?: string
-  resetPasswordToken: string
+interface ConfirmPurchaseEmailProps {
+  product: Product
+  seller: User
+  buyer: User
+  purchaseId: string
 }
 
-export const ResetPasswordEmail = ({
-  userId,
-  userFirstname,
-  resetPasswordToken,
-}: ResetPasswordEmailProps) => {
+export const ConfirmPurchaseEmail = ({
+  product,
+  buyer,
+  seller,
+  purchaseId,
+}: ConfirmPurchaseEmailProps) => {
   return (
     <Html>
       <Head />
-      <Preview>Stooket reset your password</Preview>
+      <Preview>Request purchase has been confirmed by Seller</Preview>
       <Body style={main}>
         <Container style={container}>
           <Img
@@ -35,25 +38,28 @@ export const ResetPasswordEmail = ({
             alt="Stooket"
           />
           <Section>
-            <Text style={text}>Hi {userFirstname},</Text>
+            <Text style={text}>Hi {buyer.name},</Text>
             <Text style={text}>
-              Someone recently requested a password change for your Stooket
-              account. If this was you, you can set a new password here:
+              Seller has confirmed your purchase request on:
+            </Text>
+            <Text style={text}>{product.title}</Text>
+            <Text>Category: {product.category}</Text>
+            <Text>RM{product.price?.toFixed(2)}</Text>
+            <Text>
+              You can contact seller for more information:{' '}
+              <Link
+                style={anchor}
+                href={`https://wa.me/6${seller.phoneNumber}`}
+              >
+                Contact Seller
+              </Link>
             </Text>
             <Button
               style={button}
-              href={`https://stooket.com/reset-password?token=${resetPasswordToken}&userId=${userId}`}
+              href={`https://www.stooket.com/purchase/details/${purchaseId}`}
             >
-              Reset password
+              View Request
             </Button>
-            <Text style={text}>
-              If you don&apos;t want to change your password or didn&apos;t
-              request this, just ignore and delete this message.
-            </Text>
-            <Text style={text}>
-              To keep your account secure, please don&apos;t forward this email
-              to anyone.
-            </Text>
           </Section>
         </Container>
       </Body>
@@ -96,4 +102,5 @@ const button = {
 
 const anchor = {
   textDecoration: 'underline',
+  padding: '14px 7px',
 }

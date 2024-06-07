@@ -11,21 +11,23 @@ import {
 } from '@react-email/components'
 import * as React from 'react'
 
-interface ResetPasswordEmailProps {
-  userId: string
-  userFirstname?: string
-  resetPasswordToken: string
+interface RequestPurchaseEmailProps {
+  product: Product
+  seller: User
+  buyer: User
+  purchaseId: string
 }
 
-export const ResetPasswordEmail = ({
-  userId,
-  userFirstname,
-  resetPasswordToken,
-}: ResetPasswordEmailProps) => {
+export const RequestPurchaseEmail = ({
+  product,
+  buyer,
+  seller,
+  purchaseId,
+}: RequestPurchaseEmailProps) => {
   return (
     <Html>
       <Head />
-      <Preview>Stooket reset your password</Preview>
+      <Preview>Request purchase from Stooket</Preview>
       <Body style={main}>
         <Container style={container}>
           <Img
@@ -35,25 +37,26 @@ export const ResetPasswordEmail = ({
             alt="Stooket"
           />
           <Section>
-            <Text style={text}>Hi {userFirstname},</Text>
-            <Text style={text}>
-              Someone recently requested a password change for your Stooket
-              account. If this was you, you can set a new password here:
-            </Text>
+            <Text style={text}>Hi {seller.name},</Text>
+            <Text style={text}>@{buyer.username} request to purchase:</Text>
+            <div className="flext mt-8 gap-2">
+              <Img
+                src={product.thumbnail!}
+                width="150"
+                height="150"
+                alt={product.title!}
+              />
+              <div>
+                <Text style={text}>{product.title}</Text>
+                <Text>Category: {product.category}</Text>
+              </div>
+            </div>
             <Button
               style={button}
-              href={`https://stooket.com/reset-password?token=${resetPasswordToken}&userId=${userId}`}
+              href={`https://www.stooket.com/purchase/details/${purchaseId}`}
             >
-              Reset password
+              View Request
             </Button>
-            <Text style={text}>
-              If you don&apos;t want to change your password or didn&apos;t
-              request this, just ignore and delete this message.
-            </Text>
-            <Text style={text}>
-              To keep your account secure, please don&apos;t forward this email
-              to anyone.
-            </Text>
           </Section>
         </Container>
       </Body>
