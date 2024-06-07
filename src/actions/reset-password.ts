@@ -28,7 +28,7 @@ export const resetPassword = async (values: z.infer<typeof LoginSchema>) => {
   const resetPasswordToken = crypto.randomBytes(32).toString('base64url')
   const today = new Date()
   const expiryDate = new Date(today.setTime(today.getHours() + 5))
-  const resend = new Resend(process.env.RESEND_API_KEY!)
+  const resend = new Resend('re_DcAoY5uW_Ps7zrbRgMrHdoHGj8GZUxxE7')
 
   await db
     .update(users)
