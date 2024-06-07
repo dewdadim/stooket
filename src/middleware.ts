@@ -20,7 +20,10 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/settings') ||
     request.nextUrl.pathname.startsWith('/purchases') ||
     request.nextUrl.pathname.startsWith('/seller-dashboard')
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+  const isAuthRoute =
+    authRoutes.includes(nextUrl.pathname) ||
+    request.nextUrl.pathname.startsWith('/forgot-password') ||
+    request.nextUrl.pathname.startsWith('/reset-password')
 
   if (isApiAuthRoute) {
     return null
