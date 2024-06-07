@@ -16,9 +16,7 @@ interface ResetPasswordEmailProps {
   resetPasswordToken: string
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : ''
+const baseUrl = process.env.VERCEL_URL ? `${process.env.VERCEL_URL}` : ''
 
 export const ResetPasswordEmail = ({
   userFirstname,
