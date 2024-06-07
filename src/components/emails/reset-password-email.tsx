@@ -16,8 +16,6 @@ interface ResetPasswordEmailProps {
   resetPasswordToken: string
 }
 
-const baseUrl = process.env.VERCEL_URL ? `${process.env.VERCEL_URL}` : ''
-
 export const ResetPasswordEmail = ({
   userFirstname,
   resetPasswordToken,
@@ -29,7 +27,7 @@ export const ResetPasswordEmail = ({
       <Body style={main}>
         <Container style={container}>
           <Img
-            src={`${baseUrl}/logo/stooket-logo.png`}
+            src={`https://stooket.com/logo/stooket-logo.png`}
             width="40"
             height="33"
             alt="Stooket"
@@ -42,7 +40,7 @@ export const ResetPasswordEmail = ({
             </Text>
             <Button
               style={button}
-              href={`${baseUrl}/reset-password?token=${resetPasswordToken}`}
+              href={`https://stooket.com/reset-password?token=${resetPasswordToken}`}
             >
               Reset password
             </Button>
