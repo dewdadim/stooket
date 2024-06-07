@@ -10,11 +10,23 @@ import {
 } from '@/components/ui/breadcrumb'
 import { currentUser } from '@/lib/auth'
 import getAllProductsByCategory from '@/lib/getAllProductsByCategory'
-import { shuffle } from '@/utils/shuffle'
+import { Metadata, ResolvingMetadata } from 'next'
 
 type Props = {
   params: { category: string }
   searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  // read route params
+  const category = decodeURIComponent(decodeURI(params.category))
+
+  return {
+    title: `${category}`,
+  }
 }
 
 export default async function Category({ params, searchParams }: Props) {
