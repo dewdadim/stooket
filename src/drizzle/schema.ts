@@ -35,6 +35,11 @@ export const users = pgTable('user', {
     mode: 'date',
     withTimezone: true,
   }).defaultNow(),
+  resetPasswordToken: varchar('resetPasswordToken').unique(),
+  resetPasswordTokenExpiry: timestamp('resetPasswordTokenExpiry', {
+    mode: 'date',
+    withTimezone: true,
+  }).defaultNow(),
 })
 
 export const usersRelations = relations(users, ({ many }) => ({

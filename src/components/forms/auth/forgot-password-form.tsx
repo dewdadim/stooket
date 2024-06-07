@@ -19,13 +19,13 @@ import { CardWrapper } from '@/components/forms/card-wrapper'
 import { Button } from '@/components/ui/button'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
-import { login } from '@/actions/login'
-import { Loader2 } from 'lucide-react'
-import Link from 'next/link'
+import { CheckCircle2, Loader2 } from 'lucide-react'
+import { resetPassword } from '@/actions/reset-password'
 
-function LoginForm() {
+function ForgotPasswordForm() {
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
+  const [email, setEmail] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
@@ -33,13 +33,12 @@ function LoginForm() {
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
   })
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     startTransition(() => {
-      login(values)
+      resetPassword(values)
         .then((data) => {
           if (data?.error) {
             setSuccess('')
@@ -50,8 +49,7 @@ function LoginForm() {
             setError('')
             form.reset()
             setSuccess(data.success)
-            router.push('/')
-            router.refresh()
+            setEmail(data.email)
           }
         })
         .catch(() => setError('Something went wrong'))
@@ -61,11 +59,11 @@ function LoginForm() {
   return (
     <div className="mt-36 flex justify-center">
       <CardWrapper
-        header="Stooket"
-        headerLabel="Welcome back as always!"
-        backButtonLabel="Don't have any account?"
-        backButtonHref="/register"
-        showSocial
+        header="Reset Password"
+        headerLabel="Please enter your email, we will send you a link to Reset your password."
+        backButtonLabel="Login account"
+        backButtonHref="/login"
+        className="md:w-[450px]"
       >
         <Form {...form}>
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -88,31 +86,15 @@ function LoginForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="******"
-                        type="password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                    <Link
-                      href={'/forgot-password'}
-                      className="text-xs text-sky-500"
-                    >
-                      Forgot Password?
-                    </Link>
-                  </FormItem>
-                )}
-              />
             </div>
+            {success ? (
+              <div className="flex items-center gap-x-2 rounded-md bg-sky-500/15 p-3 text-sm text-sky-700">
+                <p>
+                  Email has been sent to {email}. Make sure to check your email
+                  inbox or spam.
+                </p>
+              </div>
+            ) : null}
             <FormError message={error} />
             <FormSuccess message={success} />
             {isPending ? (
@@ -121,7 +103,7 @@ function LoginForm() {
               </Button>
             ) : (
               <Button disabled={isPending} type="submit" className="w-full">
-                Login
+                Email me recovery link
               </Button>
             )}
           </form>
@@ -131,4 +113,4 @@ function LoginForm() {
   )
 }
 
-export default LoginForm
+export default ForgotPasswordForm
