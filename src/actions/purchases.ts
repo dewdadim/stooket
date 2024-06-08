@@ -71,7 +71,7 @@ export const cancelPurchase = async (
     await resend.emails.send({
       from: 'Stooket <notification@stooket.com>',
       to: seller?.email!,
-      subject: `@${buyer?.username} has cancelled your purchase request (${purchase?.id.toUpperCase()})`,
+      subject: `@${buyer?.username} has cancelled a purchase (${purchase?.id.toUpperCase()})`,
       react: SellerCancelPurchaseEmail({
         product: product as Product,
         buyer: buyer as User,
