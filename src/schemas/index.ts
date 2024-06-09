@@ -5,7 +5,7 @@ const phoneValidation = new RegExp(
 ) //Malaysia phone number regex
 
 const usernameValidation = new RegExp(
-  /^(?![0-9._])(?!.*[0-9._]$)(?!.*\d_)(?!.*_\d)[a-zA-Z0-9_]+$/,
+  /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
 )
 
 //login user form validation
