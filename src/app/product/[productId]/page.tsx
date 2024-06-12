@@ -170,7 +170,7 @@ export default async function ProductDetails({ params }: Props) {
                 </Link>
               </div>
               <div>
-                {!user?.username.match(product.username) ? (
+                {user?.username !== product.username ? (
                   <Link
                     href={user ? '/purchase/' + params.productId : '/login'}
                     scroll={true}
